@@ -41,7 +41,7 @@ export function CalendarHeatmap({ crops, onSelect }: { crops: RankedCrop[]; onSe
       <div className="overflow-x-auto pb-1">
         <div className="min-w-[560px]">
           {/* month header */}
-          <div className="grid grid-cols-[minmax(92px,128px)_repeat(36,minmax(0,1fr))] text-[11px] text-ink-2">
+          <div className="grid grid-cols-[minmax(104px,160px)_repeat(36,minmax(0,1fr))] text-2xs text-ink-2">
             <span />
             {monthNames(locale).map((m, i) => (
               <span key={m} className="col-span-3 border-l border-border pl-1" style={{ gridColumnStart: i * 3 + 2 }}>
@@ -50,10 +50,10 @@ export function CalendarHeatmap({ crops, onSelect }: { crops: RankedCrop[]; onSe
             ))}
           </div>
           {/* "today" marker row */}
-          <div className="grid h-3 grid-cols-[minmax(92px,128px)_repeat(36,minmax(0,1fr))]">
+          <div className="grid h-3 grid-cols-[minmax(104px,160px)_repeat(36,minmax(0,1fr))]">
             <span />
             <span
-              className="flex justify-center text-[10px] leading-3 text-ink"
+              className="flex justify-center text-2xs leading-3 text-ink"
               style={{ gridColumnStart: today + 1 }}
               title={t.today(dekadLabel(today, locale))}
             >
@@ -68,7 +68,7 @@ export function CalendarHeatmap({ crops, onSelect }: { crops: RankedCrop[]; onSe
                   key={c.crop_id}
                   type="button"
                   onClick={() => onSelect(c.crop_id)}
-                  className="group grid w-full grid-cols-[minmax(92px,128px)_repeat(36,minmax(0,1fr))] items-stretch rounded-sm text-left hover:bg-surface-2"
+                  className="group grid w-full grid-cols-[minmax(104px,160px)_repeat(36,minmax(0,1fr))] items-stretch rounded-sm text-left hover:bg-surface-2"
                   aria-label={t.rowLabel(
                     c.rank,
                     c.name,

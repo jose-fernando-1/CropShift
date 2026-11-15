@@ -34,8 +34,9 @@ export function CropshiftApp({ dataFlowAllowed }: { dataFlowAllowed: boolean }) 
       {isMock ? <MockBanner /> : null}
       <AppHeader inspectorEnabled={inspectorEnabled} onOpenInspector={() => setInspectorOpen(true)} />
 
-      <main className="mx-auto grid w-full max-w-7xl flex-1 gap-6 px-4 py-6 lg:grid-cols-[380px_minmax(0,1fr)] xl:grid-cols-[420px_minmax(0,1fr)]">
-        <aside className="space-y-6 lg:sticky lg:top-12 lg:self-start">
+      <main className="mx-auto grid w-full max-w-app flex-1 gap-6 px-4 py-6 lg:grid-cols-[380px_minmax(0,1fr)] lg:px-6 xl:grid-cols-[420px_minmax(0,1fr)] 3xl:grid-cols-[480px_minmax(0,1fr)]">
+        {/* On desktop the sidebar is about one viewport tall (fits below the header on load) and the map takes the spare height. It is sticky only on tall viewports, where it fits on screen; otherwise its bottom (farm options) would be unreachable. */}
+        <aside className="flex flex-col gap-6 lg:min-h-[calc(100dvh-7rem)] lg:self-start lg:tall:sticky lg:tall:top-12">
           <LocationPanel state={state} />
           <section aria-labelledby="options-title" className="space-y-3">
             <h2 id="options-title" className="font-semibold">

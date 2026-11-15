@@ -268,7 +268,6 @@ export const en = {
   },
   explain: {
     title: "In plain words",
-    regenerate: "Regenerate",
     ai: "AI-written (Gemini), checked against the results",
     template: "Written from the results by template",
     fallback: "Written in your browser from the results by template (explanation service unavailable)",

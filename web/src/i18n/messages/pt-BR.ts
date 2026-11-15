@@ -270,7 +270,6 @@ export const ptBR: Messages = {
   },
   explain: {
     title: "Em palavras simples",
-    regenerate: "Gerar de novo",
     ai: "Escrito por IA (Gemini), conferido contra os resultados",
     template: "Escrito a partir dos resultados por modelo de texto",
     fallback: "Escrito no seu navegador a partir dos resultados (serviço de explicação indisponível)",

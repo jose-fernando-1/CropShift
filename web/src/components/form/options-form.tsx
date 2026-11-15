@@ -26,7 +26,7 @@ export function OptionsForm({
           <span className="text-xs font-medium text-ink-2">
             {t.soil} <span className="font-normal text-muted">{t.optional}</span>
           </span>
-          {soil === null ? <span className="text-[11px] text-muted">{t.defaultSoil}</span> : null}
+          {soil === null ? <span className="text-2xs text-muted">{t.defaultSoil}</span> : null}
         </div>
         <Segmented<SoilChoice>
           label={t.soil}
@@ -45,7 +45,7 @@ export function OptionsForm({
           <span className="text-xs font-medium text-ink-2">
             {t.water} <span className="font-normal text-muted">{t.optional}</span>
           </span>
-          {regime === null ? <span className="text-[11px] text-muted">{t.defaultRegime}</span> : null}
+          {regime === null ? <span className="text-2xs text-muted">{t.defaultRegime}</span> : null}
         </div>
         <Segmented<RegimeChoice>
           label={t.regimeLabel}

@@ -147,7 +147,7 @@ function Json({ label, value, open = false }: { label: string; value: unknown; o
   return (
     <details open={open}>
       <summary className="cursor-pointer text-xs font-medium">{label}</summary>
-      <pre className="mt-1 max-h-72 overflow-auto rounded bg-surface-2 p-2 text-[11px] leading-snug">{JSON.stringify(value, null, 2)}</pre>
+      <pre className="mt-1 max-h-72 overflow-auto rounded bg-surface-2 p-2 text-2xs leading-snug">{JSON.stringify(value, null, 2)}</pre>
     </details>
   );
 }

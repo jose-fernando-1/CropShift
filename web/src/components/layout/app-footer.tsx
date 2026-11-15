@@ -8,7 +8,7 @@ export function AppFooter() {
   const m = useMessages();
   return (
     <footer className="mt-auto border-t border-border bg-surface-2">
-      <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 text-sm sm:grid-cols-3">
+      <div className="mx-auto grid max-w-app gap-6 px-4 py-6 text-sm sm:grid-cols-3 lg:px-6">
         <section>
           <h2 className="font-semibold">{m.footer.nasaData}</h2>
           <ul className="mt-2 space-y-1">

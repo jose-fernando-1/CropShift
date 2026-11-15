@@ -77,7 +77,7 @@ export function DekadChart({ crop }: { crop: RankedCrop }) {
         {[0, 0.25, 0.5, 0.75, 1].map((t) => (
           <g key={t}>
             <line x1={M.left} x2={M.left + plotW} y1={y(t)} y2={y(t)} stroke="var(--border)" strokeWidth={t === 0 ? 1 : 0.75} />
-            <text x={M.left - 6} y={y(t)} dy="0.32em" textAnchor="end" fontSize={11} fill="var(--ink-2)">
+            <text x={M.left - 6} y={y(t)} dy="0.32em" textAnchor="end" fontSize={12} fill="var(--ink-2)">
               {t * 100}%
             </text>
           </g>
@@ -87,7 +87,7 @@ export function DekadChart({ crop }: { crop: RankedCrop }) {
         {monthNames(locale).map((m, i) => (
           <g key={m}>
             <line x1={x(i * 3 + 1)} x2={x(i * 3 + 1)} y1={M.top + plotH} y2={M.top + plotH + 8} stroke="var(--border)" />
-            <text x={x(i * 3 + 1) + (bw * 3) / 2} y={HEIGHT - 8} textAnchor="middle" fontSize={11} fill="var(--ink-2)">
+            <text x={x(i * 3 + 1) + (bw * 3) / 2} y={HEIGHT - 8} textAnchor="middle" fontSize={12} fill="var(--ink-2)">
               {width < 420 ? m[0].toUpperCase() : m}
             </text>
           </g>
@@ -102,7 +102,7 @@ export function DekadChart({ crop }: { crop: RankedCrop }) {
               stroke="var(--ink)"
               strokeWidth={1.25}
             />
-            <text x={(x(best.start_dekad) + x(best.end_dekad) + bw) / 2} y={M.top - 15} textAnchor="middle" fontSize={11} fill="var(--ink)">
+            <text x={(x(best.start_dekad) + x(best.end_dekad) + bw) / 2} y={M.top - 15} textAnchor="middle" fontSize={12} fill="var(--ink)">
               {t.bestWindow(percent(best.mean_p))}
             </text>
           </g>
@@ -153,7 +153,7 @@ export function DekadChart({ crop }: { crop: RankedCrop }) {
           strokeWidth={1}
           pointerEvents="none"
         />
-        <text x={x(today) + bw / 2 + 3} y={M.top + 10} fontSize={10} fill="var(--ink)" pointerEvents="none">
+        <text x={x(today) + bw / 2 + 3} y={M.top + 10} fontSize={11} fill="var(--ink)" pointerEvents="none">
           {t.todayShort}
         </text>
       </svg>
