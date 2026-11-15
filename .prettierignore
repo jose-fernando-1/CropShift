@@ -1,0 +1,18 @@
+# Generated files: their generators own the layout (npm run gen:contract, gen:fixtures, gen:geo).
+contract/*.schema.json
+contract/examples/
+web/mock-data/
+web/public/geo/
+
+# Dependencies, build output and test artefacts.
+**/node_modules/
+web/.next/
+web/out/
+web/build/
+web/coverage/
+web/test-results/
+web/playwright-report/
+web/blob-report/
+web/next-env.d.ts
+**/package-lock.json
+.devcontainer/devcontainer-lock.json

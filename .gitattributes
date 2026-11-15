@@ -1,0 +1,8 @@
+# Store text with LF line endings and check it out as LF on every OS, so a
+# Windows checkout or an editor set to CRLF never rewrites whole files.
+* text=auto eol=lf
+
+*.ico binary
+*.png binary
+*.jpg binary
+*.woff2 binary

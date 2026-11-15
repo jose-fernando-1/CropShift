@@ -88,7 +88,9 @@ Run from `web/`.
 | `npm run typecheck` | `next typegen && tsc --noEmit`. |
 | `npm test` | Vitest, once. `npm run test:watch` for watch mode. |
 | `npm run e2e` | Playwright E2E. |
-| `npm run check` | lint, typecheck, test and `gen:contract -- --check`. |
+| `npm run format` | Prettier, writes the whole repo (runs from the repo root). |
+| `npm run format:check` | Prettier, fails if any file is not formatted. |
+| `npm run check` | `format:check`, lint, typecheck, test and `gen:contract -- --check`. |
 | `npm run gen:geo` | Downloads the Pernambuco municipal mesh and names from public IBGE APIs; writes `public/geo/pe-municipalities.json` and `mock-data/municipalities.json`. |
 | `npm run gen:fixtures -- [--zarc <csv>] [--pam <csv>] [--ficha <csv>]` | Compacts the real ZARC, PAM and crop-sheet CSVs into `mock-data/zarc.json`, `mock-data/pam.json` and `mock-data/requirements.json`. Every arg is optional; only the outputs for the inputs given are written. |
 | `npm run gen:contract` | Regenerates `../contract/` (JSON Schemas and examples) from the zod schemas. |
@@ -110,11 +112,11 @@ Tests: `tests/unit/i18n.test.ts` and `tests/e2e/i18n.spec.ts`.
 
 Failure scenarios for testing error states, mock mode only:
 
-| Scenario | Effect |
-| --- | --- |
-| `power_down` | `POST /api/v1/recommendations` fails with 503 `upstream_unavailable`. |
+| Scenario       | Effect                                                                                     |
+| -------------- | ------------------------------------------------------------------------------------------ |
+| `power_down`   | `POST /api/v1/recommendations` fails with 503 `upstream_unavailable`.                      |
 | `explain_down` | The explain route fails with 500 `internal`; the UI falls back to the in-browser template. |
-| `no_data` | Recommendations return 404 `no_data` (after request validation). |
+| `no_data`      | Recommendations return 404 `no_data` (after request validation).                           |
 
 Select one in the data-flow inspector, with the `x-mock-scenario` request header, or with `?scenario=` on an API call:
 
@@ -134,7 +136,13 @@ A sheet that lists the last 50 API calls (method, path, status, duration, mode, 
 
 - `npm test` (Vitest, `tests/unit`): the mock handlers and engine, dekad helpers, the explanation template, and the published contract: every file in `../contract/examples/` is validated with Ajv against its JSON Schema, as the FastAPI side will do.
 - `npm run e2e` (Playwright, `tests/e2e`): builds the app, serves it in mock mode on port 3100 and runs the user journey in two projects, desktop (1440x900) and mobile (Pixel 7), with axe accessibility checks. Map tiles are blocked so runs are hermetic. The first run needs Chromium (`npx playwright install --with-deps chromium`; the devcontainer does this).
-- `npm run check` runs lint, typecheck, unit tests and the contract staleness check.
+- `npm run check` runs the format check, lint, typecheck, unit tests and the contract staleness check.
+
+## Code style
+
+Formatting is [Prettier](https://prettier.io) with the config in the repo root (`.prettierrc.json`); `.editorconfig` and `.gitattributes` (LF line endings) back it up. The workspace settings in `.vscode/settings.json` format on save with that config and override personal VS Code settings. Generated files (`contract/*.schema.json`, `contract/examples/`, `web/mock-data/`, `web/public/geo/`) are listed in `.prettierignore`, because their generators own the layout. Run `npm run format` to fix everything, `npm run format:check` to verify.
+
+After pulling this change in the devcontainer, run `npm install` in `web/` so the pinned Prettier is installed.
 
 ## Project layout
 
