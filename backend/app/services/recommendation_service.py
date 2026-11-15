@@ -16,6 +16,7 @@ from app.core.i18n import Locale
 from app.engines.calibration import CalibrationInput, Calibrator, IdentityCalibrator
 from app.engines.confidence import assess_confidence
 from app.engines.dekads import DEKADS_PER_YEAR, shift_dekad
+from app.engines.suitability import assess_suitability
 from app.engines.water_balance import SOIL_THETA_AW
 from app.engines.windows import GOOD_WINDOW_P, best_windows, ranking_score, spearman
 from app.models.catalog import Crop
@@ -25,6 +26,7 @@ from app.repositories.climate import ClimateRepository
 from app.repositories.crops import CropRepository
 from app.repositories.geo import MunicipalityRepository
 from app.repositories.reference import ReferenceRepository
+from app.repositories.soil import SoilRepository
 from app.repositories.windows import WindowRepository
 from app.schemas.locations import Coordinates
 from app.schemas.recommendations import (
@@ -47,6 +49,7 @@ from app.schemas.recommendations import (
 )
 from app.services import recommendation_text as text
 from app.services.location_service import LocationService, municipality_cell
+from app.services.simulation_service import LAST_SEASON
 
 GATE_THRESHOLD = 0.7
 DEFAULT_SOIL_CLASS = 2
@@ -127,12 +130,14 @@ class RecommendationService:
         reference: ReferenceRepository,
         climate: ClimateRepository,
         calibrator: Calibrator | None = None,
+        soil: SoilRepository | None = None,
     ):
         self.crops = crops
         self.municipalities = municipalities
         self.windows = windows
         self.reference = reference
         self.climate = climate
+        self.soil = soil or SoilRepository(climate.db)
         self.calibrator: Calibrator = calibrator or IdentityCalibrator()  # ML is scaffolded, not trained
         self.locations = LocationService(municipalities)
 
@@ -183,6 +188,7 @@ class RecommendationService:
         ranked: list[tuple[float, RankedCrop]] = []
         excluded: list[ExcludedCrop] = []
         any_curve = False
+        place = self._place_summary(municipality)
 
         for crop in crops:
             rainfed = p.regime == "rainfed"
@@ -269,8 +275,10 @@ class RecommendationService:
                         pam=pam,
                         flags=Flags(engine_reliable=True, ml_applied=calibrated.applied),
                         strengths=self._strengths(crop, windows, zarc, locale),
-                        risks=self._risks(values, windows, zarc, pam, p, locale),
-                        missing_data=self._missing(crop, zarc, pam, p, municipality, locale),
+                        risks=self._risks(values, windows, zarc, pam, p, locale)
+                        + self._suitability_risks(crop, place, locale),
+                        missing_data=self._missing(crop, zarc, pam, p, municipality, locale)
+                        + ([text.MISSING_SOIL_PH[locale]] if place[2] is None else []),
                         sources=[*base_sources, *self._engine_sources(p, municipality)],
                         confidence=Confidence(
                             level=confidence.level,
@@ -310,6 +318,34 @@ class RecommendationService:
         )
 
     # ---- pieces ----
+
+    def _place_summary(self, municipality: Municipality) -> tuple[float | None, float | None, float | None]:
+        """(mean annual rain mm, mean temperature °C, topsoil pH) of the place, for the static suitability notes."""
+        rain, temp = self.climate.climate_summary(municipality.power_cell_id, LAST_SEASON)
+        return rain, temp, self.soil.topsoil_ph(municipality.code)
+
+    @staticmethod
+    def _suitability_risks(crop: Crop, place: tuple, locale: Locale) -> list[str]:
+        """One note per factor the place cannot tolerate, from the EcoCrop ranges (not used for ranking)."""
+        req = crop.requirements
+        if req is None:
+            return []
+        rain, temp, ph = place
+        result = assess_suitability(
+            mean_annual_temp_c=temp,
+            annual_rain_mm=rain,
+            ph=ph,
+            temp_optimal=(req.temp_opt_min_c, req.temp_opt_max_c),
+            temp_absolute=(req.temp_abs_min_c, req.temp_abs_max_c),
+            rain_optimal=(req.rain_opt_min_mm, req.rain_opt_max_mm),
+            rain_absolute=(req.rain_abs_min_mm, req.rain_abs_max_mm),
+            ph_optimal=(req.ph_opt_min, req.ph_opt_max),
+        )
+        return [
+            text.risk_suitability(f.name, f.value, locale)
+            for f in result.factors
+            if f.status == "outside" and f.value is not None
+        ]
 
     @staticmethod
     def _name(crop: Crop, locale: Locale) -> str:

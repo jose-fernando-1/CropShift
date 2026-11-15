@@ -230,3 +230,25 @@ DISCLAIMERS = {
     },
 }
 DISCLAIMER_ORDER = ["scale", "soil", "rain", "frequency", "validation", "zarc", "dekad"]
+
+
+def risk_suitability(factor: str, value: float, locale: Locale) -> str:
+    if locale == "en":
+        what = {
+            "temperature": f"mean annual temperature ({_decimal(value, locale, 1)} °C)",
+            "rainfall": f"mean annual rainfall ({int(value + 0.5)} mm)",
+            "ph": f"topsoil pH ({_decimal(value, locale, 1)})",
+        }[factor]
+        return f"The place's {what} is outside this crop's tolerated range (FAO EcoCrop)."
+    what = {
+        "temperature": f"temperatura média anual ({_decimal(value, locale, 1)} °C)",
+        "rainfall": f"chuva média anual ({int(value + 0.5)} mm)",
+        "ph": f"pH do solo superficial ({_decimal(value, locale, 1)})",
+    }[factor]
+    return f"A {what} do local está fora da faixa tolerada por esta cultura (FAO EcoCrop)."
+
+
+MISSING_SOIL_PH = {
+    "en": "No SoilGrids pH at this location, so soil acidity was not checked against the crop's range.",
+    "pt-BR": "Não há pH do SoilGrids neste local, então a acidez do solo não foi comparada com a faixa da cultura.",
+}

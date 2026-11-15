@@ -130,7 +130,7 @@ make check   # lint + test
 
 ## Not implemented (deliberately deferred)
 
-- The PDF plan's static suitability scoring (phase 4: per-factor scores, weighted aggregate, coverage). Only the FAO-56 water-balance engine ranks crops.
+- The PDF plan's static suitability score is built (`app/engines/suitability`: trapezoid scores for temperature, rainfall and topsoil pH against the EcoCrop ranges, weighted aggregate with coverage, "not evaluated" for missing data) but only feeds the risk and missing-data notes of a result: it is not used for ranking (water would be counted twice) and the score is not in the payload (that needs a contract v0.2). It needs `climate_daily`, which is not part of the demo seed, so a database filled only from the seed omits those notes.
 - ML calibration: only the seam exists (`app/engines/calibration`, identity calibrator, `ml_applied: false`).
 - Irrigated analyses: every crop is excluded with `no_data_for_regime` (the success rule is meaningless without water stress).
 - Satellite data in the runtime (SMAP, MODIS, IMERG): not used by the API; extraction clients exist only in `data/`.

@@ -21,3 +21,13 @@ class SoilRepository:
         if municipality is not None:
             municipality.default_soil_class = soil_class
         return soil_class
+
+    def topsoil_ph(self, municipality_code: str) -> float | None:
+        """SoilGrids pH (water) of the 0-5 cm layer at the municipality centroid; None when masked."""
+        from sqlalchemy import select
+
+        return self.db.scalars(
+            select(SoilProfile.ph).where(
+                SoilProfile.municipality_code == municipality_code, SoilProfile.depth == "0-5cm"
+            )
+        ).first()

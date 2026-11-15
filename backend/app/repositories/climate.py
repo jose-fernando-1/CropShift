@@ -1,6 +1,6 @@
 from datetime import date
 
-from sqlalchemy import delete, func, select
+from sqlalchemy import delete, extract, func, select
 from sqlalchemy.orm import Session
 
 from app.integrations.nasa_power import PARAMETERS, PowerSeries
@@ -61,6 +61,18 @@ class ClimateRepository:
         else:
             for key, value in fields.items():
                 setattr(existing, key, value)
+
+    def climate_summary(self, cell_id: str, last_full_year: int) -> tuple[float | None, float | None]:
+        """(mean annual rain mm over complete years up to `last_full_year`, mean air temperature °C) of a cell."""
+        years = (
+            select(extract("year", ClimateDaily.day).label("y"), func.sum(ClimateDaily.prectotcorr).label("rain"))
+            .where(ClimateDaily.cell_id == cell_id, ClimateDaily.day < date(last_full_year + 1, 1, 1))
+            .group_by("y")
+            .subquery()
+        )
+        rain = self.db.execute(select(func.avg(years.c.rain))).scalar()
+        temp = self.db.execute(select(func.avg(ClimateDaily.t2m)).where(ClimateDaily.cell_id == cell_id)).scalar()
+        return (None if rain is None else float(rain), None if temp is None else float(temp))
 
     def dataset_versions(self) -> list[DatasetVersion]:
         return list(self.db.scalars(select(DatasetVersion).order_by(DatasetVersion.name)))
