@@ -163,13 +163,13 @@ export function DekadChart({ crop }: { crop: RankedCrop }) {
   const legend = (
     <>
       <span className="flex items-center gap-1.5">
-        <span className="h-3 w-3 rounded-sm bg-[var(--seq-450)]" aria-hidden /> {t.legendProbability}
+        <span className="h-3 w-3 rounded-sm bg-(--seq-450)" aria-hidden /> {t.legendProbability}
       </span>
       <span className="flex items-center gap-1.5">
         <span className="h-3 w-px bg-ink-2" aria-hidden /> {t.legendRange}
       </span>
       <span className="flex items-center gap-1.5">
-        <span className="h-3 w-4 rounded-sm border-b-[3px] border-zarc bg-[var(--zarc-soft)]" aria-hidden />
+        <span className="h-3 w-4 rounded-sm border-b-[3px] border-zarc bg-(--zarc-soft)" aria-hidden />
         {crop.zarc ? t.legendZarcDetail(crop.zarc.soil_code, crop.zarc.cycle_code) : t.legendNoZarc}
       </span>
     </>
