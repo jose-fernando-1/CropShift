@@ -5,16 +5,12 @@ import { ArrowRight, CircleCheck, CircleX, Trash2 } from "lucide-react";
 import { useState, useSyncExternalStore } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, SheetContent } from "@/components/ui/dialog";
+import { useMessages } from "@/i18n/use-i18n";
 import { getMockScenario, setMockScenario } from "@/lib/api/client";
 import { requestLog, type LoggedRequest } from "@/lib/api/request-log";
 import { cn } from "@/lib/utils";
 
-const SCENARIOS = [
-  { value: "none", label: "Normal responses" },
-  { value: "power_down", label: "POWER / engine down (503)" },
-  { value: "explain_down", label: "Explanation service down (500)" },
-  { value: "no_data", label: "No data for this place (404)" },
-];
+const SCENARIOS = ["none", "power_down", "explain_down", "no_data"];
 
 const EMPTY: LoggedRequest[] = [];
 
@@ -23,6 +19,7 @@ const EMPTY: LoggedRequest[] = [];
  * request, response, timing and contract check, plus failure scenarios.
  */
 export function InspectorSheet({ open, onOpenChange, mode }: { open: boolean; onOpenChange: (v: boolean) => void; mode: "mock" | "live" | "unknown" }) {
+  const t = useMessages().inspector;
   const entries = useSyncExternalStore(requestLog.subscribe, requestLog.snapshot, () => EMPTY);
   const [scenario, setScenario] = useState(getMockScenario);
   const [expanded, setExpanded] = useState<number | null>(null);
@@ -37,18 +34,18 @@ export function InspectorSheet({ open, onOpenChange, mode }: { open: boolean; on
   };
 
   const layers = [
-    { name: "Fixtures", note: mode === "live" ? "track A table" : "mock-data/*.json", mocked: mode !== "live" },
-    { name: "/api route", note: mode === "live" ? "proxy → FastAPI" : "src/mocks", mocked: mode !== "live" },
-    { name: "zod contract", note: "v0.1", mocked: false },
-    { name: "Query cache", note: "TanStack", mocked: false },
-    { name: "UI", note: "components", mocked: false },
+    { name: t.layers.fixtures, note: mode === "live" ? "track A" : "mock-data/*.json", mocked: mode !== "live" },
+    { name: t.layers.route, note: mode === "live" ? "proxy → FastAPI" : "src/mocks", mocked: mode !== "live" },
+    { name: t.layers.contract, note: "v0.1", mocked: false },
+    { name: t.layers.cache, note: "TanStack", mocked: false },
+    { name: t.layers.ui, note: "components", mocked: false },
   ];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <SheetContent title="Data flow" description="Every call the page makes, checked against the contract.">
+      <SheetContent title={t.title} description={t.description}>
         <div className="space-y-5 text-sm">
-          <ol className="flex flex-wrap items-center gap-1 text-xs" aria-label="Pipeline">
+          <ol className="flex flex-wrap items-center gap-1 text-xs" aria-label={t.pipeline}>
             {layers.map((l, i) => (
               <li key={l.name} className="flex items-center gap-1">
                 <span className={cn("rounded-md border px-2 py-1", l.mocked ? "border-warning bg-warning-soft text-warning-ink" : "border-border bg-surface-2")}>
@@ -62,7 +59,7 @@ export function InspectorSheet({ open, onOpenChange, mode }: { open: boolean; on
 
           {mode !== "live" ? (
             <label className="block">
-              <span className="mb-1 block text-xs font-medium text-ink-2">Mock scenario (sent as x-mock-scenario)</span>
+              <span className="mb-1 block text-xs font-medium text-ink-2">{t.scenario}</span>
               <select
                 value={scenario}
                 onChange={(e) => changeScenario(e.target.value)}
@@ -70,8 +67,8 @@ export function InspectorSheet({ open, onOpenChange, mode }: { open: boolean; on
                 data-testid="scenario-select"
               >
                 {SCENARIOS.map((s) => (
-                  <option key={s.value} value={s.value}>
-                    {s.label}
+                  <option key={s} value={s}>
+                    {t.scenarios[s]}
                   </option>
                 ))}
               </select>
@@ -79,12 +76,12 @@ export function InspectorSheet({ open, onOpenChange, mode }: { open: boolean; on
           ) : null}
 
           <div className="flex items-center justify-between">
-            <h3 className="font-semibold">Requests ({entries.length})</h3>
+            <h3 className="font-semibold">{t.requests(entries.length)}</h3>
             <Button size="sm" variant="ghost" onClick={() => requestLog.clear()}>
-              <Trash2 aria-hidden /> Clear
+              <Trash2 aria-hidden /> {t.clear}
             </Button>
           </div>
-          {entries.length === 0 ? <p className="text-ink-2">No calls yet. Pick a location to see the flow.</p> : null}
+          {entries.length === 0 ? <p className="text-ink-2">{t.empty}</p> : null}
           <ul className="space-y-2">
             {entries.map((e) => (
               <li key={e.id} className="rounded-md border border-border">
@@ -99,9 +96,9 @@ export function InspectorSheet({ open, onOpenChange, mode }: { open: boolean; on
                   <span className={cn("font-mono text-xs", e.status && e.status >= 400 ? "text-critical-ink" : "text-ink-2")}>{e.status ?? "…"}</span>
                   <span className="w-14 text-right font-mono text-xs text-muted">{e.durationMs !== null ? `${Math.round(e.durationMs)} ms` : ""}</span>
                   {e.schemaOk === null ? null : e.schemaOk ? (
-                    <CircleCheck className="size-4 text-good-ink" aria-label="matches contract" />
+                    <CircleCheck className="size-4 text-good-ink" aria-label={t.matches} />
                   ) : (
-                    <CircleX className="size-4 text-critical-ink" aria-label="does not match contract" />
+                    <CircleX className="size-4 text-critical-ink" aria-label={t.mismatch} />
                   )}
                 </button>
                 {expanded === e.id ? (
@@ -116,8 +113,8 @@ export function InspectorSheet({ open, onOpenChange, mode }: { open: boolean; on
                         ))}
                       </ul>
                     ) : null}
-                    {e.requestBody !== undefined ? <Json label="Request body" value={e.requestBody} /> : null}
-                    <Json label="Response body" value={e.responseBody} />
+                    {e.requestBody !== undefined ? <Json label={t.requestBody} value={e.requestBody} open /> : null}
+                    <Json label={t.responseBody} value={e.responseBody} />
                   </div>
                 ) : null}
               </li>
@@ -129,9 +126,9 @@ export function InspectorSheet({ open, onOpenChange, mode }: { open: boolean; on
   );
 }
 
-function Json({ label, value }: { label: string; value: unknown }) {
+function Json({ label, value, open = false }: { label: string; value: unknown; open?: boolean }) {
   return (
-    <details open={label === "Request body"}>
+    <details open={open}>
       <summary className="cursor-pointer text-xs font-medium">{label}</summary>
       <pre className="mt-1 max-h-72 overflow-auto rounded bg-surface-2 p-2 text-[11px] leading-snug">{JSON.stringify(value, null, 2)}</pre>
     </details>

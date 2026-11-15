@@ -3,6 +3,7 @@
 import { X } from "lucide-react";
 import { Dialog as D } from "radix-ui";
 import type { ReactNode } from "react";
+import { useMessages } from "@/i18n/use-i18n";
 import { cn } from "@/lib/utils";
 
 export const Dialog = D.Root;
@@ -20,6 +21,7 @@ export function DialogContent({
   children: ReactNode;
   className?: string;
 }) {
+  const m = useMessages();
   return (
     <D.Portal>
       <D.Overlay className="fixed inset-0 z-40 bg-black/40" />
@@ -34,7 +36,7 @@ export function DialogContent({
             <D.Title className="text-lg font-semibold">{title}</D.Title>
             {description ? <D.Description className="mt-1 text-sm text-ink-2">{description}</D.Description> : null}
           </div>
-          <D.Close className="rounded-md p-1 text-ink-2 hover:bg-surface-2" aria-label="Close">
+          <D.Close className="rounded-md p-1 text-ink-2 hover:bg-surface-2" aria-label={m.app.close}>
             <X className="size-5" />
           </D.Close>
         </div>
@@ -56,6 +58,7 @@ export function SheetContent({
   children: ReactNode;
   className?: string;
 }) {
+  const m = useMessages();
   return (
     <D.Portal>
       <D.Overlay className="fixed inset-0 z-40 bg-black/30" />
@@ -70,7 +73,7 @@ export function SheetContent({
             <D.Title className="text-lg font-semibold">{title}</D.Title>
             {description ? <D.Description className="mt-0.5 text-sm text-ink-2">{description}</D.Description> : null}
           </div>
-          <D.Close className="rounded-md p-1 text-ink-2 hover:bg-surface-2" aria-label="Close">
+          <D.Close className="rounded-md p-1 text-ink-2 hover:bg-surface-2" aria-label={m.app.close}>
             <X className="size-5" />
           </D.Close>
         </div>

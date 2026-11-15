@@ -3,6 +3,7 @@
 import { Table2, ChartColumn } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
+import { useMessages } from "@/i18n/use-i18n";
 
 /** Title row with a chart/table toggle: every chart has a table view. */
 export function ChartFrame({
@@ -19,6 +20,7 @@ export function ChartFrame({
   table: ReactNode;
 }) {
   const [asTable, setAsTable] = useState(false);
+  const t = useMessages().chart;
   return (
     <figure className="min-w-0">
       <div className="flex flex-wrap items-start justify-between gap-2">
@@ -28,7 +30,7 @@ export function ChartFrame({
         </figcaption>
         <Button size="sm" variant="ghost" onClick={() => setAsTable((v) => !v)} aria-pressed={asTable}>
           {asTable ? <ChartColumn aria-hidden /> : <Table2 aria-hidden />}
-          {asTable ? "View as chart" : "View as table"}
+          {asTable ? t.viewChart : t.viewTable}
         </Button>
       </div>
       {legend && !asTable ? <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-ink-2">{legend}</div> : null}

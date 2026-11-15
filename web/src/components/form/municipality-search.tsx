@@ -2,6 +2,7 @@
 
 import { Search } from "lucide-react";
 import { useId, useMemo, useState } from "react";
+import { useMessages } from "@/i18n/use-i18n";
 import type { MunicipalityOption } from "@/lib/api/municipalities";
 import { foldAccents } from "@/lib/domain/geo";
 import { cn } from "@/lib/utils";
@@ -19,6 +20,7 @@ export function MunicipalitySearch({
   disabled?: boolean;
 }) {
   const id = useId();
+  const t = useMessages().location;
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
@@ -41,7 +43,7 @@ export function MunicipalitySearch({
   return (
     <div className="relative">
       <label htmlFor={`${id}-input`} className="mb-1 block text-xs font-medium text-ink-2">
-        Search a municipality
+        {t.searchLabel}
       </label>
       <div className="relative">
         <Search className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted" aria-hidden />
@@ -54,7 +56,7 @@ export function MunicipalitySearch({
           aria-activedescendant={expanded ? `${id}-opt-${active}` : undefined}
           autoComplete="off"
           disabled={disabled}
-          placeholder="e.g. São Bento do Una"
+          placeholder={t.searchPlaceholder}
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
@@ -103,7 +105,7 @@ export function MunicipalitySearch({
       ) : null}
       {open && query.trim() && results.length === 0 ? (
         <p className="mt-1 text-xs text-ink-2" role="status">
-          No municipality in Pernambuco matches “{query}”.
+          {t.noMatch(query)}
         </p>
       ) : null}
     </div>

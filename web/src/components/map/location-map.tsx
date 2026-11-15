@@ -4,6 +4,7 @@ import "leaflet/dist/leaflet.css";
 import type { Layer, Path, PathOptions } from "leaflet";
 import { useEffect, useRef } from "react";
 import { CircleMarker, GeoJSON, MapContainer, TileLayer, useMap, useMapEvents } from "react-leaflet";
+import { useMessages } from "@/i18n/use-i18n";
 import type { MunicipalityFeatureCollection } from "@/lib/api/municipalities";
 
 // Mainland Pernambuco (Fernando de Noronha is reachable via search).
@@ -53,6 +54,7 @@ export default function LocationMap({
   focus: [number, number] | null;
   onPick: (lat: number, lon: number) => void;
 }) {
+  const t = useMessages().location;
   const layers = useRef(new Map<string, Path>());
   const selectedRef = useRef(selectedCode);
 
@@ -68,7 +70,7 @@ export default function LocationMap({
       scrollWheelZoom={false}
       className="h-full w-full rounded-md"
       attributionControl
-      aria-label="Map of Pernambuco. Click or tap to choose a point. You can also search a municipality or type coordinates."
+      aria-label={t.mapLabel}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors · IBGE'

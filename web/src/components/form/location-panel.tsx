@@ -5,6 +5,8 @@ import dynamic from "next/dynamic";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useMessages } from "@/i18n/use-i18n";
+import { ApiClientError } from "@/lib/api/client";
 import { useMunicipalities } from "@/lib/api/municipalities";
 import { useResolve } from "@/lib/api/queries";
 import { polygonCentroid } from "@/lib/domain/geo";
@@ -22,30 +24,20 @@ const LocationMap = dynamic(() => import("@/components/map/location-map"), {
 /** Prototype test point (São Bento do Una), used by "Try an example". */
 const EXAMPLE = { lat: -8.6, lon: -36.4 };
 
-type Notice = { tone: "warning" | "critical"; title: string; text: string; testId: string };
+type NoticeKind = "outOfState" | GeoError | "resolveError";
+type Notice = { kind: NoticeKind; errorCode?: string };
 
-const GEO_NOTICES: Record<GeoError, Notice> = {
-  denied: {
-    tone: "warning",
-    title: "Location permission denied",
-    text: "No problem: tap the map, search your municipality or type coordinates instead.",
-    testId: "notice-gps-denied",
-  },
-  unavailable: {
-    tone: "warning",
-    title: "Could not get your location",
-    text: "Your device did not return a position. Tap the map, search, or type coordinates.",
-    testId: "notice-gps-unavailable",
-  },
-  unsupported: {
-    tone: "warning",
-    title: "Location not supported",
-    text: "This browser cannot share a location. Tap the map, search, or type coordinates.",
-    testId: "notice-gps-unsupported",
-  },
+const NOTICE_TEST_IDS: Record<NoticeKind, string> = {
+  outOfState: "notice-out-of-state",
+  denied: "notice-gps-denied",
+  unavailable: "notice-gps-unavailable",
+  unsupported: "notice-gps-unsupported",
+  resolveError: "notice-resolve-error",
 };
 
 export function LocationPanel({ state }: { state: AnalysisState }) {
+  const m = useMessages();
+  const t = m.location;
   const municipalities = useMunicipalities();
   const resolve = useResolve();
   const [pin, setPin] = useState<{ lat: number; lon: number } | null>(null);
@@ -73,17 +65,12 @@ export function LocationPanel({ state }: { state: AnalysisState }) {
             state.selectPoint(res.municipality.municipality_code, lat, lon);
             setMapOpen(false);
           } else {
-            setNotice({
-              tone: "warning",
-              title: "Outside Pernambuco",
-              text: "Field Shift only covers Pernambuco for now. Pick a point inside the state.",
-              testId: "notice-out-of-state",
-            });
+            setNotice({ kind: "outOfState" });
           }
         },
         onError: (err) => {
           if (mine !== generation.current) return;
-          setNotice({ tone: "critical", title: "Could not check this point", text: err.message, testId: "notice-resolve-error" });
+          setNotice({ kind: "resolveError", errorCode: err instanceof ApiClientError ? err.code : "internal" });
         },
       },
     );
@@ -103,16 +90,22 @@ export function LocationPanel({ state }: { state: AnalysisState }) {
   };
 
   const collapsed = Boolean(state.selection) && !mapOpen;
+  const noticeCopy =
+    notice === null
+      ? null
+      : notice.kind === "resolveError"
+        ? { title: t.notices.resolveError, text: (m.errors[notice.errorCode ?? "internal"] ?? m.errors.internal).text }
+        : t.notices[notice.kind];
 
   return (
     <section aria-labelledby="location-title" className="space-y-3">
       <div className="flex items-center justify-between gap-2">
         <h2 id="location-title" className="font-semibold">
-          1. Where is your field?
+          {t.title}
         </h2>
         {state.selection ? (
           <Button size="sm" variant="ghost" className="lg:hidden" onClick={() => setMapOpen((v) => !v)} aria-expanded={!collapsed}>
-            {collapsed ? <ChevronDown aria-hidden /> : <ChevronUp aria-hidden />} {collapsed ? "Change" : "Hide map"}
+            {collapsed ? <ChevronDown aria-hidden /> : <ChevronUp aria-hidden />} {collapsed ? t.change : t.hideMap}
           </Button>
         ) : null}
       </div>
@@ -123,7 +116,7 @@ export function LocationPanel({ state }: { state: AnalysisState }) {
           <span>
             <strong>{selectedName ?? state.selection.code}</strong>
             <span className="text-ink-2">
-              {state.selection.kind === "point" ? " · your point" : " · municipality centre"}
+              {state.selection.kind === "point" ? t.yourPoint : t.centre}
             </span>
           </span>
         </p>
@@ -141,39 +134,39 @@ export function LocationPanel({ state }: { state: AnalysisState }) {
             <LocationMap geojson={municipalities.data.geojson} selectedCode={selectedCode} pin={shownPin} focus={focus} onPick={pick} />
           ) : municipalities.isError ? (
             <div className="grid h-full place-items-center p-4 text-center text-sm text-ink-2">
-              The map could not load. Use the search or type coordinates.
+              {t.mapError}
             </div>
           ) : (
             <Skeleton className="h-full w-full" />
           )}
           {resolve.isPending ? (
             <span className="absolute left-2 top-2 z-[500] rounded bg-surface/90 px-2 py-1 text-xs shadow" role="status">
-              Finding municipality…
+              {t.finding}
             </span>
           ) : null}
         </div>
 
-        {notice ? (
+        {notice && noticeCopy ? (
           <div
             role="alert"
-            data-testid={notice.testId}
+            data-testid={NOTICE_TEST_IDS[notice.kind]}
             className={cn(
               "flex gap-2 rounded-md border p-3 text-sm",
-              notice.tone === "warning" ? "border-warning bg-warning-soft text-warning-ink" : "border-critical/40 bg-critical-soft text-critical-ink",
+              notice.kind === "resolveError" ? "border-critical/40 bg-critical-soft text-critical-ink" : "border-warning bg-warning-soft text-warning-ink",
             )}
           >
-            {notice.testId === "notice-out-of-state" ? <MapPinOff className="mt-0.5 size-4 shrink-0" aria-hidden /> : <TriangleAlert className="mt-0.5 size-4 shrink-0" aria-hidden />}
+            {notice.kind === "outOfState" ? <MapPinOff className="mt-0.5 size-4 shrink-0" aria-hidden /> : <TriangleAlert className="mt-0.5 size-4 shrink-0" aria-hidden />}
             <div>
-              <p className="font-medium">{notice.title}</p>
-              <p>{notice.text}</p>
+              <p className="font-medium">{noticeCopy.title}</p>
+              <p>{noticeCopy.text}</p>
             </div>
           </div>
         ) : null}
 
         <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-          <UseMyLocation onLocated={pick} onError={(e) => setNotice(GEO_NOTICES[e])} disabled={resolve.isPending} />
+          <UseMyLocation onLocated={pick} onError={(e) => setNotice({ kind: e })} disabled={resolve.isPending} />
           <Button variant="secondary" onClick={() => pick(EXAMPLE.lat, EXAMPLE.lon)} disabled={resolve.isPending} data-testid="try-example">
-            <Sparkles aria-hidden /> Try an example
+            <Sparkles aria-hidden /> {t.example}
           </Button>
         </div>
 

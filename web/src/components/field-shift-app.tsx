@@ -10,10 +10,13 @@ import { OptionsForm } from "@/components/form/options-form";
 import { InspectorSheet } from "@/components/inspector/inspector-sheet";
 import { LimitsPanel } from "@/components/results/limits-panel";
 import { ResultsView } from "@/components/results/results-view";
+import { useDocumentLocale, useMessages } from "@/i18n/use-i18n";
 import { useHealth, useRecommendation } from "@/lib/api/queries";
 import { useAnalysisState } from "@/lib/state/use-analysis-state";
 
 export function FieldShiftApp() {
+  useDocumentLocale();
+  const m = useMessages();
   const state = useAnalysisState();
   const health = useHealth();
   const debug = useSearchParams().get("debug") === "1";
@@ -36,7 +39,7 @@ export function FieldShiftApp() {
           <LocationPanel state={state} />
           <section aria-labelledby="options-title" className="space-y-3">
             <h2 id="options-title" className="font-semibold">
-              2. About your farm
+              {m.options.title}
             </h2>
             <OptionsForm soil={state.soil} regime={state.regime} onSoil={state.setSoil} onRegime={state.setRegime} />
           </section>
@@ -67,28 +70,19 @@ export function FieldShiftApp() {
 }
 
 function EmptyState() {
+  const t = useMessages().empty;
   return (
     <div className="space-y-5" data-testid="empty-state">
       <section className="rounded-lg border border-border bg-surface p-6">
-        <h2 className="text-xl font-semibold">What should you plant, and when?</h2>
-        <p className="mt-2 max-w-prose text-ink-2">
-          Choose a point in Pernambuco. Field Shift replays 40 seasons of NASA climate data to show, for each crop, how
-          often planting in each 10-day period would have worked. It puts that next to the official ZARC planting window
-          and what your municipality actually harvested.
-        </p>
+        <h2 className="text-xl font-semibold">{t.title}</h2>
+        <p className="mt-2 max-w-prose text-ink-2">{t.text}</p>
         <ol className="mt-4 grid gap-3 text-sm sm:grid-cols-3">
-          <li className="rounded-md bg-surface-2 p-3">
-            <strong className="block">1. Location</strong>
-            Tap the map, search your municipality, type coordinates or use your location.
-          </li>
-          <li className="rounded-md bg-surface-2 p-3">
-            <strong className="block">2. Your farm</strong>
-            Soil type and irrigation are optional. If you skip them, defaults are used and shown.
-          </li>
-          <li className="rounded-md bg-surface-2 p-3">
-            <strong className="block">3. Results</strong>
-            A planting calendar, ranked crops, the official window, yield history and a plain-language summary.
-          </li>
+          {t.steps.map((step) => (
+            <li key={step.title} className="rounded-md bg-surface-2 p-3">
+              <strong className="block">{step.title}</strong>
+              {step.text}
+            </li>
+          ))}
         </ol>
       </section>
       <LimitsPanel />

@@ -1,4 +1,7 @@
+"use client";
+
 import type { ReactNode } from "react";
+import { useMessages } from "@/i18n/use-i18n";
 import { cn } from "@/lib/utils";
 
 /**
@@ -21,6 +24,7 @@ export function Metric({
   className?: string;
   emphasis?: boolean;
 }) {
+  const m = useMessages();
   return (
     <div className={cn("min-w-0", className)}>
       <dt className="text-xs text-ink-2">{label}</dt>
@@ -28,7 +32,7 @@ export function Metric({
         <span className={cn("tabular-nums", emphasis ? "text-2xl font-semibold" : "text-base font-medium")}>{value}</span>
         {unit ? <span className="ml-1 text-sm text-ink-2">{unit}</span> : null}
         <span className="block truncate text-[11px] text-muted" title={source}>
-          Source: {source}
+          {m.metric.source} {source}
         </span>
       </dd>
     </div>

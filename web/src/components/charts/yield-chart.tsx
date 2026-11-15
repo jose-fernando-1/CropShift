@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import type { Pam } from "@/contract/types";
-import { kgPerHa } from "@/lib/domain/format";
+import { useLocale, useMessages } from "@/i18n/use-i18n";
+import { kgPerHa, kgPerHaNumber } from "@/lib/domain/format";
 import { ChartFrame } from "./chart-frame";
 import { useWidth } from "./use-width";
 
@@ -11,6 +12,8 @@ const M = { top: 12, right: 112, bottom: 26, left: 52 };
 
 /** Recorded yield in the municipality (IBGE PAM) against the municipality and state medians. */
 export function YieldChart({ pam, municipalityName }: { pam: Pam; municipalityName: string }) {
+  const locale = useLocale();
+  const t = useMessages().chart;
   const [ref, width] = useWidth<HTMLDivElement>();
   const [active, setActive] = useState<number | null>(null);
 
@@ -37,25 +40,25 @@ export function YieldChart({ pam, municipalityName }: { pam: Pam; municipalityNa
       <p className="mb-1 min-h-5 text-xs text-ink-2" aria-live="polite">
         {activeIndex >= 0 ? (
           <>
-            <strong className="font-semibold text-ink">{kgPerHa(values[activeIndex])}</strong> in {years[activeIndex]}
+            <strong className="font-semibold text-ink">{kgPerHa(values[activeIndex], locale)}</strong> {t.yieldIn(years[activeIndex])}
           </>
         ) : (
-          "Hover or tap a year to read it."
+          t.yieldHint
         )}
       </p>
       <svg
         width={width}
         height={HEIGHT}
         role="img"
-        aria-label={`Recorded ${pam.crop_label} yield in ${municipalityName}, ${minYear}–${maxYear}.`}
+        aria-label={t.yieldAria(pam.crop_label, municipalityName, minYear, maxYear)}
         className="block max-w-full"
         onPointerLeave={() => setActive(null)}
       >
-        {ticks.map((t) => (
-          <g key={t}>
-            <line x1={M.left} x2={M.left + plotW} y1={y(t)} y2={y(t)} stroke="var(--border)" strokeWidth={t === 0 ? 1 : 0.75} />
-            <text x={M.left - 6} y={y(t)} dy="0.32em" textAnchor="end" fontSize={11} fill="var(--ink-2)">
-              {Math.round(t).toLocaleString("en-US")}
+        {ticks.map((tick) => (
+          <g key={tick}>
+            <line x1={M.left} x2={M.left + plotW} y1={y(tick)} y2={y(tick)} stroke="var(--border)" strokeWidth={tick === 0 ? 1 : 0.75} />
+            <text x={M.left - 6} y={y(tick)} dy="0.32em" textAnchor="end" fontSize={11} fill="var(--ink-2)">
+              {kgPerHaNumber(tick, locale)}
             </text>
           </g>
         ))}
@@ -68,7 +71,7 @@ export function YieldChart({ pam, municipalityName }: { pam: Pam; municipalityNa
           <g>
             <line x1={M.left} x2={M.left + plotW} y1={y(pam.state_median)} y2={y(pam.state_median)} stroke="var(--muted)" strokeDasharray="2 3" strokeWidth={1.5} />
             <text x={M.left + plotW + 6} y={y(pam.state_median)} dy="0.32em" fontSize={11} fill="var(--ink-2)">
-              PE median {Math.round(pam.state_median)}
+              {t.stateMedian(kgPerHaNumber(pam.state_median, locale))}
             </text>
           </g>
         ) : null}
@@ -82,7 +85,7 @@ export function YieldChart({ pam, municipalityName }: { pam: Pam; municipalityNa
               fontSize={11}
               fill="var(--ink)"
             >
-              Local median {Math.round(pam.municipality_median)}
+              {t.localMedian(kgPerHaNumber(pam.municipality_median, locale))}
             </text>
           </g>
         ) : null}
@@ -112,24 +115,24 @@ export function YieldChart({ pam, municipalityName }: { pam: Pam; municipalityNa
     <table className="w-full text-left text-xs">
       <thead className="sticky top-0 bg-surface-2">
         <tr>
-          <th className="px-2 py-1.5 font-medium">Year</th>
-          <th className="px-2 py-1.5 font-medium">Yield (kg/ha)</th>
+          <th className="px-2 py-1.5 font-medium">{t.year}</th>
+          <th className="px-2 py-1.5 font-medium">{t.yieldColumn}</th>
         </tr>
       </thead>
       <tbody>
         {years.map((yr, i) => (
           <tr key={yr} className="border-t border-border/60">
             <td className="px-2 py-1 tabular-nums">{yr}</td>
-            <td className="px-2 py-1 tabular-nums">{Math.round(values[i]).toLocaleString("en-US")}</td>
+            <td className="px-2 py-1 tabular-nums">{kgPerHaNumber(values[i], locale)}</td>
           </tr>
         ))}
         <tr className="border-t border-border">
-          <td className="px-2 py-1">Local median</td>
-          <td className="px-2 py-1 tabular-nums">{pam.municipality_median ?? "—"}</td>
+          <td className="px-2 py-1">{t.legendLocal}</td>
+          <td className="px-2 py-1 tabular-nums">{pam.municipality_median === null ? "—" : kgPerHaNumber(pam.municipality_median, locale)}</td>
         </tr>
         <tr className="border-t border-border/60">
-          <td className="px-2 py-1">Pernambuco median</td>
-          <td className="px-2 py-1 tabular-nums">{pam.state_median ?? "—"}</td>
+          <td className="px-2 py-1">{t.legendState}</td>
+          <td className="px-2 py-1 tabular-nums">{pam.state_median === null ? "—" : kgPerHaNumber(pam.state_median, locale)}</td>
         </tr>
       </tbody>
     </table>
@@ -137,18 +140,18 @@ export function YieldChart({ pam, municipalityName }: { pam: Pam; municipalityNa
 
   return (
     <ChartFrame
-      title="What the municipality actually harvested"
-      subtitle={`IBGE PAM, product “${pam.crop_label}”, yield in kg/ha. Context only: not a forecast for your field.`}
+      title={t.yieldTitle}
+      subtitle={t.yieldSubtitle(pam.crop_label)}
       legend={
         <>
           <span className="flex items-center gap-1.5">
-            <span className="h-0.5 w-4 bg-[var(--seq-450)]" aria-hidden /> Yield per year
+            <span className="h-0.5 w-4 bg-[var(--seq-450)]" aria-hidden /> {t.legendYield}
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="w-4 border-t-2 border-dashed border-ink-2" aria-hidden /> Local median
+            <span className="w-4 border-t-2 border-dashed border-ink-2" aria-hidden /> {t.legendLocal}
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="w-4 border-t-2 border-dotted border-muted" aria-hidden /> Pernambuco median
+            <span className="w-4 border-t-2 border-dotted border-muted" aria-hidden /> {t.legendState}
           </span>
         </>
       }

@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import type { RankedCrop } from "@/contract/types";
-import { DEKADS, MONTHS, dekadLabel, dekadOfDate, windowLabel } from "@/lib/domain/dekads";
+import { useLocale, useMessages } from "@/i18n/use-i18n";
+import { DEKADS, dekadLabel, dekadOfDate, monthNames, windowLabel } from "@/lib/domain/dekads";
 import { percent, percentWithBand } from "@/lib/domain/format";
 import { cn } from "@/lib/utils";
 import { ChartFrame } from "./chart-frame";
@@ -15,6 +16,8 @@ type Hover = { cropId: string; dekad: number } | null;
  * success, orange outline = official ZARC window. Rows keep the API's order.
  */
 export function CalendarHeatmap({ crops, onSelect }: { crops: RankedCrop[]; onSelect: (cropId: string) => void }) {
+  const locale = useLocale();
+  const t = useMessages().chart;
   const [hover, setHover] = useState<Hover>(null);
   const today = dekadOfDate(new Date());
   const hovered = hover ? crops.find((c) => c.crop_id === hover.cropId) : undefined;
@@ -22,11 +25,11 @@ export function CalendarHeatmap({ crops, onSelect }: { crops: RankedCrop[]; onSe
   const readout = hovered && hover ? (
     <>
       <strong className="font-semibold text-ink">{percentWithBand(...pBand(hovered, hover.dekad))}</strong>{" "}
-      success · {hovered.name} · {dekadLabel(hover.dekad)}
-      {hovered.zarc ? ` · ZARC value ${hovered.zarc.values[hover.dekad - 1]}` : " · no ZARC"}
+      {t.success} · {hovered.name} · {dekadLabel(hover.dekad, locale)}
+      {hovered.zarc ? ` · ${t.zarcValue(hovered.zarc.values[hover.dekad - 1])}` : ` · ${t.noZarc}`}
     </>
   ) : (
-    <span>Hover or tap a cell to read it. Select a crop for details.</span>
+    <span>{t.calendarHint}</span>
   );
 
   const chart = (
@@ -39,7 +42,7 @@ export function CalendarHeatmap({ crops, onSelect }: { crops: RankedCrop[]; onSe
           {/* month header */}
           <div className="grid grid-cols-[minmax(92px,128px)_repeat(36,minmax(0,1fr))] text-[11px] text-ink-2">
             <span />
-            {MONTHS.map((m, i) => (
+            {monthNames(locale).map((m, i) => (
               <span key={m} className="col-span-3 border-l border-border pl-1" style={{ gridColumnStart: i * 3 + 2 }}>
                 {m}
               </span>
@@ -51,7 +54,7 @@ export function CalendarHeatmap({ crops, onSelect }: { crops: RankedCrop[]; onSe
             <span
               className="flex justify-center text-[10px] leading-3 text-ink"
               style={{ gridColumnStart: today + 1 }}
-              title={`Today: ${dekadLabel(today)}`}
+              title={t.today(dekadLabel(today, locale))}
             >
               ▼
             </span>
@@ -65,7 +68,7 @@ export function CalendarHeatmap({ crops, onSelect }: { crops: RankedCrop[]; onSe
                   type="button"
                   onClick={() => onSelect(c.crop_id)}
                   className="group grid w-full grid-cols-[minmax(92px,128px)_repeat(36,minmax(0,1fr))] items-stretch rounded-sm text-left hover:bg-surface-2"
-                  aria-label={`${c.rank}. ${c.name}: best window ${best ? windowLabel(best.start_dekad, best.end_dekad) : "none"}${best ? `, ${percent(best.mean_p)} average success` : ""}. Open details.`}
+                  aria-label={t.rowLabel(c.rank, c.name, best ? windowLabel(best.start_dekad, best.end_dekad, locale) : t.none, best ? percent(best.mean_p) : null)}
                 >
                   <span className="truncate pr-2 text-sm font-medium group-hover:underline">
                     <span className="text-ink-2 tabular-nums">{c.rank}.</span> {c.name}
@@ -104,13 +107,13 @@ export function CalendarHeatmap({ crops, onSelect }: { crops: RankedCrop[]; onSe
             <span key={s.min} className="h-3 w-3" style={{ background: s.color }} />
           ))}
         </span>
-        Success in 40 seasons: 0% → 100%
+        {t.legendScale}
       </span>
       <span className="flex items-center gap-1.5">
         <span className="h-3 w-4 rounded-sm" style={{ boxShadow: "inset 0 -3px 0 var(--zarc), inset 0 3px 0 var(--zarc)" }} aria-hidden />
-        Official ZARC window
+        {t.legendZarc}
       </span>
-      <span>▼ Today ({dekadLabel(today)})</span>
+      <span>▼ {t.today(dekadLabel(today, locale))}</span>
     </>
   );
 
@@ -118,7 +121,7 @@ export function CalendarHeatmap({ crops, onSelect }: { crops: RankedCrop[]; onSe
     <table className="w-full text-left text-xs">
       <thead className="sticky top-0 bg-surface-2">
         <tr>
-          <th className="px-2 py-1.5 font-medium">Dekad</th>
+          <th className="px-2 py-1.5 font-medium">{t.dekad}</th>
           {crops.map((c) => (
             <th key={c.crop_id} className="px-2 py-1.5 font-medium">
               {c.name}
@@ -130,12 +133,12 @@ export function CalendarHeatmap({ crops, onSelect }: { crops: RankedCrop[]; onSe
         {DEKADS.map((d) => (
           <tr key={d} className="border-t border-border/60">
             <th scope="row" className="px-2 py-1 font-normal whitespace-nowrap">
-              {d}. {dekadLabel(d)}
+              {d}. {dekadLabel(d, locale)}
             </th>
             {crops.map((c) => (
               <td key={c.crop_id} className="px-2 py-1 tabular-nums whitespace-nowrap">
                 {percentWithBand(...pBand(c, d))}
-                {c.zarc && c.zarc.values[d - 1] > 0 ? <span className="ml-1 text-ink-2">· ZARC {c.zarc.values[d - 1]}</span> : null}
+                {c.zarc && c.zarc.values[d - 1] > 0 ? <span className="ml-1 text-ink-2">· {t.zarcValue(c.zarc.values[d - 1])}</span> : null}
               </td>
             ))}
           </tr>
@@ -146,8 +149,8 @@ export function CalendarHeatmap({ crops, onSelect }: { crops: RankedCrop[]; onSe
 
   return (
     <ChartFrame
-      title="Planting calendar"
-      subtitle="Chance that planting in each 10-day period (dekad) succeeds, over 40 past seasons of NASA POWER climate."
+      title={t.calendarTitle}
+      subtitle={t.calendarSubtitle}
       legend={legend}
       chart={chart}
       table={table}

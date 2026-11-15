@@ -4,6 +4,7 @@ import { LocateFixed } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent } from "@/components/ui/dialog";
+import { useMessages } from "@/i18n/use-i18n";
 
 export type GeoError = "denied" | "unavailable" | "unsupported";
 
@@ -20,6 +21,7 @@ export function UseMyLocation({
   onError: (error: GeoError) => void;
   disabled?: boolean;
 }) {
+  const t = useMessages().location;
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
 
@@ -46,21 +48,21 @@ export function UseMyLocation({
   return (
     <>
       <Button variant="secondary" onClick={() => setOpen(true)} disabled={disabled || busy} className="w-full">
-        <LocateFixed aria-hidden /> {busy ? "Finding you…" : "Use my location"}
+        <LocateFixed aria-hidden /> {busy ? t.findingYou : t.useMyLocation}
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent title="Use your location?" description="Your browser will ask for permission next." className="max-w-md">
+        <DialogContent title={t.consentTitle} description={t.consentDescription} className="max-w-md">
           <ul className="list-disc space-y-1 pl-5 text-sm text-ink-2">
-            <li>Your position is only used to find your municipality and climate cell.</li>
-            <li>It is not saved, not put in shareable links and not sent to the AI.</li>
-            <li>You can always type coordinates or search instead.</li>
+            {t.consentItems.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
           </ul>
           <div className="mt-5 flex justify-end gap-2">
             <DialogClose asChild>
-              <Button variant="ghost">Cancel</Button>
+              <Button variant="ghost">{t.cancel}</Button>
             </DialogClose>
             <Button variant="primary" onClick={locate}>
-              Allow and continue
+              {t.allow}
             </Button>
           </div>
         </DialogContent>

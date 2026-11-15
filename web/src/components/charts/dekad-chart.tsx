@@ -2,7 +2,8 @@
 
 import { useState, type KeyboardEvent } from "react";
 import type { RankedCrop } from "@/contract/types";
-import { DEKADS, MONTHS, dekadLabel, dekadOfDate, windowLabel } from "@/lib/domain/dekads";
+import { useLocale, useMessages } from "@/i18n/use-i18n";
+import { DEKADS, dekadLabel, dekadOfDate, monthNames, windowLabel } from "@/lib/domain/dekads";
 import { percent, percentWithBand } from "@/lib/domain/format";
 import { ChartFrame } from "./chart-frame";
 import { useWidth } from "./use-width";
@@ -16,6 +17,8 @@ const M = { top: 26, right: 8, bottom: 30, left: 40 };
  * use the arrow keys to read a dekad.
  */
 export function DekadChart({ crop }: { crop: RankedCrop }) {
+  const locale = useLocale();
+  const t = useMessages().chart;
   const [ref, width] = useWidth<HTMLDivElement>();
   const [active, setActive] = useState<number | null>(null);
   const today = dekadOfDate(new Date());
@@ -43,19 +46,19 @@ export function DekadChart({ crop }: { crop: RankedCrop }) {
       <p className="mb-1 min-h-5 text-xs text-ink-2" aria-live="polite">
         {a && active ? (
           <>
-            <strong className="font-semibold text-ink">{percentWithBand(a.p, a.lo, a.hi)}</strong> success ·{" "}
-            {dekadLabel(active)} (dekad {active}) ·{" "}
-            {crop.zarc ? (zarcAt(active) > 0 ? `ZARC value ${zarcAt(active)}` : "outside ZARC window") : "no ZARC"}
+            <strong className="font-semibold text-ink">{percentWithBand(a.p, a.lo, a.hi)}</strong> {t.success} ·{" "}
+            {dekadLabel(active, locale)} ({t.dekadOf(active)}) ·{" "}
+            {crop.zarc ? (zarcAt(active) > 0 ? t.zarcValue(zarcAt(active)) : t.outsideZarc) : t.noZarc}
           </>
         ) : (
-          "Hover, tap, or focus the chart and use ← → to read each dekad."
+          t.dekadHint
         )}
       </p>
       <svg
         width={width}
         height={HEIGHT}
         role="img"
-        aria-label={`${crop.name}: probability of success by planting dekad${best ? `; best window ${windowLabel(best.start_dekad, best.end_dekad)}` : ""}.`}
+        aria-label={t.dekadAria(crop.name, best ? windowLabel(best.start_dekad, best.end_dekad, locale) : null)}
         tabIndex={0}
         onKeyDown={onKey}
         onBlur={() => setActive(null)}
@@ -81,11 +84,11 @@ export function DekadChart({ crop }: { crop: RankedCrop }) {
         ))}
 
         {/* month ticks */}
-        {MONTHS.map((m, i) => (
+        {monthNames(locale).map((m, i) => (
           <g key={m}>
             <line x1={x(i * 3 + 1)} x2={x(i * 3 + 1)} y1={M.top + plotH} y2={M.top + plotH + 8} stroke="var(--border)" />
             <text x={x(i * 3 + 1) + (bw * 3) / 2} y={HEIGHT - 8} textAnchor="middle" fontSize={11} fill="var(--ink-2)">
-              {width < 420 ? m[0] : m}
+              {width < 420 ? m[0].toUpperCase() : m}
             </text>
           </g>
         ))}
@@ -100,7 +103,7 @@ export function DekadChart({ crop }: { crop: RankedCrop }) {
               strokeWidth={1.25}
             />
             <text x={(x(best.start_dekad) + x(best.end_dekad) + bw) / 2} y={M.top - 15} textAnchor="middle" fontSize={11} fill="var(--ink)">
-              Best window · {percent(best.mean_p)} avg
+              {t.bestWindow(percent(best.mean_p))}
             </text>
           </g>
         ) : null}
@@ -159,7 +162,7 @@ export function DekadChart({ crop }: { crop: RankedCrop }) {
           pointerEvents="none"
         />
         <text x={x(today) + bw / 2 + 3} y={M.top + 10} fontSize={10} fill="var(--ink)" pointerEvents="none">
-          today
+          {t.todayShort}
         </text>
       </svg>
     </div>
@@ -168,14 +171,14 @@ export function DekadChart({ crop }: { crop: RankedCrop }) {
   const legend = (
     <>
       <span className="flex items-center gap-1.5">
-        <span className="h-3 w-3 rounded-sm bg-[var(--seq-450)]" aria-hidden /> Probability of success
+        <span className="h-3 w-3 rounded-sm bg-[var(--seq-450)]" aria-hidden /> {t.legendProbability}
       </span>
       <span className="flex items-center gap-1.5">
-        <span className="h-3 w-px bg-ink-2" aria-hidden /> 95% range (40 seasons)
+        <span className="h-3 w-px bg-ink-2" aria-hidden /> {t.legendRange}
       </span>
       <span className="flex items-center gap-1.5">
         <span className="h-3 w-4 rounded-sm border-b-[3px] border-zarc bg-[var(--zarc-soft)]" aria-hidden />
-        {crop.zarc ? `Official ZARC window (soil ${crop.zarc.soil_code}, cycle ${crop.zarc.cycle_code})` : "No ZARC window available"}
+        {crop.zarc ? t.legendZarcDetail(crop.zarc.soil_code, crop.zarc.cycle_code) : t.legendNoZarc}
       </span>
     </>
   );
@@ -184,19 +187,19 @@ export function DekadChart({ crop }: { crop: RankedCrop }) {
     <table className="w-full text-left text-xs">
       <thead className="sticky top-0 bg-surface-2">
         <tr>
-          <th className="px-2 py-1.5 font-medium">Dekad</th>
-          <th className="px-2 py-1.5 font-medium">Success (95% range)</th>
-          <th className="px-2 py-1.5 font-medium">ZARC value</th>
+          <th className="px-2 py-1.5 font-medium">{t.dekad}</th>
+          <th className="px-2 py-1.5 font-medium">{t.successRange}</th>
+          <th className="px-2 py-1.5 font-medium">{t.zarcColumn}</th>
         </tr>
       </thead>
       <tbody>
         {crop.p_success.map((v, i) => (
           <tr key={i} className="border-t border-border/60">
             <th scope="row" className="px-2 py-1 font-normal">
-              {i + 1}. {dekadLabel(i + 1)}
+              {i + 1}. {dekadLabel(i + 1, locale)}
             </th>
             <td className="px-2 py-1 tabular-nums">{percentWithBand(v.p, v.lo, v.hi)}</td>
-            <td className="px-2 py-1 tabular-nums">{crop.zarc ? (zarcAt(i + 1) || "not recommended") : "—"}</td>
+            <td className="px-2 py-1 tabular-nums">{crop.zarc ? (zarcAt(i + 1) || t.notRecommended) : "—"}</td>
           </tr>
         ))}
       </tbody>
@@ -205,8 +208,8 @@ export function DekadChart({ crop }: { crop: RankedCrop }) {
 
   return (
     <ChartFrame
-      title="When to plant"
-      subtitle="Share of 40 simulated seasons (1984–2024, NASA POWER) in which planting in that dekad succeeded."
+      title={t.dekadTitle}
+      subtitle={t.dekadSubtitle}
       legend={legend}
       chart={chart}
       table={table}

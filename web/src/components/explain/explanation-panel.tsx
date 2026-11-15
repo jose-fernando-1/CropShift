@@ -6,6 +6,7 @@ import { useMemo } from "react";
 import type { Recommendation } from "@/contract/types";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useLocale, useMessages } from "@/i18n/use-i18n";
 import { useExplanation } from "@/lib/api/queries";
 import { templateExplanation } from "@/lib/explain/template";
 
@@ -15,22 +16,24 @@ import { templateExplanation } from "@/lib/explain/template";
  * template runs in the browser, so the app always works without AI.
  */
 export function ExplanationPanel({ rec }: { rec: Recommendation }) {
+  const locale = useLocale();
+  const t = useMessages().explain;
   const query = useExplanation(rec.analysis_id);
   const queryClient = useQueryClient();
-  const fallback = useMemo(() => (query.isError ? templateExplanation(rec) : null), [query.isError, rec]);
+  const fallback = useMemo(() => (query.isError ? templateExplanation(rec, new Date(), locale) : null), [query.isError, rec, locale]);
   const explanation = query.data ?? fallback;
 
   const label = !explanation
     ? null
     : explanation.source === "ai"
-      ? { icon: <Bot aria-hidden className="size-4" />, text: "AI-written (Gemini), checked against the results" }
-      : { icon: <FileText aria-hidden className="size-4" />, text: fallback ? "Written in your browser from the results by template (explanation service unavailable)" : "Written from the results by template" };
+      ? { icon: <Bot aria-hidden className="size-4" />, text: t.ai }
+      : { icon: <FileText aria-hidden className="size-4" />, text: fallback ? t.fallback : t.template };
 
   return (
     <section aria-labelledby="explain-title" className="rounded-lg border border-border bg-surface p-4" data-testid="explanation">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h2 id="explain-title" className="font-semibold">
-          In plain words
+          {t.title}
         </h2>
         <Button
           size="sm"
@@ -38,7 +41,7 @@ export function ExplanationPanel({ rec }: { rec: Recommendation }) {
           onClick={() => queryClient.invalidateQueries({ queryKey: ["explanation", rec.analysis_id] })}
           disabled={query.isFetching}
         >
-          <RefreshCw aria-hidden className={query.isFetching ? "animate-spin" : undefined} /> Regenerate
+          <RefreshCw aria-hidden className={query.isFetching ? "animate-spin" : undefined} /> {t.regenerate}
         </Button>
       </div>
       {label ? (
@@ -68,7 +71,7 @@ export function ExplanationPanel({ rec }: { rec: Recommendation }) {
             </div>
           ))}
           <div>
-            <h3 className="font-medium">Before you decide, check</h3>
+            <h3 className="font-medium">{t.checksTitle}</h3>
             <ul className="mt-1 list-disc space-y-1 pl-5 text-ink-2">
               {explanation.field_checks.map((c) => (
                 <li key={c}>{c}</li>
