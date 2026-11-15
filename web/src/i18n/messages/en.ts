@@ -13,7 +13,6 @@ export const en = {
   },
   app: {
     title: "Cropshift: what to plant and when",
-    tagline: "What to plant and when, in Pernambuco. Decision support, not a substitute for your judgement.",
     versionTitle: "Cropshift version",
     version: (v: string) => `v${v}`,
     dataFlow: "Data flow",

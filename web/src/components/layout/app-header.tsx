@@ -18,7 +18,6 @@ export function AppHeader({ inspectorEnabled, onOpenInspector }: { inspectorEnab
           </span>
           <div>
             <h1 className="text-lg font-semibold leading-tight">Cropshift</h1>
-            <p className="text-xs text-ink-2">{m.app.tagline}</p>
           </div>
         </div>
         <div className="flex items-center gap-3 text-xs text-muted">
