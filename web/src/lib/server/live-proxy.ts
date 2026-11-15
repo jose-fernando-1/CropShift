@@ -5,7 +5,7 @@
  */
 import { ApiError } from "@/contract/schemas";
 
-const FORWARDED_REQUEST_HEADERS = ["content-type", "accept", "x-request-id"];
+const FORWARDED_REQUEST_HEADERS = ["content-type", "accept", "accept-language", "x-request-id"];
 
 function error(status: number, code: string, message: string) {
   return Response.json({ error: { code, message } }, { status });
@@ -51,10 +51,10 @@ export async function proxyToBackend(request: Request, path: string[]): Promise<
 
   const text = await upstream.text();
   if (upstream.ok) {
-    return new Response(text, {
-      status: upstream.status,
-      headers: { "content-type": upstream.headers.get("content-type") ?? "application/json" },
-    });
+    const headers = new Headers({ "content-type": upstream.headers.get("content-type") ?? "application/json" });
+    const language = upstream.headers.get("content-language");
+    if (language) headers.set("content-language", language);
+    return new Response(text, { status: upstream.status, headers });
   }
 
   // Pass contract errors through; wrap anything else (FastAPI's default 422 {detail}, HTML 502 pages, ...).

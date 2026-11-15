@@ -6,7 +6,9 @@
  * Every level carries its reasons.
  */
 import type { Confidence, DekadProbability, Zarc } from "@/contract/types";
+import type { Locale } from "@/i18n";
 import { dekadLabel } from "@/lib/domain/dekads";
+import { mockMessages } from "./messages";
 import { bestDekad } from "./windows";
 
 export function confidenceFor(input: {
@@ -14,12 +16,15 @@ export function confidenceFor(input: {
   p: DekadProbability[];
   zarc: Zarc | null;
   nearCentroid: boolean;
+  locale?: Locale;
 }): Confidence {
+  const locale = input.locale ?? "en";
+  const t = mockMessages(locale).confidence;
   if (!input.gatePassed) {
-    return { level: "low", reasons: ["The crop did not pass the quality gate against ZARC."] };
+    return { level: "low", reasons: [t.gateFailed] };
   }
   if (!input.zarc) {
-    return { level: "low", reasons: ["No official ZARC window to compare the engine with."] };
+    return { level: "low", reasons: [t.noZarc] };
   }
 
   const best = bestDekad(input.p);
@@ -31,18 +36,18 @@ export function confidenceFor(input: {
 
   if (value > 0 && value === bestZarcValue) {
     level = "high";
-    reasons.push(`The engine's best dekad (${dekadLabel(best)}) is in ZARC's best class (value ${value}).`);
+    reasons.push(t.bestClass(dekadLabel(best, locale), value));
   } else if (value > 0) {
     level = "medium";
-    reasons.push(`The engine's best dekad (${dekadLabel(best)}) is inside the ZARC window, but not in its best class.`);
+    reasons.push(t.inside(dekadLabel(best, locale)));
   } else {
     level = "low";
-    reasons.push(`The engine's best dekad (${dekadLabel(best)}) is outside the ZARC window.`);
+    reasons.push(t.outside(dekadLabel(best, locale)));
   }
 
   if (!input.nearCentroid) {
     if (level === "high") level = "medium";
-    reasons.push("Your point is in a different climate cell than the municipality centroid.");
+    reasons.push(t.otherCell);
   }
   return { level, reasons };
 }

@@ -11,6 +11,7 @@ import path from "node:path";
 import { z } from "zod";
 import { CONTRACT_SCHEMAS, CONTRACT_VERSION } from "../src/contract/schemas";
 import type { SoilClass } from "../src/contract/types";
+import type { Locale } from "../src/i18n";
 import { templateExplanation } from "../src/lib/explain/template";
 import { buildRecommendation, type AnalysisParams } from "../src/mocks/build-recommendation";
 import { municipalityByCode } from "../src/mocks/data";
@@ -21,7 +22,7 @@ const SBU = "2613008";
 const PETROLINA = "2611101";
 const RECIFE = "2611606";
 
-function rec(code: string, soil: SoilClass, regime: "rainfed" | "irrigated", user = true) {
+function rec(code: string, soil: SoilClass, regime: "rainfed" | "irrigated", user = true, locale: Locale = "en") {
   const params: AnalysisParams = {
     code,
     soil,
@@ -31,7 +32,7 @@ function rec(code: string, soil: SoilClass, regime: "rainfed" | "irrigated", use
     inputMode: "municipality",
     nearCentroid: true,
   };
-  return buildRecommendation(params, municipalityByCode.get(code)!, FIXED_NOW);
+  return buildRecommendation(params, municipalityByCode.get(code)!, FIXED_NOW, locale);
 }
 
 function files(): Record<string, unknown> {
@@ -53,6 +54,13 @@ function files(): Record<string, unknown> {
   out["examples/recommendation.petrolina.soil2.rainfed.json"] = rec(PETROLINA, 2, "rainfed");
   out["examples/recommendation.recife.soil2.rainfed.json"] = rec(RECIFE, 2, "rainfed");
   out["examples/explanation.sao-bento-do-una.soil2.rainfed.json"] = templateExplanation(rec(SBU, 2, "rainfed"), FIXED_NOW);
+  // Accept-Language: pt-BR (same numbers and ids; only human-readable text changes)
+  out["examples/recommendation.sao-bento-do-una.soil2.rainfed.pt-BR.json"] = rec(SBU, 2, "rainfed", true, "pt-BR");
+  out["examples/explanation.sao-bento-do-una.soil2.rainfed.pt-BR.json"] = templateExplanation(
+    rec(SBU, 2, "rainfed", true, "pt-BR"),
+    FIXED_NOW,
+    "pt-BR",
+  );
   out["examples/recommendation-request.point.json"] = { lat: -8.6, lon: -36.4, soil_class: 2, regime: "rainfed" };
   out["examples/recommendation-request.municipality.json"] = { municipality_code: SBU };
   out["examples/resolve-response.covered.json"] = {

@@ -1,0 +1,48 @@
+{
+  "analysis_id": "fsm_20261114_2613008.2.u.r.u.m.1",
+  "source": "template",
+  "mock": true,
+  "generated_at": "2026-11-14T12:00:00.000Z",
+  "sections": [
+    {
+      "id": "summary",
+      "title": "Resumo",
+      "paragraphs": [
+        "Para São Bento do Una, com solo médio e cultivo de sequeiro, as culturas com as melhores janelas de plantio simuladas são: Feijão-caupi, Amendoim, Sorgo granífero."
+      ]
+    },
+    {
+      "id": "top",
+      "title": "Melhores culturas",
+      "paragraphs": [
+        "1. Feijão-caupi: A melhor janela é mar 11 – jun 30, em que o plantio deu certo em 89% das safras simuladas, em média. A janela oficial do ZARC aparece no gráfico para comparação. A confiança é média: O melhor decêndio do motor (abr 21–30) está dentro da janela do ZARC, mas não na melhor classe.",
+        "2. Amendoim: A melhor janela é mar 1 – jun 20, em que o plantio deu certo em 85% das safras simuladas, em média. A janela oficial do ZARC aparece no gráfico para comparação. A confiança é alta: O melhor decêndio do motor (mar 21–31) está na melhor classe do ZARC (valor 20).",
+        "3. Sorgo granífero: A melhor janela é mar 1 – jun 20, em que o plantio deu certo em 89% das safras simuladas, em média. A janela oficial do ZARC aparece no gráfico para comparação. A confiança é alta: O melhor decêndio do motor (mar 21–31) está na melhor classe do ZARC (valor 20)."
+      ]
+    },
+    {
+      "id": "excluded",
+      "title": "Fora do ranking",
+      "paragraphs": [
+        "Milho (1ª safra): Ainda fora do ranking: o motor de balanço hídrico não foi validado para esta cultura.",
+        "Feijão comum: Ainda fora do ranking: o motor de balanço hídrico não foi validado para esta cultura.",
+        "Girassol: Ainda fora do ranking: o motor de balanço hídrico não foi validado para esta cultura.",
+        "Mamona: Estimativa própria não confiável: o motor não reproduz o ZARC para esta cultura (correlação de postos -0,25)."
+      ]
+    },
+    {
+      "id": "limits",
+      "title": "Qual a segurança disto",
+      "paragraphs": [
+        "São probabilidades de safras passadas com dados climáticos da NASA, não uma previsão. Descrevem uma célula climática, não a sua área.",
+        "Isto é apoio à decisão: não substitui o seu julgamento."
+      ]
+    }
+  ],
+  "field_checks": [
+    "Faça uma análise de solo: textura, profundidade e fertilidade mudam quanta água a planta consegue usar.",
+    "Verifique preços e compradores na sua região antes de escolher a cultura.",
+    "Pergunte sobre pragas e doenças desta safra na assistência técnica local.",
+    "Compare com o calendário de plantio local e com a sua experiência com as chuvas."
+  ]
+}

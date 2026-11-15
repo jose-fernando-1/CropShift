@@ -6,6 +6,7 @@
 import type { z } from "zod";
 import * as S from "@/contract/schemas";
 import type { ErrorCode, RecommendationRequest, ResolveRequest } from "@/contract/types";
+import type { Locale } from "@/i18n";
 import { requestLog } from "./request-log";
 
 export type ClientErrorCode = ErrorCode | "network" | "schema_mismatch";
@@ -35,11 +36,14 @@ async function call<T extends z.ZodType>(
   schema: T,
   method: "GET" | "POST",
   path: string,
+  locale: Locale,
   body?: unknown,
 ): Promise<z.infer<T>> {
   const logId = requestLog.start({ method, path, requestBody: body, schema: schemaName });
   const started = performance.now();
-  const headers: Record<string, string> = { accept: "application/json" };
+  // The locale comes from the caller (and its query key), never from shared state, so a
+  // response can't be cached under a key for a different language.
+  const headers: Record<string, string> = { accept: "application/json", "accept-language": locale };
   if (body !== undefined) headers["content-type"] = "application/json";
   if (scenario) headers["x-mock-scenario"] = scenario;
 
@@ -81,11 +85,12 @@ function issues(error: z.ZodError) {
 }
 
 export const api = {
-  health: () => call("health", S.Health, "GET", "/api/health"),
-  crops: () => call("crops", S.CropsResponse, "GET", "/api/v1/crops"),
-  resolve: (body: ResolveRequest) => call("resolve-response", S.ResolveResponse, "POST", "/api/v1/locations/resolve", body),
-  recommend: async (body: RecommendationRequest) => {
-    const rec = await call("recommendation", S.Recommendation, "POST", "/api/v1/recommendations", body);
+  health: () => call("health", S.Health, "GET", "/api/health", "en"),
+  crops: (locale: Locale) => call("crops", S.CropsResponse, "GET", "/api/v1/crops", locale),
+  resolve: (body: ResolveRequest, locale: Locale) =>
+    call("resolve-response", S.ResolveResponse, "POST", "/api/v1/locations/resolve", locale, body),
+  recommend: async (body: RecommendationRequest, locale: Locale) => {
+    const rec = await call("recommendation", S.Recommendation, "POST", "/api/v1/recommendations", locale, body);
     // Contract invariant the JSON Schema cannot express: a crop is ranked or excluded, never both.
     const ranked = new Set(rec.crops.map((c) => c.crop_id));
     const both = rec.excluded.filter((e) => ranked.has(e.crop_id)).map((e) => e.crop_id);
@@ -94,6 +99,6 @@ export const api = {
     }
     return rec;
   },
-  explain: (analysisId: string) =>
-    call("explanation", S.Explanation, "POST", `/api/v1/recommendations/${encodeURIComponent(analysisId)}/explain`),
+  explain: (analysisId: string, locale: Locale) =>
+    call("explanation", S.Explanation, "POST", `/api/v1/recommendations/${encodeURIComponent(analysisId)}/explain`, locale),
 };
