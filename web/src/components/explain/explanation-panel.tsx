@@ -60,16 +60,19 @@ export function ExplanationPanel({ rec }: { rec: Recommendation }) {
 
       {explanation ? (
         <div className="mt-3 space-y-4 text-sm leading-relaxed">
-          {explanation.sections.map((s) => (
-            <div key={s.id}>
-              <h3 className="font-medium">{s.title}</h3>
-              {s.paragraphs.map((p) => (
-                <p key={p} className="mt-1 text-ink-2">
-                  {p}
-                </p>
-              ))}
-            </div>
-          ))}
+          {/* Two balanced columns on wide screens keep lines readable; sections may split between paragraphs. */}
+          <div className="xl:columns-2 xl:gap-10">
+            {explanation.sections.map((s, i) => (
+              <div key={s.id} className={i > 0 ? "mt-4" : undefined}>
+                <h3 className="font-medium break-after-avoid">{s.title}</h3>
+                {s.paragraphs.map((p) => (
+                  <p key={p} className="mt-1 break-inside-avoid text-ink-2">
+                    {p}
+                  </p>
+                ))}
+              </div>
+            ))}
+          </div>
           <div>
             <h3 className="font-medium">{t.checksTitle}</h3>
             <ul className="mt-1 list-disc space-y-1 pl-5 text-ink-2">

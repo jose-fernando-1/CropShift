@@ -98,7 +98,7 @@ export function LocationPanel({ state }: { state: AnalysisState }) {
         : t.notices[notice.kind];
 
   return (
-    <section aria-labelledby="location-title" className="space-y-3">
+    <section aria-labelledby="location-title" className="flex flex-col gap-3 lg:flex-1">
       <div className="flex items-center justify-between gap-2">
         <h2 id="location-title" className="font-semibold">
           {t.title}
@@ -120,21 +120,24 @@ export function LocationPanel({ state }: { state: AnalysisState }) {
         </p>
       ) : null}
 
-      <div className={cn("space-y-3", collapsed && "hidden lg:block")}>
+      <div className={cn("flex flex-col gap-3 lg:flex-1", collapsed && "hidden lg:flex")}>
         {municipalities.data ? (
           <MunicipalitySearch options={municipalities.data.options} onSelect={chooseMunicipality} />
         ) : (
           <Skeleton className="h-16" />
         )}
 
-        <div className="relative h-72 overflow-hidden rounded-md border border-border lg:h-80">
-          {municipalities.data ? (
-            <LocationMap geojson={municipalities.data.geojson} selectedCode={selectedCode} pin={shownPin} focus={focus} onPick={pick} />
-          ) : municipalities.isError ? (
-            <div className="grid h-full place-items-center p-4 text-center text-sm text-ink-2">{t.mapError}</div>
-          ) : (
-            <Skeleton className="h-full w-full" />
-          )}
+        {/* Fixed height on mobile; on desktop it grows into the sidebar's spare height. The absolute inner box gives Leaflet a definite size. */}
+        <div className="relative h-72 overflow-hidden rounded-md border border-border lg:h-auto lg:min-h-72 lg:flex-1">
+          <div className="absolute inset-0">
+            {municipalities.data ? (
+              <LocationMap geojson={municipalities.data.geojson} selectedCode={selectedCode} pin={shownPin} focus={focus} onPick={pick} />
+            ) : municipalities.isError ? (
+              <div className="grid h-full place-items-center p-4 text-center text-sm text-ink-2">{t.mapError}</div>
+            ) : (
+              <Skeleton className="h-full w-full" />
+            )}
+          </div>
           {resolve.isPending ? (
             <span className="absolute left-2 top-2 z-[500] rounded bg-surface/90 px-2 py-1 text-xs shadow" role="status">
               {t.finding}

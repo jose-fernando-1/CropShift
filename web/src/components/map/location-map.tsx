@@ -32,6 +32,17 @@ function HidePolygonsFromAssistiveTech() {
   return null;
 }
 
+/** The map's box changes height with the sidebar (flex layout), not only on window resize; keep Leaflet's size in sync. */
+function TrackContainerSize() {
+  const map = useMap();
+  useEffect(() => {
+    const observer = new ResizeObserver(() => map.invalidateSize());
+    observer.observe(map.getContainer());
+    return () => observer.disconnect();
+  }, [map]);
+  return null;
+}
+
 /** Re-centres on the selected municipality or pin. */
 function FocusOn({ target }: { target: [number, number] | null }) {
   const map = useMap();
@@ -100,6 +111,7 @@ export default function LocationMap({
       ) : null}
       <ClickHandler onPick={onPick} />
       <HidePolygonsFromAssistiveTech />
+      <TrackContainerSize />
       <FocusOn target={focus} />
     </MapContainer>
   );

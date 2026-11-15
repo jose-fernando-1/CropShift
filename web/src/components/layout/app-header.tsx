@@ -11,7 +11,7 @@ export function AppHeader({ inspectorEnabled, onOpenInspector }: { inspectorEnab
   const m = useMessages();
   return (
     <header className="border-b border-border bg-surface">
-      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3">
+      <div className="mx-auto flex max-w-app flex-wrap items-center justify-between gap-3 px-4 py-3 lg:px-6">
         <div className="flex items-center gap-3">
           <span className="grid size-9 place-items-center rounded-lg bg-brand text-white" aria-hidden>
             <Sprout className="size-5" />

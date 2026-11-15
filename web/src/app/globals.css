@@ -86,7 +86,14 @@
   --text-xl--line-height: calc(1.875 / 1.375);
   --text-2xl: 1.625rem;
   --text-2xl--line-height: calc(2.125 / 1.625);
+
+  /* Page width shared by header, banner, main and footer; `3xl` starts where the container stops growing and adds columns. */
+  --container-app: 112rem;
+  --breakpoint-3xl: 112rem;
 }
+
+/* Viewports tall enough to keep the whole desktop sidebar on screen while it is sticky. */
+@custom-variant tall (@media (min-height: 54rem));
 
 html {
   background: var(--surface);

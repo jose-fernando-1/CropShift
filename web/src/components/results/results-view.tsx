@@ -63,7 +63,7 @@ export function ResultsView({
         </h2>
         <p className="text-sm text-ink-2">{t.rankedText}</p>
         {rec.crops.length > 0 ? (
-          <ol className="mt-3 grid gap-3 xl:grid-cols-2" aria-live="polite">
+          <ol className="mt-3 grid gap-3 xl:grid-cols-2 3xl:grid-cols-3" aria-live="polite">
             {rec.crops.map((c) => (
               <RankingCard key={c.crop_id} crop={c} onOpen={() => onOpenCrop(c.crop_id)} />
             ))}
@@ -81,7 +81,7 @@ export function ResultsView({
             {t.notRankedTitle}
           </h2>
           <p className="text-sm text-ink-2">{t.notRankedText}</p>
-          <ul className="mt-3 grid gap-3 xl:grid-cols-2">
+          <ul className="mt-3 grid gap-3 xl:grid-cols-2 3xl:grid-cols-3">
             {rec.excluded.map((e) => (
               <ExcludedCard key={e.crop_id} crop={e} />
             ))}
@@ -102,7 +102,7 @@ function LoadingState() {
     <div className="space-y-4" aria-busy="true" aria-label={t.loading}>
       <Skeleton className="h-24 w-full" />
       <Skeleton className="h-44 w-full" />
-      <div className="grid gap-3 xl:grid-cols-2">
+      <div className="grid gap-3 xl:grid-cols-2 3xl:grid-cols-3">
         <Skeleton className="h-40" />
         <Skeleton className="h-40" />
       </div>

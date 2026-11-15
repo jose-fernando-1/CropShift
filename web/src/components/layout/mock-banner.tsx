@@ -15,7 +15,7 @@ export function MockBanner() {
         backgroundImage: "repeating-linear-gradient(135deg, transparent 0 14px, rgba(250,178,25,0.18) 14px 28px)",
       }}
     >
-      <div className="mx-auto flex max-w-7xl items-center gap-2 px-4 py-1.5 text-sm">
+      <div className="mx-auto flex max-w-app items-center gap-2 px-4 py-1.5 text-sm lg:px-6">
         <FlaskConical className="size-4 shrink-0" aria-hidden />
         <p>
           <strong>{m.banner.strong}</strong> {m.banner.text}
