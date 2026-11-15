@@ -1,0 +1,12 @@
+{
+  "_note": "Prototype water-balance results for São Bento do Una (point -36.40, -8.60; POWER 1984-2023; 0.11 m3/m3; rainfed). Cowpea values are DIGITIZED from the proposal chart (p. 8), not exported numbers. Replace with track A output.",
+  "municipality_code": "2613008",
+  "soil_class": 2,
+  "seasons": 40,
+  "cowpea": [0.12, 0.15, 0.28, 0.32, 0.55, 0.65, 0.68, 0.78, 0.8, 0.88, 0.95, 1.0, 0.95, 0.95, 0.95, 0.95, 0.88, 0.7, 0.53, 0.25, 0.12, 0.05, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.03, 0.03, 0.05, 0.08],
+  "summaries": {
+    "peanut": { "zarc_window": [5, 18], "mean_in": 0.63, "mean_out": 0.04, "rho": 0.86, "top5": [12, 13, 11, 14, 10] },
+    "sorghum": { "zarc_window": [7, 19], "mean_in": 0.82, "mean_out": 0.15, "rho": 0.82, "top5": [10, 11, 12, 13, 14] },
+    "castor": { "zarc_window": [14, 19], "mean_in": 0.05, "mean_out": 0.24, "rho": -0.25, "top5": [10, 11, 9, 8, 7] }
+  }
+}

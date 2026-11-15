@@ -1,0 +1,15 @@
+{
+  "coverage": "covered",
+  "mock": true,
+  "municipality": {
+    "municipality_code": "2613008",
+    "municipality_name": "São Bento do Una",
+    "state": "PE",
+    "power_cell": {
+      "id": "r163c230",
+      "lat": -8.5,
+      "lon": -36.25
+    },
+    "near_centroid": true
+  }
+}

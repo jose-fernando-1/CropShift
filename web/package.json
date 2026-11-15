@@ -1,0 +1,58 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "node scripts/start-standalone.mjs",
+    "lint": "eslint",
+    "typecheck": "next typegen && tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "e2e": "playwright test",
+    "gen:geo": "tsx scripts/fetch-ibge-geo.ts",
+    "gen:fixtures": "tsx scripts/build-mock-fixtures.ts",
+    "gen:contract": "tsx scripts/gen-contract.ts",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm test && npm run gen:contract -- --check",
+    "format": "cd .. && prettier --write .",
+    "format:check": "cd .. && prettier --check ."
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.107.1",
+    "@turf/boolean-point-in-polygon": "^7.4.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^1.73.0",
+    "next": "16.4.6",
+    "radix-ui": "^1.8.1",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-leaflet": "^5.0.0",
+    "tailwind-merge": "^3.7.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.65.1",
+    "@tailwindcss/turbopack": "4.3.3",
+    "@types/geojson": "^7946.0.16",
+    "@types/leaflet": "^1.9.22",
+    "@types/node": "^22.20.5",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^6.3.0",
+    "ajv": "^8.20.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.6",
+    "prettier": "3.10.1",
+    "tailwindcss": "4.3.3",
+    "tsx": "^4.23.15",
+    "typescript": "^5",
+    "vitest": "^5.1.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
