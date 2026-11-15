@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+/* Field Shift design tokens (light theme only; outdoor use favours high contrast). */
+:root {
+  color-scheme: light;
+  --surface: #fcfcfb;
+  --surface-2: #f4f3ef;
+  --surface-3: #ebe9e2;
+  --border: #dedcd4;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #6b6963;
+  --brand: #1d5f35;
+  --brand-hover: #174d2b;
+  --brand-soft: #e6f0e8;
+  --focus: #2a78d6;
+
+  /* Sequential ramp (single hue, blue) for probability of success. */
+  --seq-0: #f0efec;
+  --seq-100: #cde2fb;
+  --seq-200: #9ec5f4;
+  --seq-300: #6da7ec;
+  --seq-400: #3987e5;
+  --seq-450: #2a78d6;
+  --seq-500: #256abf;
+  --seq-600: #184f95;
+  --seq-700: #0d366b;
+
+  /* ZARC window marker (categorical slot 2, orange): outlines, never fills. */
+  --zarc: #eb6834;
+  --zarc-soft: rgba(235, 104, 52, 0.12);
+
+  /* Status (always paired with an icon and a label). */
+  --good: #0ca30c;
+  --good-ink: #006300;
+  --warning: #fab219;
+  --warning-soft: #fff4d6;
+  --warning-ink: #6b4a00;
+  --critical: #d03b3b;
+  --critical-soft: #fbeaea;
+  --critical-ink: #8f1f1f;
+}
+
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-border: var(--border);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-soft: var(--brand-soft);
+  --color-focus: var(--focus);
+  --color-zarc: var(--zarc);
+  --color-good: var(--good);
+  --color-good-ink: var(--good-ink);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-warning-ink: var(--warning-ink);
+  --color-critical: var(--critical);
+  --color-critical-soft: var(--critical-soft);
+  --color-critical-ink: var(--critical-ink);
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+html {
+  background: var(--surface);
+}
+
+body {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Leaflet: keep the map under our sticky header and dialogs. */
+.leaflet-container {
+  font: inherit;
+  background: var(--surface-2);
+  z-index: 0;
+}
+.leaflet-tooltip.municipality-tooltip {
+  font-size: 12px;
+  padding: 2px 6px;
+}
