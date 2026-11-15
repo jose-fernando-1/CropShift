@@ -191,6 +191,9 @@ export const Location = z.object({
   regime: Regime,
   regime_source: InputSource,
   input_mode: z.enum(["point", "municipality"]),
+  municipality_centroid: Coordinates.describe(
+    "centroid of the municipality (IBGE mesh). The user's point is never echoed back; the client already has it.",
+  ),
   near_centroid: z.boolean(),
 });
 

@@ -268,6 +268,7 @@ export function buildRecommendation(
       regime: p.regime,
       regime_source: p.regimeSource,
       input_mode: p.inputMode,
+      municipality_centroid: municipality.centroid,
       near_centroid: p.nearCentroid,
     },
     crops,

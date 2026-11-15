@@ -13,6 +13,9 @@ test.describe("main journey (mock mode)", () => {
     await expect(page).not.toHaveURL(/-8\.6|36\.4/); // coordinates never go in the URL
 
     const cards = page.locator('[data-testid^="rank-card-"]');
+    await expect(page.getByTestId("result-coordinates")).toHaveText("-8.6000, -36.4000");
+    await expect(page.getByRole("button", { name: "Share" })).toBeVisible();
+    await expect(page.getByText(/^csm_/)).toHaveCount(0); // no analysis-id button
     await expect(cards).toHaveCount(3);
     await expect(cards.first()).toHaveAttribute("data-testid", "rank-card-cowpea");
     await expect(page.getByTestId("excluded-card-castor")).toContainText("Own estimate not reliable");
@@ -78,6 +81,7 @@ test.describe("main journey (mock mode)", () => {
     await expect(page.getByTestId("explanation-source")).toBeVisible();
     const results = await new AxeBuilder({ page }).exclude(".leaflet-container").analyze();
     const serious = results.violations.filter((v) => v.impact === "serious" || v.impact === "critical");
+    await expect(page.getByTestId("result-coordinates")).toHaveText(/^-8\.\d{4}, -36\.\d{4}$/); // municipality centre
     expect(serious.map((v) => `${v.id}: ${v.nodes.length} nodes`)).toEqual([]);
   });
 });

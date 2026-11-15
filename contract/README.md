@@ -80,6 +80,7 @@ These need team ratification:
 - `excluded[]`: `reason_code` (`gate_failed`, `engine_not_run`, `no_data_for_regime`), `eligible`; ranked crops also carry `eligible: true` and `legume` (boolean, drives the legume badge).
 - Crop `gate` object: `status` (`passed`, `failed`, `not_run`), `metric`, `value`, `threshold`, `note`; `has_zarc`, `has_pam`.
 - `crops` response: `requirements` per crop (nullable), the raw FAO-56 and EcoCrop crop sheet from the team's `ficha_exigencias_culturas_FAO56_EcoCrop.csv`: `fao56` (`stage_days`, `kc`, `max_height_m`, `max_root_depth_m`, `depletion_fraction`, `salinity_threshold_ece_ds_m`) and `ecocrop` (`species`, optimal and absolute temperature and rainfall, `ph_optimal`, `cycle_days`, `tolerances`). Ranges are `{min, max}` (`min` equals `max` for single values). Values are as published: `stage_days.total` can differ from the stage sum (cowpea 100 vs 110, sorghum 125 vs 130) and is kept raw. Example: `examples/crops.json`.
+- `location.municipality_centroid` `{lat, lon}`: the municipality's centroid (IBGE mesh). The user's point is not echoed back: the client already has it, and keeping it out of responses keeps it out of logs (it is also not in `analysis_id` or the page URL).
 - `explanation`: `field_checks`, `source` (`template` or `ai`).
 - `confidence` (`level` plus `reasons`), `flags`, `disclaimers`, `dataset_versions`, `mock`.
 - `Accept-Language` / `Content-Language` handling (see Conventions).

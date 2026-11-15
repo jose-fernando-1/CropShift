@@ -56,6 +56,7 @@ export function CropshiftApp({ dataFlowAllowed }: { dataFlowAllowed: boolean }) 
               onOpenCrop={state.openCrop}
               onRetry={() => recommendation.refetch()}
               onOpenInspector={openInspector}
+              requestPoint={state.request && "lat" in state.request ? { lat: state.request.lat, lon: state.request.lon } : null}
             />
           ) : (
             <EmptyState />

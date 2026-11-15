@@ -25,6 +25,7 @@ export function ResultsView({
   onOpenCrop,
   onRetry,
   onOpenInspector,
+  requestPoint,
 }: {
   rec: Recommendation | undefined;
   error: unknown;
@@ -34,6 +35,8 @@ export function ResultsView({
   onOpenCrop: (id: string | null) => void;
   onRetry: () => void;
   onOpenInspector: (() => void) | null;
+  /** The point the user picked (point mode only); kept client-side, the API does not echo it. */
+  requestPoint: { lat: number; lon: number } | null;
 }) {
   const t = useMessages().results;
   if (error && !rec) return <ErrorState error={error} onRetry={onRetry} onOpenInspector={onOpenInspector} />;
@@ -43,7 +46,7 @@ export function ResultsView({
     // "Refetch keeps the frame": previous result stays, dimmed, while new options load.
     <div className={cn("space-y-5 transition-opacity", isRefetching && "opacity-60")} aria-busy={isRefetching} data-testid="results">
       {error ? <ErrorState error={error} onRetry={onRetry} onOpenInspector={onOpenInspector} compact /> : null}
-      <ContextBar rec={rec} />
+      <ContextBar rec={rec} requestPoint={requestPoint} />
 
       {rec.crops.length > 0 ? (
         <section aria-labelledby="calendar-title" className="rounded-lg border border-border bg-surface p-4">

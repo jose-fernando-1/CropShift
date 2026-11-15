@@ -3,7 +3,7 @@ import * as S from "@/contract/schemas";
 import { getMessages, localeFromAcceptLanguage } from "@/i18n";
 import { en } from "@/i18n/messages/en";
 import { dekadLabel, windowLabel } from "@/lib/domain/dekads";
-import { kgPerHa, numberRange } from "@/lib/domain/format";
+import { coordinates, kgPerHa, numberRange } from "@/lib/domain/format";
 import { templateExplanation } from "@/lib/explain/template";
 import { buildRecommendation, type AnalysisParams } from "@/mocks/build-recommendation";
 import { municipalityByCode } from "@/mocks/data";
@@ -109,7 +109,12 @@ describe("pt-BR template phrasing", () => {
   });
 });
 
-describe("locale number formats for the crop sheet", () => {
+describe("locale number formats for the context bar and crop sheet", () => {
+  it("formats the analysed point the way the coordinate box accepts it", () => {
+    expect(coordinates(-8.6, -36.4, "en")).toBe("-8.6000, -36.4000");
+    expect(coordinates(-8.6, -36.4, "pt-BR")).toBe("-8,6000; -36,4000");
+  });
+
   it("formats raw ranges and single values", () => {
     expect(numberRange({ min: 0.35, max: 0.6 }, "en")).toBe("0.35–0.6");
     expect(numberRange({ min: 0.35, max: 0.6 }, "pt-BR")).toBe("0,35–0,6");

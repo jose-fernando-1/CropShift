@@ -44,6 +44,10 @@
     "regime": "irrigated",
     "regime_source": "user",
     "input_mode": "municipality",
+    "municipality_centroid": {
+      "lat": -8.53692,
+      "lon": -36.45155
+    },
     "near_centroid": true
   },
   "crops": [

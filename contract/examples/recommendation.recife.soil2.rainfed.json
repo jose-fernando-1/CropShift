@@ -44,6 +44,10 @@
     "regime": "rainfed",
     "regime_source": "user",
     "input_mode": "municipality",
+    "municipality_centroid": {
+      "lat": -8.04027,
+      "lon": -34.93331
+    },
     "near_centroid": true
   },
   "crops": [

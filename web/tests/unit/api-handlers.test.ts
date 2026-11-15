@@ -44,6 +44,8 @@ describe("mock API", () => {
     const res = await post("v1/recommendations", { lat: -8.6, lon: -36.4 });
     const rec = S.Recommendation.parse(await res.json());
     expect(rec.location).toMatchObject({ municipality_code: "2613008", soil_source: "default", regime_source: "default", input_mode: "point" });
+    expect(rec.location).not.toHaveProperty("point"); // the user's point is never echoed back
+    expect(rec.location.municipality_centroid.lat).toBeCloseTo(-8.5, 0);
     const ex = S.Explanation.parse(await (await post(`v1/recommendations/${rec.analysis_id}/explain`, {})).json());
     expect(ex.source).toBe("template");
     expect(ex.analysis_id).toBe(rec.analysis_id);
