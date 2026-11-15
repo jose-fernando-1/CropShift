@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 from app import __version__
 from app.api.v1.crops import router as crops_router
+from app.api.v1.environment import router as environment_router
 from app.api.v1.explain import router as explain_router
 from app.api.v1.locations import router as locations_router
 from app.api.v1.recommendations import router as recommendations_router
@@ -13,6 +14,7 @@ router.include_router(crops_router)
 router.include_router(locations_router)
 router.include_router(recommendations_router)
 router.include_router(explain_router)
+router.include_router(environment_router)
 
 
 @router.get("/", tags=["General"])

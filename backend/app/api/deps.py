@@ -15,6 +15,7 @@ from app.repositories.geo import MunicipalityRepository
 from app.repositories.reference import ReferenceRepository
 from app.repositories.windows import WindowRepository
 from app.services.catalog_service import CatalogService
+from app.services.environment_service import EnvironmentService
 from app.services.explain_service import ExplainService
 from app.services.location_service import LocationService
 from app.services.recommendation_service import RecommendationService
@@ -76,3 +77,10 @@ def _gemini() -> GeminiExplainer | None:
 
 
 ExplainServiceDep = Annotated[ExplainService, Depends(get_explain_service)]
+
+
+def get_environment_service(db: DbSession) -> EnvironmentService:
+    return EnvironmentService(MunicipalityRepository(db), ClimateRepository(db))
+
+
+EnvironmentServiceDep = Annotated[EnvironmentService, Depends(get_environment_service)]

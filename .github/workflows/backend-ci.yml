@@ -2,9 +2,29 @@ name: backend-ci
 
 on:
   push:
-    paths: ["backend/**", "data/**", "contract/**", "web/mock-data/**", "ruff.toml", "Makefile", ".github/workflows/backend-ci.yml", "docker-compose.yml"]
+    paths:
+      [
+        "backend/**",
+        "data/**",
+        "contract/**",
+        "web/mock-data/**",
+        "ruff.toml",
+        "Makefile",
+        ".github/workflows/backend-ci.yml",
+        "docker-compose.yml",
+      ]
   pull_request:
-    paths: ["backend/**", "data/**", "contract/**", "web/mock-data/**", "ruff.toml", "Makefile", ".github/workflows/backend-ci.yml", "docker-compose.yml"]
+    paths:
+      [
+        "backend/**",
+        "data/**",
+        "contract/**",
+        "web/mock-data/**",
+        "ruff.toml",
+        "Makefile",
+        ".github/workflows/backend-ci.yml",
+        "docker-compose.yml",
+      ]
 
 permissions:
   contents: read

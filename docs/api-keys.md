@@ -22,7 +22,7 @@ EARTHDATA_USERNAME=your_username
 EARTHDATA_PASSWORD=your_password
 ```
 
-`doctor` logs in to AppEEARS and reports `OK` when it gets a token. Only the satellite pipeline uses these values; no extractor for it is wired into the CLI yet (see [../data/README.md](../data/README.md)).
+`doctor` logs in to AppEEARS and reports `OK` when it gets a token. Only the satellite pipeline uses these values; `python -m data extract appeears` uses them (written, tested only with a mocked transport, not yet run against the live service) (see [../data/README.md](../data/README.md)).
 
 ## Gemini
 
