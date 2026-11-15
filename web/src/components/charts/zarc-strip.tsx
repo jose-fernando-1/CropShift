@@ -32,7 +32,7 @@ export function ZarcStrip({ zarc }: { zarc: Zarc }) {
           );
         })}
       </div>
-      <div className="mt-0.5 grid grid-cols-12 text-[10px] text-muted" aria-hidden>
+      <div className="mt-0.5 grid grid-cols-12 text-2xs text-muted" aria-hidden>
         {monthNames(locale).map((m) => (
           <span key={m}>{m[0].toUpperCase()}</span>
         ))}

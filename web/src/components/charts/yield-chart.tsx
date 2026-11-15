@@ -8,7 +8,7 @@ import { ChartFrame } from "./chart-frame";
 import { useWidth } from "./use-width";
 
 const HEIGHT = 200;
-const M = { top: 12, right: 112, bottom: 26, left: 52 };
+const M = { top: 12, right: 132, bottom: 26, left: 52 };
 
 /** Recorded yield in the municipality (IBGE PAM) against the municipality and state medians. */
 export function YieldChart({ pam, municipalityName }: { pam: Pam; municipalityName: string }) {
@@ -57,13 +57,13 @@ export function YieldChart({ pam, municipalityName }: { pam: Pam; municipalityNa
         {ticks.map((tick) => (
           <g key={tick}>
             <line x1={M.left} x2={M.left + plotW} y1={y(tick)} y2={y(tick)} stroke="var(--border)" strokeWidth={tick === 0 ? 1 : 0.75} />
-            <text x={M.left - 6} y={y(tick)} dy="0.32em" textAnchor="end" fontSize={11} fill="var(--ink-2)">
+            <text x={M.left - 6} y={y(tick)} dy="0.32em" textAnchor="end" fontSize={12} fill="var(--ink-2)">
               {kgPerHaNumber(tick, locale)}
             </text>
           </g>
         ))}
         {yearTicks.map((yr) => (
-          <text key={yr} x={x(yr)} y={HEIGHT - 8} textAnchor="middle" fontSize={11} fill="var(--ink-2)">
+          <text key={yr} x={x(yr)} y={HEIGHT - 8} textAnchor="middle" fontSize={12} fill="var(--ink-2)">
             {yr}
           </text>
         ))}
@@ -78,7 +78,7 @@ export function YieldChart({ pam, municipalityName }: { pam: Pam; municipalityNa
               strokeDasharray="2 3"
               strokeWidth={1.5}
             />
-            <text x={M.left + plotW + 6} y={y(pam.state_median)} dy="0.32em" fontSize={11} fill="var(--ink-2)">
+            <text x={M.left + plotW + 6} y={y(pam.state_median)} dy="0.32em" fontSize={12} fill="var(--ink-2)">
               {t.stateMedian(kgPerHaNumber(pam.state_median, locale))}
             </text>
           </g>
@@ -98,7 +98,7 @@ export function YieldChart({ pam, municipalityName }: { pam: Pam; municipalityNa
               x={M.left + plotW + 6}
               y={y(pam.municipality_median)}
               dy={pam.state_median !== null && Math.abs(y(pam.state_median) - y(pam.municipality_median)) < 12 ? "-0.6em" : "0.32em"}
-              fontSize={11}
+              fontSize={12}
               fill="var(--ink)"
             >
               {t.localMedian(kgPerHaNumber(pam.municipality_median, locale))}

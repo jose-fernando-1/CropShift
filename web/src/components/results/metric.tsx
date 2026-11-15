@@ -31,7 +31,7 @@ export function Metric({
       <dd className="mt-0.5">
         <span className={cn("tabular-nums", emphasis ? "text-2xl font-semibold" : "text-base font-medium")}>{value}</span>
         {unit ? <span className="ml-1 text-sm text-ink-2">{unit}</span> : null}
-        <span className="block truncate text-[11px] text-muted" title={source}>
+        <span className="block truncate text-2xs text-muted" title={source}>
           {m.metric.source} {source}
         </span>
       </dd>

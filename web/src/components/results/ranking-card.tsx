@@ -47,7 +47,7 @@ export function RankingCard({ crop, onOpen }: { crop: RankedCrop; onOpen: () => 
               <span className="size-2.5 rounded-full" style={{ background: probabilityStep(best.mean_p).color }} aria-hidden />
               <span className="text-2xl font-semibold tabular-nums">{percent(best.mean_p)}</span>
             </div>
-            <p className="text-[11px] text-muted">{t.avgSuccess}</p>
+            <p className="text-2xs text-muted">{t.avgSuccess}</p>
           </div>
         ) : null}
       </div>
@@ -65,7 +65,7 @@ export function RankingCard({ crop, onOpen }: { crop: RankedCrop; onOpen: () => 
         <div>
           <dt className="text-xs text-ink-2">{t.range}</dt>
           <dd className="font-medium tabular-nums">{lo !== null && hi !== null ? `${percent(lo)}–${percent(hi)}` : "—"}</dd>
-          <dd className="text-[11px] text-muted">{t.rangeNote}</dd>
+          <dd className="text-2xs text-muted">{t.rangeNote}</dd>
         </div>
       </dl>
 
