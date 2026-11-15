@@ -9,10 +9,10 @@ from sqlalchemy.orm import (
 
 from app.core.config import settings
 
-
 engine = create_engine(
     settings.database_url,
     pool_pre_ping=True,
+    hide_parameters=True,  # bound values (user coordinates) must never appear in error text or logs
     pool_size=5,
     max_overflow=10,
 )
@@ -29,6 +29,6 @@ class Base(DeclarativeBase):
     pass
 
 
-def get_db() -> Generator[Session, None, None]:
+def get_db() -> Generator[Session]:
     with SessionLocal() as session:
         yield session

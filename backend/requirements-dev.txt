@@ -1,0 +1,13 @@
+# Test and lint tools on top of the runtime set.
+-r requirements.txt
+attrs==26.1.0
+iniconfig==2.3.1
+jsonschema-specifications==2025.9.1
+jsonschema==4.26.0
+pluggy==1.7.0
+Pygments==2.21.0
+pytest==9.2.0
+referencing==0.37.0
+respx==0.23.1
+rpds-py==2026.9.1
+ruff==0.17.5

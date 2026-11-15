@@ -1,0 +1,7 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = [
+    "live: calls real external APIs (NASA POWER, SoilGrids, ...); run with `pytest -m live`",
+    "db: needs the PostGIS database (docker compose up -d db)",
+]

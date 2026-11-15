@@ -1,10 +1,9 @@
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
-
 from alembic import context
+from sqlalchemy import engine_from_config, pool
 
+import app.models  # noqa: F401  (registers all tables on Base.metadata)
 from app.core.config import settings
 from app.core.database import Base
 
@@ -26,6 +25,14 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 target_metadata = Base.metadata
+
+
+def include_object(obj, name, type_, reflected, compare_to):
+    """Ignore database objects the models do not own (PostGIS and its tiger/topology tables)."""
+    if type_ == "table" and reflected and name not in target_metadata.tables:
+        return False
+    return not (type_ == "index" and reflected and compare_to is None)
+
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -49,6 +56,7 @@ def run_migrations_offline() -> None:
     context.configure(
         url=url,
         target_metadata=target_metadata,
+        include_object=include_object,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
     )
@@ -72,7 +80,10 @@ def run_migrations_online() -> None:
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata
+            connection=connection,
+            target_metadata=target_metadata,
+            include_object=include_object,
+            compare_type=True,
         )
 
         with context.begin_transaction():
