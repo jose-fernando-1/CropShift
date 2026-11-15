@@ -27,9 +27,13 @@ What is mocked: only the layers below `/api`. The client, zod validation, query 
 
 Live proxy behavior (`src/lib/server/live-proxy.ts`):
 
-- Forwards only `content-type`, `accept` and `x-request-id`, plus the client IP as `x-forwarded-for` (from the incoming `x-forwarded-for`, else `x-real-ip`).
+- Forwards only `content-type`, `accept`, `accept-language` and `x-request-id`, plus the client IP as `x-forwarded-for` (from the incoming `x-forwarded-for`, else `x-real-ip`).
 - `/api/health` goes to `/health`; every other path goes to `/api/<path>` with its query string.
 - Successful responses pass through. Error bodies that already match the contract envelope pass through. Anything else is normalized: unreachable or timeout gives 503 `upstream_unavailable`; 400 or 422 gives `invalid_request`; 429 gives `rate_limited`; other 5xx gives 503 `upstream_unavailable`; remaining statuses give `internal`. Missing `API_ORIGIN` gives 503 `upstream_unavailable`.
+
+## Language
+
+The locale lives in a client store (`src/i18n/store.ts`, persisted as `fs-lang`). The query hooks read it, put it in the query key and pass it to `api.*`, which sends it as `Accept-Language`. In mock mode `src/mocks/handlers.ts` picks the language from that header (English for anything else), localizes the text via `src/mocks/messages.ts` and sets `Content-Language`. In live mode `live-proxy.ts` forwards `accept-language` and passes the backend's `content-language` back. Error copy is chosen on the client per error code. Ids and numbers are the same in every language.
 
 ## Fixtures: real vs synthetic
 

@@ -36,6 +36,7 @@ Schemas are JSON Schema draft 2020-12. Examples are generated with a fixed times
 - `analysis_id` is opaque to clients, but limited to URL-path-safe characters (`[A-Za-z0-9_.~-]+`, enforced by the schema) because it is a path segment in `/explain`; the web proxy rejects anything else. UUIDs, ULIDs and base64url fit.
 - `crops[]` holds only crops that passed the quality gate, ranked 1..n in display order. `excluded[]` holds the rest. A crop is never in both.
 - ZARC values are 0, 20, 30 or 40 and are shown as-is; their meaning as risk percent is unconfirmed. `zarc` is `null` when there is no mapping (irrigated regime, common bean rainfed). `pam` is `null` when PAM has no series (for example sunflower).
+- Language: clients send `Accept-Language: en` or `pt-BR`. Servers localize human-readable fields (crop names, confidence reasons, `strengths`/`risks`/`missing_data`, excluded reasons, disclaimer texts, gate notes, explanation sections and `field_checks`, error messages) and fall back to English for any other value. Ids, codes and numbers are never localized (`crop_id`, `reason_code`, disclaimer `id`, `crop_label`, ZARC and PAM codes, `analysis_id`). `analysis_id` is language-neutral, so cache explanations by (id, language). Responses carry `Content-Language`; add `Vary: Accept-Language` if HTTP caching is ever introduced. Examples: `examples/recommendation.sao-bento-do-una.soil2.rainfed.pt-BR.json` and `examples/explanation.sao-bento-do-una.soil2.rainfed.pt-BR.json`. The schemas are unchanged.
 - The schemas avoid `.refine`, `.transform` and defaults, so zod and the JSON Schema accept the same instances.
 
 ## Routes
@@ -80,4 +81,5 @@ These need team ratification:
 - Crop `gate` object: `status` (`passed`, `failed`, `not_run`), `metric`, `value`, `threshold`, `note`; `has_zarc`, `has_pam`.
 - `explanation`: `field_checks`, `source` (`template` or `ai`).
 - `confidence` (`level` plus `reasons`), `flags`, `disclaimers`, `dataset_versions`, `mock`.
+- `Accept-Language` / `Content-Language` handling (see Conventions).
 - The `crops[]` / `excluded[]` split itself, and the error code list.

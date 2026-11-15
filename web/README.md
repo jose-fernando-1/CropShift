@@ -2,7 +2,7 @@
 
 Front end for Field Shift (NASA Space Apps 2026, team Rural). Given a point or municipality in Pernambuco, it shows for each crop the probability of planting success per dekad (36 ten-day windows, from 40 seasons of NASA POWER climate), next to the official ZARC window and IBGE PAM yields.
 
-It is a Next.js 16 + React 19 + TypeScript app. The FastAPI backend does not exist yet, so the app ships with a complete in-process mock API that follows the shared [API contract](../contract/README.md). The UI and all docs are in English.
+It is a Next.js 16 + React 19 + TypeScript app. The FastAPI backend does not exist yet, so the app ships with a complete in-process mock API that follows the shared [API contract](../contract/README.md). The UI is in English by default, with Brazilian Portuguese (pt-BR) available from the header; the docs are in English.
 
 See also: [data flow and fixtures](docs/data-flow.md), [API contract](../contract/README.md).
 
@@ -95,6 +95,16 @@ Run from `web/`.
 
 `gen:fixtures` inputs are the challenge data CSVs, not stored in the repo (the maintainers keep them in `~/Downloads`): the ZARC risk table for Pernambuco, season 2025/26 (`zarc_tabua_risco_safra2025_2026_PE.csv`, `;`-separated) and the PAM yield table 2005-2024 (`ibge_pam_PE_2005_2024_culturas_chave.csv`). The generated JSON files are committed; you only need the CSVs to rebuild them.
 
+## Languages
+
+English is always the default (the challenge requires an English UI). pt-BR is opt-in through the EN | PT switcher in the header (`src/components/layout/language-switcher.tsx`) and is remembered on that device in `localStorage` under `fs-lang`. The locale is not in the URL and the root layout stays static: `<html lang>` and the tab title follow the choice on the client. Numbers and ids never change across languages, only human-readable text.
+
+The language reaches the API as `Accept-Language` on every call and is part of every query key, so switching refetches. The mock answers in the requested language; error copy is chosen on the client per error code. See [docs/data-flow.md](docs/data-flow.md#language) and the [contract convention](../contract/README.md#conventions).
+
+Messages live in `src/i18n/messages/`: `en.ts` defines the shape and `pt-BR.ts` must match it, so a missing key fails `npm run typecheck`. To add or edit a string, change `en.ts` first, then `pt-BR.ts`. Components use `useMessages()` / `useLocale()` (`src/i18n/use-i18n.ts`); code outside React (template, mock, formatters) uses `getMessages(locale)` from `src/i18n`. Text produced by the mock API lives in `src/mocks/messages.ts`.
+
+Tests: `tests/unit/i18n.test.ts` and `tests/e2e/i18n.spec.ts`.
+
 ## Mock scenarios
 
 Failure scenarios for testing error states, mock mode only:
@@ -139,7 +149,8 @@ web/
       domain/       dekads, formatting, geo helpers
       explain/      template explanation (client fallback and mock)
       state/        analysis state (URL params)
-    mocks/          mock API: handlers, engine, synthetic curves, scenarios
+    mocks/          mock API: handlers, engine, synthetic curves, scenarios, localized text
+    i18n/           locales, message catalogs (en, pt-BR), locale store and hooks
   mock-data/        fixtures: catalog, municipalities, zarc, pam, prototype
   public/geo/       municipal mesh for the map
   scripts/          generators (geo, fixtures, contract), standalone starter
