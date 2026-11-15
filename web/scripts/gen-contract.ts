@@ -39,8 +39,8 @@ function files(): Record<string, unknown> {
   const out: Record<string, unknown> = {};
   for (const [name, schema] of Object.entries(CONTRACT_SCHEMAS)) {
     out[`${name}.schema.json`] = {
-      $id: `https://fieldshift.local/contract/${CONTRACT_VERSION}/${name}.schema.json`,
-      title: `Field Shift ${name} (contract v${CONTRACT_VERSION})`,
+      $id: `https://cropshift.local/contract/${CONTRACT_VERSION}/${name}.schema.json`,
+      title: `Cropshift ${name} (contract v${CONTRACT_VERSION})`,
       ...z.toJSONSchema(schema),
     };
   }
@@ -76,7 +76,7 @@ function files(): Record<string, unknown> {
   };
   out["examples/resolve-response.out-of-state.json"] = { coverage: "out_of_state", mock: true, municipality: null };
   out["examples/api-error.out-of-coverage.json"] = {
-    error: { code: "out_of_coverage", message: "This point is outside Pernambuco. Field Shift covers Pernambuco only." },
+    error: { code: "out_of_coverage", message: "This point is outside Pernambuco. Cropshift covers Pernambuco only." },
   };
   return out;
 }

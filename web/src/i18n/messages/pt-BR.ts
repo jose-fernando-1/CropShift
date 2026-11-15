@@ -10,7 +10,7 @@ export const ptBR: Messages = {
     confidence: { high: "Alta", medium: "Média", low: "Baixa" },
   },
   app: {
-    title: "Field Shift: o que plantar e quando",
+    title: "Cropshift: o que plantar e quando",
     tagline: "O que plantar e quando, em Pernambuco. Apoio à decisão: não substitui o seu julgamento.",
     versionsTitle: "Versões dos dados e do método",
     versions: (data, method, contract) => `dados ${data} · ${method} · contrato v${contract}`,
@@ -37,11 +37,11 @@ export const ptBR: Messages = {
     aiUse: "Uso de IA",
     aiText:
       "O ranking e as probabilidades vêm do código, não de IA. As explicações são geradas a partir dos resultados por modelo de texto e, quando ativado, reescritas pelo Google Gemini e conferidas contra os números. Parte do código foi escrita com ajuda de IA.",
-    support: "O Field Shift é apoio à decisão. Não substitui o seu julgamento nem a orientação técnica local.",
+    support: "O Cropshift é apoio à decisão. Não substitui o seu julgamento nem a orientação técnica local.",
   },
   method: {
     trigger: "Dados, método e limites",
-    title: "Como o Field Shift funciona",
+    title: "Como o Cropshift funciona",
     description: "Método, porta de qualidade e os limites destes resultados.",
     methodTitle: "Método",
     steps: [
@@ -104,7 +104,7 @@ export const ptBR: Messages = {
     cancel: "Cancelar",
     allow: "Permitir e continuar",
     notices: {
-      outOfState: { title: "Fora de Pernambuco", text: "Por enquanto o Field Shift cobre só Pernambuco. Escolha um ponto dentro do estado." },
+      outOfState: { title: "Fora de Pernambuco", text: "Por enquanto o Cropshift cobre só Pernambuco. Escolha um ponto dentro do estado." },
       denied: { title: "Permissão de localização negada", text: "Tudo bem: toque no mapa, busque o seu município ou digite as coordenadas." },
       unavailable: { title: "Não foi possível obter a localização", text: "O aparelho não informou uma posição. Toque no mapa, busque ou digite as coordenadas." },
       unsupported: { title: "Localização não suportada", text: "Este navegador não compartilha localização. Toque no mapa, busque ou digite as coordenadas." },
@@ -130,7 +130,7 @@ export const ptBR: Messages = {
   },
   empty: {
     title: "O que plantar, e quando?",
-    text: "Escolha um ponto em Pernambuco. O Field Shift repassa 40 safras de dados climáticos da NASA para mostrar, para cada cultura, com que frequência plantar em cada período de 10 dias teria dado certo. E coloca isso ao lado da janela oficial de plantio do ZARC e do que o seu município de fato colheu.",
+    text: "Escolha um ponto em Pernambuco. O Cropshift repassa 40 safras de dados climáticos da NASA para mostrar, para cada cultura, com que frequência plantar em cada período de 10 dias teria dado certo. E coloca isso ao lado da janela oficial de plantio do ZARC e do que o seu município de fato colheu.",
     steps: [
       { title: "1. Local", text: "Toque no mapa, busque o seu município, digite coordenadas ou use a sua localização." },
       { title: "2. Sua propriedade", text: "Tipo de solo e irrigação são opcionais. Se você pular, usamos o padrão e mostramos qual foi." },
@@ -158,15 +158,15 @@ export const ptBR: Messages = {
     rankedText: "Ordenado pelo melhor trecho de 30 dias para plantar. Só entram no ranking as culturas que passaram na porta de qualidade.",
     noneRanked: "Nenhuma cultura passou na porta de qualidade neste local.",
     notRankedTitle: "Fora do ranking",
-    notRankedText: "Estas culturas aparecem só com a janela oficial e o rendimento registrado. O Field Shift ainda não faz estimativa para elas.",
+    notRankedText: "Estas culturas aparecem só com a janela oficial e o rendimento registrado. O Cropshift ainda não faz estimativa para elas.",
     loading: "Carregando resultados",
     tryAgain: "Tentar de novo",
     openInspector: "Abrir o inspetor de fluxo de dados",
   },
   errors: {
-    out_of_coverage: { title: "Fora da cobertura", text: "O Field Shift cobre só Pernambuco. Escolha um local dentro do estado." },
+    out_of_coverage: { title: "Fora da cobertura", text: "O Cropshift cobre só Pernambuco. Escolha um local dentro do estado." },
     no_data: { title: "Ainda sem dados para este local", text: "Ainda não há dados climáticos pré-calculados para este local." },
-    upstream_unavailable: { title: "API indisponível", text: "A API do Field Shift não respondeu. Tente de novo em um minuto." },
+    upstream_unavailable: { title: "API indisponível", text: "A API do Cropshift não respondeu. Tente de novo em um minuto." },
     network: { title: "Sem conexão", text: "Não foi possível falar com o servidor. Verifique a sua conexão." },
     rate_limited: { title: "Muitas requisições", text: "Aguarde um pouco e tente de novo." },
     schema_mismatch: { title: "Resposta inesperada da API", text: "A resposta não segue o formato esperado. O inspetor de fluxo de dados mostra os detalhes." },

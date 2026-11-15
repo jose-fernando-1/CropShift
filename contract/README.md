@@ -1,4 +1,4 @@
-# Field Shift API contract
+# Cropshift API contract
 
 Version 0.1, DRAFT. To be ratified by the three tracks (Entrega 0) before the FastAPI backend implements it. Until then the web mock API is the reference implementation.
 
@@ -56,7 +56,7 @@ The web app calls `/api/health`; the Next proxy maps it to the backend's `/healt
 Every error uses the envelope:
 
 ```json
-{ "error": { "code": "out_of_coverage", "message": "This point is outside Pernambuco. Field Shift covers Pernambuco only." } }
+{ "error": { "code": "out_of_coverage", "message": "This point is outside Pernambuco. Cropshift covers Pernambuco only." } }
 ```
 
 Codes: `invalid_request`, `invalid_coordinates`, `out_of_coverage`, `not_found`, `no_data`, `upstream_unavailable`, `rate_limited`, `internal`. See `examples/api-error.out-of-coverage.json`.

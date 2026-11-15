@@ -1,4 +1,4 @@
-# Field Shift: local/production stack.
+# Cropshift: local/production stack.
 #   docker compose up --build web          -> http://localhost:3000 (mock API)
 # To use the real backend, uncomment `api`, set API_MODE=live on `web`.
 services:

@@ -1,4 +1,4 @@
-# Field Shift web: production image (Next.js standalone server).
+# Cropshift web: production image (Next.js standalone server).
 # API_MODE / API_ORIGIN / API_TIMEOUT_MS are read at runtime, so one image
 # serves both the mock API and the live proxy to FastAPI.
 

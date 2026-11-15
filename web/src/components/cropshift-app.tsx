@@ -14,7 +14,7 @@ import { useDocumentLocale, useMessages } from "@/i18n/use-i18n";
 import { useHealth, useRecommendation } from "@/lib/api/queries";
 import { useAnalysisState } from "@/lib/state/use-analysis-state";
 
-export function FieldShiftApp() {
+export function CropshiftApp() {
   useDocumentLocale();
   const m = useMessages();
   const state = useAnalysisState();

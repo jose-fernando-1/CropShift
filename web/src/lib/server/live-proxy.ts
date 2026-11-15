@@ -46,7 +46,7 @@ export async function proxyToBackend(request: Request, path: string[]): Promise<
       cache: "no-store",
     });
   } catch {
-    return error(503, "upstream_unavailable", "The Field Shift API is unreachable. Try again in a minute.");
+    return error(503, "upstream_unavailable", "The Cropshift API is unreachable. Try again in a minute.");
   }
 
   const text = await upstream.text();
@@ -69,6 +69,6 @@ export async function proxyToBackend(request: Request, path: string[]): Promise<
   }
   if (upstream.status === 404) return error(404, "not_found", "The API has no such resource.");
   if (upstream.status === 429) return error(429, "rate_limited", "Too many requests. Wait a moment and try again.");
-  if (upstream.status >= 500) return error(503, "upstream_unavailable", "The Field Shift API failed. Try again in a minute.");
+  if (upstream.status >= 500) return error(503, "upstream_unavailable", "The Cropshift API failed. Try again in a minute.");
   return error(upstream.status, "internal", `Unexpected API response (HTTP ${upstream.status}).`);
 }

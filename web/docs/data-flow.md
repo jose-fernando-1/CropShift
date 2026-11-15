@@ -20,7 +20,7 @@ flowchart TD
 1. Components never call `fetch`. They use the hooks in `src/lib/api/queries.ts` (`useHealth`, `useCrops`, `useResolve`, `useRecommendation`, `useExplanation`).
 2. The hooks call `api.*` in `src/lib/api/client.ts`. The client parses every response with the zod schema from `src/contract/schemas.ts`; a body that does not match becomes an `ApiClientError` with code `schema_mismatch`. Error bodies are parsed as the contract error envelope. Each call is recorded in the in-memory request log (last 50) that feeds the [inspector](../README.md#data-flow-inspector). In mock mode the client adds the `x-mock-scenario` header when a scenario is selected.
 3. All calls are same-origin `/api/...`: one catch-all route, no CORS, and any backend secret stays server-side.
-4. `handleApi` reads `API_MODE` on each request and sets `x-fieldshift-mode` and `cache-control: no-store` on the response.
+4. `handleApi` reads `API_MODE` on each request and sets `x-cropshift-mode` and `cache-control: no-store` on the response.
 5. In mock mode `src/mocks/handlers.ts` routes the request, builds the answer from the fixtures and validates its own output against the contract (a mock that drifts returns 500 `internal`). In live mode `live-proxy.ts` forwards to `API_ORIGIN`.
 
 What is mocked: only the layers below `/api`. The client, zod validation, query cache, UI and the `/api` route itself are the real code in both modes. The inspector draws this boundary.
@@ -33,7 +33,7 @@ Live proxy behavior (`src/lib/server/live-proxy.ts`):
 
 ## Language
 
-The locale lives in a client store (`src/i18n/store.ts`, persisted as `fs-lang`). The query hooks read it, put it in the query key and pass it to `api.*`, which sends it as `Accept-Language`. In mock mode `src/mocks/handlers.ts` picks the language from that header (English for anything else), localizes the text via `src/mocks/messages.ts` and sets `Content-Language`. In live mode `live-proxy.ts` forwards `accept-language` and passes the backend's `content-language` back. Error copy is chosen on the client per error code. Ids and numbers are the same in every language.
+The locale lives in a client store (`src/i18n/store.ts`, persisted as `cropshift-lang`). The query hooks read it, put it in the query key and pass it to `api.*`, which sends it as `Accept-Language`. In mock mode `src/mocks/handlers.ts` picks the language from that header (English for anything else), localizes the text via `src/mocks/messages.ts` and sets `Content-Language`. In live mode `live-proxy.ts` forwards `accept-language` and passes the backend's `content-language` back. Error copy is chosen on the client per error code. Ids and numbers are the same in every language.
 
 ## Fixtures: real vs synthetic
 

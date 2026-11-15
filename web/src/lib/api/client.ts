@@ -55,7 +55,7 @@ async function call<T extends z.ZodType>(
     throw new ApiClientError("network", "Could not reach the server. Check your connection.", null);
   }
 
-  const mode = res.headers.get("x-fieldshift-mode");
+  const mode = res.headers.get("x-cropshift-mode");
   let json: unknown;
   try {
     json = await res.json();

@@ -14,7 +14,7 @@ export async function handleApi(request: Request, path: string[]) {
     : live
       ? await proxyToBackend(request, path)
       : await handleMock(request, path);
-  response.headers.set("x-fieldshift-mode", live ? "live" : "mock");
+  response.headers.set("x-cropshift-mode", live ? "live" : "mock");
   response.headers.set("cache-control", "no-store");
   return response;
 }

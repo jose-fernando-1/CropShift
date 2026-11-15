@@ -12,7 +12,7 @@ export const en = {
     confidence: { high: "High", medium: "Medium", low: "Low" } as Record<"high" | "medium" | "low", string>,
   },
   app: {
-    title: "Field Shift: what to plant and when",
+    title: "Cropshift: what to plant and when",
     tagline: "What to plant and when, in Pernambuco. Decision support, not a substitute for your judgement.",
     versionsTitle: "Data and method versions",
     versions: (data: string, method: string, contract: string) => `data ${data} · ${method} · contract v${contract}`,
@@ -39,11 +39,11 @@ export const en = {
     aiUse: "AI use",
     aiText:
       "Rankings and probabilities come from code, not from AI. Explanations are generated from the results by template, and optionally rewritten by Google Gemini, checked against the numbers. Parts of the code were written with AI assistance.",
-    support: "Field Shift is decision support. It does not replace your own judgement or local advice.",
+    support: "Cropshift is decision support. It does not replace your own judgement or local advice.",
   },
   method: {
     trigger: "Data, method & limits",
-    title: "How Field Shift works",
+    title: "How Cropshift works",
     description: "Method, quality gate and the limits of these results.",
     methodTitle: "Method",
     steps: [
@@ -106,7 +106,7 @@ export const en = {
     cancel: "Cancel",
     allow: "Allow and continue",
     notices: {
-      outOfState: { title: "Outside Pernambuco", text: "Field Shift only covers Pernambuco for now. Pick a point inside the state." },
+      outOfState: { title: "Outside Pernambuco", text: "Cropshift only covers Pernambuco for now. Pick a point inside the state." },
       denied: { title: "Location permission denied", text: "No problem: tap the map, search your municipality or type coordinates instead." },
       unavailable: { title: "Could not get your location", text: "Your device did not return a position. Tap the map, search, or type coordinates." },
       unsupported: { title: "Location not supported", text: "This browser cannot share a location. Tap the map, search, or type coordinates." },
@@ -132,7 +132,7 @@ export const en = {
   },
   empty: {
     title: "What should you plant, and when?",
-    text: "Choose a point in Pernambuco. Field Shift replays 40 seasons of NASA climate data to show, for each crop, how often planting in each 10-day period would have worked. It puts that next to the official ZARC planting window and what your municipality actually harvested.",
+    text: "Choose a point in Pernambuco. Cropshift replays 40 seasons of NASA climate data to show, for each crop, how often planting in each 10-day period would have worked. It puts that next to the official ZARC planting window and what your municipality actually harvested.",
     steps: [
       { title: "1. Location", text: "Tap the map, search your municipality, type coordinates or use your location." },
       { title: "2. Your farm", text: "Soil type and irrigation are optional. If you skip them, defaults are used and shown." },
@@ -160,15 +160,15 @@ export const en = {
     rankedText: "Ordered by the best 30-day planting stretch. Only crops that passed the quality gate are ranked.",
     noneRanked: "No crop passed the quality gate for this place.",
     notRankedTitle: "Not ranked",
-    notRankedText: "These crops are shown with the official window and recorded yields only. Field Shift does not estimate them yet.",
+    notRankedText: "These crops are shown with the official window and recorded yields only. Cropshift does not estimate them yet.",
     loading: "Loading results",
     tryAgain: "Try again",
     openInspector: "Open data flow inspector",
   },
   errors: {
-    out_of_coverage: { title: "Outside our coverage", text: "Field Shift covers Pernambuco only. Pick a place inside the state." },
+    out_of_coverage: { title: "Outside our coverage", text: "Cropshift covers Pernambuco only. Pick a place inside the state." },
     no_data: { title: "No data for this place yet", text: "There is no precomputed climate data for this place yet." },
-    upstream_unavailable: { title: "API unavailable", text: "The Field Shift API did not answer. Try again in a minute." },
+    upstream_unavailable: { title: "API unavailable", text: "The Cropshift API did not answer. Try again in a minute." },
     network: { title: "No connection", text: "Could not reach the server. Check your connection." },
     rate_limited: { title: "Too many requests", text: "Wait a moment and try again." },
     schema_mismatch: { title: "Unexpected answer from the API", text: "The answer does not match the expected format. The data flow inspector shows the details." },

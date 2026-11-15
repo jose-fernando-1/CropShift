@@ -19,7 +19,7 @@ const NAMES_URL = `https://servicodados.ibge.gov.br/api/v1/localidades/estados/$
 const root = path.resolve(import.meta.dirname, "..");
 
 async function getJson<T>(url: string): Promise<T> {
-  const res = await fetch(url, { headers: { "user-agent": "fieldshift-web-generator" } });
+  const res = await fetch(url, { headers: { "user-agent": "cropshift-web-generator" } });
   if (!res.ok) throw new Error(`GET ${url} -> HTTP ${res.status}`);
   return (await res.json()) as T;
 }

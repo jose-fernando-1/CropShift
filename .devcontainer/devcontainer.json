@@ -1,5 +1,5 @@
 {
-  "name": "Field Shift (web)",
+  "name": "Cropshift (web)",
   "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
   "features": {
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
@@ -7,7 +7,7 @@
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "remoteUser": "node",
   "mounts": [
-    "source=fieldshift-web-node-modules-${devcontainerId},target=/workspaces/${localWorkspaceFolderBasename}/web/node_modules,type=volume"
+    "source=cropshift-web-node-modules-${devcontainerId},target=/workspaces/${localWorkspaceFolderBasename}/web/node_modules,type=volume"
   ],
   "containerEnv": {
     "API_MODE": "mock",

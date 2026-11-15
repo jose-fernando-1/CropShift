@@ -1,6 +1,6 @@
 # Rurotation
 
-Field Shift (NASA Space Apps 2026, team Rural): for a point or municipality in Pernambuco, Brazil, it shows for each crop the probability of planting success per dekad (36 ten-day windows) from 40 seasons of NASA POWER climate, next to the official ZARC planting window and IBGE PAM yields.
+Cropshift (NASA Space Apps 2026, team Rural): for a point or municipality in Pernambuco, Brazil, it shows for each crop the probability of planting success per dekad (36 ten-day windows) from 40 seasons of NASA POWER climate, next to the official ZARC planting window and IBGE PAM yields.
 
 Current state: the web app (`web/`) runs against a mock API that follows the shared contract. The FastAPI backend does not exist yet.
 

@@ -24,7 +24,7 @@ export function AppHeader({
             <Sprout className="size-5" />
           </span>
           <div>
-            <h1 className="text-lg font-semibold leading-tight">Field Shift</h1>
+            <h1 className="text-lg font-semibold leading-tight">Cropshift</h1>
             <p className="text-xs text-ink-2">{m.app.tagline}</p>
           </div>
         </div>

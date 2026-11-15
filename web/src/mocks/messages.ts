@@ -11,7 +11,7 @@ const en = {
   gateNotes: {} as Partial<Record<string, string>>,
   sources: {
     synthetic: "Synthetic mock values (not real results)",
-    prototype: "Field Shift prototype engine, São Bento do Una (digitized chart)",
+    prototype: "Cropshift prototype engine, São Bento do Una (digitized chart)",
   },
   excluded: {
     gateFailed: (rho: number | null) =>
@@ -61,8 +61,8 @@ const en = {
     powerDown: "NASA POWER did not answer in time. Try again in a minute.",
     invalidRequest: "Send lat/lon or municipality_code, plus optional soil_class (1-3) and regime.",
     invalidCoordinates: "Latitude must be in [-90, 90] and longitude in [-180, 180].",
-    municipalityNotCovered: "This municipality is not covered. Field Shift covers Pernambuco only.",
-    pointNotCovered: "This point is outside Pernambuco. Field Shift covers Pernambuco only.",
+    municipalityNotCovered: "This municipality is not covered. Cropshift covers Pernambuco only.",
+    pointNotCovered: "This point is outside Pernambuco. Cropshift covers Pernambuco only.",
     noData: "There is no precomputed climate data for this place yet.",
     explainDown: "The explanation service failed.",
     unknownId: "Unknown analysis id.",
@@ -92,7 +92,7 @@ const ptBR: MockMessages = {
   },
   sources: {
     synthetic: "Valores sintéticos de demonstração (não são resultados reais)",
-    prototype: "Motor protótipo do Field Shift, São Bento do Una (gráfico digitalizado)",
+    prototype: "Motor protótipo do Cropshift, São Bento do Una (gráfico digitalizado)",
   },
   excluded: {
     gateFailed: (rho) =>
@@ -142,8 +142,8 @@ const ptBR: MockMessages = {
     powerDown: "O NASA POWER não respondeu a tempo. Tente de novo em um minuto.",
     invalidRequest: "Envie lat/lon ou municipality_code, e opcionalmente soil_class (1-3) e regime.",
     invalidCoordinates: "A latitude deve estar em [-90, 90] e a longitude em [-180, 180].",
-    municipalityNotCovered: "Este município não está coberto. O Field Shift cobre só Pernambuco.",
-    pointNotCovered: "Este ponto está fora de Pernambuco. O Field Shift cobre só Pernambuco.",
+    municipalityNotCovered: "Este município não está coberto. O Cropshift cobre só Pernambuco.",
+    pointNotCovered: "Este ponto está fora de Pernambuco. O Cropshift cobre só Pernambuco.",
     noData: "Ainda não há dados climáticos pré-calculados para este local.",
     explainDown: "O serviço de explicação falhou.",
     unknownId: "Id de análise desconhecido.",

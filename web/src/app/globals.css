@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Field Shift design tokens (light theme only; outdoor use favours high contrast). */
+/* Cropshift design tokens (light theme only; outdoor use favours high contrast). */
 :root {
   color-scheme: light;
   --surface: #fcfcfb;

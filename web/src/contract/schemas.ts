@@ -1,5 +1,5 @@
 /**
- * Field Shift API contract, draft v0.1 (plan v2, section 6).
+ * Cropshift API contract, draft v0.1 (plan v2, section 6).
  *
  * Single source of truth for the web client, the mock API and the JSON Schema
  * exported to `/contract` for the FastAPI side. Keep it free of `.refine`,

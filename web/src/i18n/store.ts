@@ -7,7 +7,7 @@ import { DEFAULT_LOCALE, isLocale, type Locale } from "./locales";
  * synchronously from the switcher, so the next render's query keys and
  * fetches already use the new language.
  */
-const STORAGE_KEY = "fs-lang";
+const STORAGE_KEY = "cropshift-lang";
 let current: Locale | null = null;
 const listeners = new Set<() => void>();
 

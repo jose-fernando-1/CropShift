@@ -1,6 +1,6 @@
 {
-  "$id": "https://fieldshift.local/contract/0.1/recommendation.schema.json",
-  "title": "Field Shift recommendation (contract v0.1)",
+  "$id": "https://cropshift.local/contract/0.1/recommendation.schema.json",
+  "title": "Cropshift recommendation (contract v0.1)",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "properties": {

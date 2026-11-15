@@ -1,6 +1,6 @@
 {
   "error": {
     "code": "out_of_coverage",
-    "message": "This point is outside Pernambuco. Field Shift covers Pernambuco only."
+    "message": "This point is outside Pernambuco. Cropshift covers Pernambuco only."
   }
 }

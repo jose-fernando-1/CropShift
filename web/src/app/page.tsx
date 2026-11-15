@@ -1,10 +1,10 @@
 import { Suspense } from "react";
-import { FieldShiftApp } from "@/components/field-shift-app";
+import { CropshiftApp } from "@/components/cropshift-app";
 
 export default function Home() {
   return (
     <Suspense>
-      <FieldShiftApp />
+      <CropshiftApp />
     </Suspense>
   );
 }

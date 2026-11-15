@@ -1,6 +1,6 @@
-# Field Shift web
+# Cropshift web
 
-Front end for Field Shift (NASA Space Apps 2026, team Rural). Given a point or municipality in Pernambuco, it shows for each crop the probability of planting success per dekad (36 ten-day windows, from 40 seasons of NASA POWER climate), next to the official ZARC window and IBGE PAM yields.
+Front end for Cropshift (NASA Space Apps 2026, team Rural). Given a point or municipality in Pernambuco, it shows for each crop the probability of planting success per dekad (36 ten-day windows, from 40 seasons of NASA POWER climate), next to the official ZARC window and IBGE PAM yields.
 
 It is a Next.js 16 + React 19 + TypeScript app. The FastAPI backend does not exist yet, so the app ships with a complete in-process mock API that follows the shared [API contract](../contract/README.md). The UI is in English by default, with Brazilian Portuguese (pt-BR) available from the header; the docs are in English.
 
@@ -12,7 +12,7 @@ See also: [data flow and fixtures](docs/data-flow.md), [API contract](../contrac
 
 Open the repo root in VS Code and choose "Reopen in Container" (`.devcontainer/devcontainer.json`, Node 22).
 
-- `web/node_modules` is a named Docker volume (`fieldshift-web-node-modules-<devcontainerId>`, one per workspace).
+- `web/node_modules` is a named Docker volume (`cropshift-web-node-modules-<devcontainerId>`, one per workspace).
 - `.devcontainer/post-create.sh` runs `npm ci` and `npx playwright install --with-deps chromium`. It is safe to re-run.
 - Ports 3000 (`next dev`) and 3001 (a second instance, for testing live mode) are forwarded.
 - `API_MODE=mock` is set in the container environment.
@@ -70,7 +70,7 @@ The browser only calls same-origin `/api/*`. A single catch-all route (`src/app/
 - `mock`: `src/mocks` answers from the fixtures in `mock-data/`. Every response has `mock: true`.
 - `live`: `src/lib/server/live-proxy.ts` forwards to `API_ORIGIN`. `/api/health` maps to the backend's `/health`; other paths keep their `/api/...` path.
 
-Responses carry `x-fieldshift-mode: mock|live` and `cache-control: no-store`. In live mode, failures (backend down, timeout, non-contract error bodies such as FastAPI's default 422) are normalized to the contract error envelope `{ "error": { "code", "message" } }`, so the UI shows "API unavailable" instead of a schema error. `/health` (outside `/api`) serves the same handler, so a second web instance can stand in for the backend in a live-mode test.
+Responses carry `x-cropshift-mode: mock|live` and `cache-control: no-store`. In live mode, failures (backend down, timeout, non-contract error bodies such as FastAPI's default 422) are normalized to the contract error envelope `{ "error": { "code", "message" } }`, so the UI shows "API unavailable" instead of a schema error. `/health` (outside `/api`) serves the same handler, so a second web instance can stand in for the backend in a live-mode test.
 
 Details: [docs/data-flow.md](docs/data-flow.md).
 
@@ -97,7 +97,7 @@ Run from `web/`.
 
 ## Languages
 
-English is always the default (the challenge requires an English UI). pt-BR is opt-in through the EN | PT switcher in the header (`src/components/layout/language-switcher.tsx`) and is remembered on that device in `localStorage` under `fs-lang`. The locale is not in the URL and the root layout stays static: `<html lang>` and the tab title follow the choice on the client. Numbers and ids never change across languages, only human-readable text.
+English is always the default (the challenge requires an English UI). pt-BR is opt-in through the EN | PT switcher in the header (`src/components/layout/language-switcher.tsx`) and is remembered on that device in `localStorage` under `cropshift-lang`. The locale is not in the URL and the root layout stays static: `<html lang>` and the tab title follow the choice on the client. Numbers and ids never change across languages, only human-readable text.
 
 The language reaches the API as `Accept-Language` on every call and is part of every query key, so switching refetches. The mock answers in the requested language; error copy is chosen on the client per error code. See [docs/data-flow.md](docs/data-flow.md#language) and the [contract convention](../contract/README.md#conventions).
 

@@ -58,7 +58,7 @@ describe("route allowlist", () => {
   it("rejects paths outside the contract and unsafe segments", async () => {
     const { isContractRoute } = await import("@/lib/server/routes");
     expect(isContractRoute("GET", ["health"])).toBe(true);
-    expect(isContractRoute("POST", ["v1", "recommendations", "fsm_1_2613008.2.d.r.d.p.1", "explain"])).toBe(true);
+    expect(isContractRoute("POST", ["v1", "recommendations", "csm_1_2613008.2.d.r.d.p.1", "explain"])).toBe(true);
     expect(isContractRoute("GET", ["docs"])).toBe(false);
     expect(isContractRoute("GET", ["..", "..", "docs"])).toBe(false);
     expect(isContractRoute("POST", ["v1", "recommendations", "x/../../secret", "explain"])).toBe(false);

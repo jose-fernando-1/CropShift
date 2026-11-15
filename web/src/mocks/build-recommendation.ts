@@ -45,11 +45,11 @@ export function encodeAnalysisId(p: AnalysisParams) {
     p.inputMode[0],
     p.nearCentroid ? 1 : 0,
   ].join(".");
-  return `fsm_${catalog.data_version.replace(/[^0-9]/g, "")}_${raw}`;
+  return `csm_${catalog.data_version.replace(/[^0-9]/g, "")}_${raw}`;
 }
 
 export function decodeAnalysisId(id: string): AnalysisParams | null {
-  const m = /^fsm_\d+_(\d{7})\.([123])\.([ud])\.([ri])\.([ud])\.([pm])\.([01])$/.exec(id);
+  const m = /^csm_\d+_(\d{7})\.([123])\.([ud])\.([ri])\.([ud])\.([pm])\.([01])$/.exec(id);
   if (!m) return null;
   return {
     code: m[1],

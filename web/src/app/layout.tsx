@@ -3,7 +3,7 @@ import { Providers } from "./providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Field Shift: what to plant and when",
+  title: "Cropshift: what to plant and when",
   description:
     "Planting windows for crops in Pernambuco from 40 years of NASA POWER climate data, next to the official ZARC window and local yield history.",
 };

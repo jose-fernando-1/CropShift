@@ -1,5 +1,5 @@
 /**
- * Mock implementation of the Field Shift API (plan v2, section 6).
+ * Mock implementation of the Cropshift API (plan v2, section 6).
  * Same paths, schemas and error envelope as the FastAPI backend.
  */
 import type { z } from "zod";
