@@ -282,7 +282,6 @@ export const en = {
       `${rank}. ${name}: best window ${window}${avg ? `, ${avg} average success` : ""}. Open details.`,
     none: "none",
     dekadTitle: "When to plant",
-    dekadSubtitle: "Share of 40 simulated seasons (1984–2024, NASA POWER) in which planting in that dekad succeeded.",
     dekadHint: "Hover, tap, or focus the chart and use ← → to read each dekad.",
     dekadAria: (name: string, window: string | null) =>
       `${name}: probability of success by planting dekad${window ? `; best window ${window}` : ""}.`,

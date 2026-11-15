@@ -209,7 +209,6 @@ export function DekadChart({ crop }: { crop: RankedCrop }) {
   return (
     <ChartFrame
       title={t.dekadTitle}
-      subtitle={t.dekadSubtitle}
       legend={legend}
       chart={chart}
       table={table}

@@ -279,7 +279,6 @@ export const ptBR: Messages = {
       `${rank}. ${name}: melhor janela ${window}${avg ? `, ${avg} de sucesso médio` : ""}. Abrir detalhes.`,
     none: "nenhuma",
     dekadTitle: "Quando plantar",
-    dekadSubtitle: "Fração de 40 safras simuladas (1984–2024, NASA POWER) em que plantar naquele decêndio deu certo.",
     dekadHint: "Passe o mouse, toque ou foque o gráfico e use ← → para ler cada decêndio.",
     dekadAria: (name, window) => `${name}: probabilidade de sucesso por decêndio de plantio${window ? `; melhor janela ${window}` : ""}.`,
     bestWindow: (avg) => `Melhor janela · média ${avg}`,
