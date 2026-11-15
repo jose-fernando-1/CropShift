@@ -1,0 +1,66 @@
+name: backend-ci
+
+on:
+  push:
+    paths: ["backend/**", "data/**", "contract/**", "web/mock-data/**", "ruff.toml", "Makefile", ".github/workflows/backend-ci.yml", "docker-compose.yml"]
+  pull_request:
+    paths: ["backend/**", "data/**", "contract/**", "web/mock-data/**", "ruff.toml", "Makefile", ".github/workflows/backend-ci.yml", "docker-compose.yml"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backend-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgis/postgis:16-3.5
+        env:
+          POSTGRES_USER: rurotation
+          POSTGRES_PASSWORD: change_me
+          POSTGRES_DB: rurotation
+        ports: ["5433:5432"]
+        options: >-
+          --health-cmd "pg_isready -h 127.0.0.1 -U rurotation -d rurotation"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      PYTHONPATH: ${{ github.workspace }}/backend:${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: |
+            backend/requirements.txt
+            backend/requirements-dev.txt
+            data/requirements.txt
+      - run: pip install -r backend/requirements-dev.txt -r data/requirements.txt
+      - run: ruff check backend data
+      - run: ruff format --check backend data
+      - name: Migrations apply, roll back and re-apply
+        working-directory: backend
+        run: |
+          alembic upgrade head
+          alembic check
+          alembic downgrade base
+          alembic upgrade head
+      - name: Tests (offline)
+        working-directory: backend
+        run: python -m pytest -m "not live"
+
+  image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -f backend/Dockerfile --target runtime -t cropshift-api .
+      - run: docker build -f backend/Dockerfile --target tools -t cropshift-tools .
+      - run: docker run --rm cropshift-api alembic --help
+      - run: docker run --rm cropshift-tools --help
+      - run: docker compose --profile live config -q
