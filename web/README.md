@@ -28,7 +28,7 @@ docker compose up --build web      # http://localhost:3000, mock API
 WEB_PORT=8080 docker compose up --build web
 ```
 
-The image is a multi-stage build of the Next.js standalone server (`web/Dockerfile`). `API_MODE`, `API_ORIGIN` and `API_TIMEOUT_MS` are read at runtime, so the same image serves the mock and the live proxy:
+The image is a multi-stage build of the Next.js standalone server (`web/Dockerfile`). `API_MODE`, `API_ORIGIN`, `API_TIMEOUT_MS` and `SHOW_DATA_FLOW` are read at runtime, so the same image serves the mock and the live proxy:
 
 ```bash
 API_MODE=live API_ORIGIN=http://api:8000 docker compose up --build web
@@ -56,6 +56,7 @@ Copy `.env.example` to `.env.local` if you need to change any. All are read at r
 | `API_MODE` | `mock` | `mock`: in-process mock API. `live`: proxy to `API_ORIGIN`. |
 | `API_ORIGIN` | empty | FastAPI origin for live mode, no trailing slash (for example `http://api:8000`). Live mode without it answers `503 upstream_unavailable`. |
 | `API_TIMEOUT_MS` | `15000` | Upstream timeout in live mode. |
+| `SHOW_DATA_FLOW` | `true` | Unset, empty, `true`, `1`, `on` or `yes` (case-insensitive) keep the header's "Data flow" button and the inspector. Any other value, such as `false` or a typo, hides them entirely, even with `?debug=1`. Useful on a public demo. |
 | `MOCK_LATENCY_MS` | random 300-900 | Mock only. Fixed latency in ms; `0` disables it. |
 | `WEB_PORT` | `3000` | Compose only: host port. |
 | `PORT` | `3000` | Port of the standalone server (`npm start`). |
@@ -127,7 +128,7 @@ curl -X POST 'localhost:3000/api/v1/recommendations?scenario=no_data' \
 
 ## Data-flow inspector
 
-A sheet that lists the last 50 API calls (method, path, status, duration, mode, request and response bodies, zod validation result), the layers between UI and data with the mocked ones marked, and the scenario selector. It is available in mock mode, or in any mode with `?debug=1` in the page URL.
+A sheet that lists the last 50 API calls (method, path, status, duration, mode, request and response bodies, zod validation result), the layers between UI and data with the mocked ones marked, and the scenario selector. It is available in mock mode, or in any mode with `?debug=1` in the page URL, unless `SHOW_DATA_FLOW` is off (see [environment variables](#environment-variables)), in which case it is not rendered.
 
 ## Testing
 

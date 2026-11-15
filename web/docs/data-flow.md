@@ -73,7 +73,7 @@ Rules that are also mock behavior, not real engine output:
 2. Start the web with `API_MODE=live` and `API_ORIGIN=<backend origin>` (see [the env table](../README.md#environment-variables)). No rebuild.
 3. Check `GET /api/health` returns the backend's `/health` payload with `mock: false`.
 
-Nothing in the UI changes: it only depends on the contract. The UI shows the mock banner and inspector only when a response says `mock: true` (or with `?debug=1`).
+Nothing in the UI changes: it only depends on the contract. The UI shows the mock banner and inspector only when a response says `mock: true` (or with `?debug=1`); `SHOW_DATA_FLOW=false` hides the inspector in every mode.
 
 `mock-data/catalog.json` is the gate config in mock mode: the web reads only that file for crop gate status. Its `_note` says to replace it with track C's gate report. In live mode the same information comes from `GET /api/v1/crops` and from `crops[]` / `excluded[]` in each recommendation, so the file is unused.
 

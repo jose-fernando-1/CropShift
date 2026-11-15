@@ -14,7 +14,7 @@ import { useDocumentLocale, useMessages } from "@/i18n/use-i18n";
 import { useHealth, useRecommendation } from "@/lib/api/queries";
 import { useAnalysisState } from "@/lib/state/use-analysis-state";
 
-export function CropshiftApp() {
+export function CropshiftApp({ dataFlowAllowed }: { dataFlowAllowed: boolean }) {
   useDocumentLocale();
   const m = useMessages();
   const state = useAnalysisState();
@@ -25,7 +25,7 @@ export function CropshiftApp() {
   const recommendation = useRecommendation(state.request);
 
   const isMock = health.data?.mock === true || recommendation.data?.mock === true;
-  const inspectorEnabled = isMock || debug;
+  const inspectorEnabled = dataFlowAllowed && (isMock || debug);
   const mode = health.data ? (health.data.mock ? "mock" : "live") : "unknown";
   const openInspector = inspectorEnabled ? () => setInspectorOpen(true) : null;
 
