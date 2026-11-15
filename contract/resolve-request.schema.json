@@ -1,0 +1,23 @@
+{
+  "$id": "https://cropshift.local/contract/0.1/resolve-request.schema.json",
+  "title": "Cropshift resolve-request (contract v0.1)",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "lat": {
+      "type": "number",
+      "minimum": -90,
+      "maximum": 90
+    },
+    "lon": {
+      "type": "number",
+      "minimum": -180,
+      "maximum": 180
+    }
+  },
+  "required": [
+    "lat",
+    "lon"
+  ],
+  "additionalProperties": false
+}

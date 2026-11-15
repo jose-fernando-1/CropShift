@@ -1,0 +1,33 @@
+{
+  // Workspace settings override personal ones, so the repo's style (.prettierrc.json,
+  // .editorconfig) applies on save whatever your global Prettier or indent settings are.
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "editor.rulers": [140],
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "prettier.requireConfig": true,
+  // Use the pinned Prettier from web/ for every file, root-level ones included, so the
+  // editor and `npm run format:check` always agree.
+  "prettier.prettierPath": "./web/node_modules/prettier",
+  "[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[typescriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[json]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[jsonc]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[css]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[yaml]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[dockercompose]": { "editor.defaultFormatter": "esbenp.prettier-vscode", "editor.tabSize": 2 },
+  "[markdown]": { "editor.defaultFormatter": "esbenp.prettier-vscode", "files.trimTrailingWhitespace": false },
+  "[dockerfile]": { "editor.tabSize": 4 },
+  "typescript.preferences.quoteStyle": "double",
+  "javascript.preferences.quoteStyle": "double",
+  "typescript.format.semicolons": "insert",
+  "javascript.format.semicolons": "insert",
+  "typescript.tsdk": "web/node_modules/typescript/lib",
+  "eslint.workingDirectories": ["web"]
+}

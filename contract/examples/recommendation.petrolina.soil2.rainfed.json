@@ -1,0 +1,1301 @@
+{
+  "analysis_id": "csm_20261114_2611101.2.u.r.u.m.1",
+  "contract_version": "0.1",
+  "method_version": "engine-0.1-prototype",
+  "dataset_versions": [
+    {
+      "name": "NASA POWER daily",
+      "version": "1984-2024",
+      "retrieved_at": "2026-11-14"
+    },
+    {
+      "name": "MAPA ZARC",
+      "version": "2025/2026",
+      "retrieved_at": "2026-11-14"
+    },
+    {
+      "name": "IBGE PAM",
+      "version": "2005-2024",
+      "retrieved_at": "2026-11-14"
+    },
+    {
+      "name": "IBGE municipal mesh v3",
+      "version": "qualidade=minima",
+      "retrieved_at": "2026-11-14"
+    },
+    {
+      "name": "FAO-56 / EcoCrop crop sheet",
+      "version": "v1",
+      "retrieved_at": "2026-11-14"
+    }
+  ],
+  "mock": true,
+  "generated_at": "2026-11-14T12:00:00.000Z",
+  "location": {
+    "municipality_code": "2611101",
+    "municipality_name": "Petrolina",
+    "power_cell": {
+      "id": "r162c223",
+      "lat": -9,
+      "lon": -40.625
+    },
+    "soil_class": 2,
+    "soil_source": "user",
+    "regime": "rainfed",
+    "regime_source": "user",
+    "input_mode": "municipality",
+    "municipality_centroid": {
+      "lat": -9.01922,
+      "lon": -40.57211
+    },
+    "near_centroid": true
+  },
+  "crops": [
+    {
+      "crop_id": "sorghum",
+      "name": "Grain sorghum",
+      "eligible": true,
+      "legume": false,
+      "best_windows": [
+        {
+          "start_dekad": 1,
+          "end_dekad": 3,
+          "mean_p": 0.75
+        }
+      ],
+      "p_success": [
+        {
+          "p": 0.725,
+          "lo": 0.572,
+          "hi": 0.839
+        },
+        {
+          "p": 0.8,
+          "lo": 0.652,
+          "hi": 0.895
+        },
+        {
+          "p": 0.725,
+          "lo": 0.572,
+          "hi": 0.839
+        },
+        {
+          "p": 0.35,
+          "lo": 0.221,
+          "hi": 0.505
+        },
+        {
+          "p": 0.075,
+          "lo": 0.026,
+          "hi": 0.199
+        },
+        {
+          "p": 0.025,
+          "lo": 0.004,
+          "hi": 0.129
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0.025,
+          "lo": 0.004,
+          "hi": 0.129
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0.025,
+          "lo": 0.004,
+          "hi": 0.129
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0.025,
+          "lo": 0.004,
+          "hi": 0.129
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0.025,
+          "lo": 0.004,
+          "hi": 0.129
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0.025,
+          "lo": 0.004,
+          "hi": 0.129
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0.025,
+          "lo": 0.004,
+          "hi": 0.129
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0.025,
+          "lo": 0.004,
+          "hi": 0.129
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0.025,
+          "lo": 0.004,
+          "hi": 0.129
+        },
+        {
+          "p": 0.075,
+          "lo": 0.026,
+          "hi": 0.199
+        },
+        {
+          "p": 0.375,
+          "lo": 0.242,
+          "hi": 0.53
+        }
+      ],
+      "zarc": {
+        "values": [
+          40,
+          30,
+          40,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "cycle_code": "21",
+        "soil_code": 2,
+        "ordinance": "Port.130_de_12-05-2025",
+        "season": "2025/2026"
+      },
+      "pam": {
+        "crop_label": "sorgo",
+        "years": [
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011
+        ],
+        "yield_kg_ha": [
+          1800,
+          1300,
+          500,
+          1000,
+          1500,
+          300,
+          600
+        ],
+        "municipality_median": 1000,
+        "state_median": 900
+      },
+      "flags": {
+        "engine_reliable": true,
+        "ml_applied": false
+      },
+      "strengths": [
+        "Jan 1 – Jan 31 succeeded in 75% of 40 simulated seasons on average.",
+        "The best simulated window sits inside the official ZARC window."
+      ],
+      "risks": [
+        "Narrow window: only 3 dekads reach 70% success.",
+        "Success drops below 50% from Feb 1–10: planting late is risky."
+      ],
+      "missing_data": [
+        "Soil water capacity is assumed (0.11 m³/m³), not measured."
+      ],
+      "sources": [
+        {
+          "id": "nasa-power",
+          "name": "NASA POWER daily (1984–2024)",
+          "url": "https://power.larc.nasa.gov/docs/services/api/temporal/daily/",
+          "version": "daily, 0.5° × 0.625°"
+        },
+        {
+          "id": "zarc",
+          "name": "MAPA ZARC risk table, season 2025/2026",
+          "url": "https://dados.agricultura.gov.br/dataset/tabua-de-risco-zoneamento-agricola-de-risco-climatico",
+          "version": "2025/2026"
+        },
+        {
+          "id": "ibge-pam",
+          "name": "IBGE PAM yield, 2005–2024",
+          "url": "https://sidra.ibge.gov.br/tabela/5457",
+          "version": "2005-2024"
+        },
+        {
+          "id": "fao56",
+          "name": "FAO-56 crop coefficients and stage lengths",
+          "url": "https://www.fao.org/4/x0490e/x0490e00.htm",
+          "version": null
+        },
+        {
+          "id": "mock-synthetic",
+          "name": "Synthetic mock values (not real results)",
+          "url": null,
+          "version": "mock-2026-11-14"
+        }
+      ],
+      "confidence": {
+        "level": "high",
+        "reasons": [
+          "The engine's best dekad (Jan 11–20) is in ZARC's best class (value 30)."
+        ]
+      },
+      "rank": 1
+    },
+    {
+      "crop_id": "cowpea",
+      "name": "Cowpea",
+      "eligible": true,
+      "legume": true,
+      "best_windows": [
+        {
+          "start_dekad": 4,
+          "end_dekad": 4,
+          "mean_p": 0.75
+        }
+      ],
+      "p_success": [
+        {
+          "p": 0.05,
+          "lo": 0.014,
+          "hi": 0.165
+        },
+        {
+          "p": 0.225,
+          "lo": 0.123,
+          "hi": 0.375
+        },
+        {
+          "p": 0.525,
+          "lo": 0.375,
+          "hi": 0.671
+        },
+        {
+          "p": 0.75,
+          "lo": 0.598,
+          "hi": 0.858
+        },
+        {
+          "p": 0.5,
+          "lo": 0.352,
+          "hi": 0.648
+        },
+        {
+          "p": 0.25,
+          "lo": 0.142,
+          "hi": 0.402
+        },
+        {
+          "p": 0.075,
+          "lo": 0.026,
+          "hi": 0.199
+        },
+        {
+          "p": 0.025,
+          "lo": 0.004,
+          "hi": 0.129
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0.025,
+          "lo": 0.004,
+          "hi": 0.129
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0.025,
+          "lo": 0.004,
+          "hi": 0.129
+        },
+        {
+          "p": 0.025,
+          "lo": 0.004,
+          "hi": 0.129
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0.025,
+          "lo": 0.004,
+          "hi": 0.129
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0.025,
+          "lo": 0.004,
+          "hi": 0.129
+        },
+        {
+          "p": 0.025,
+          "lo": 0.004,
+          "hi": 0.129
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0.025,
+          "lo": 0.004,
+          "hi": 0.129
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        }
+      ],
+      "zarc": {
+        "values": [
+          0,
+          0,
+          0,
+          40,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "cycle_code": "21",
+        "soil_code": 2,
+        "ordinance": "Port.274_de_30-05-2025",
+        "season": "2025/2026"
+      },
+      "pam": {
+        "crop_label": "feijao",
+        "years": [
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "yield_kg_ha": [
+          380,
+          401,
+          368,
+          395,
+          341,
+          180,
+          300,
+          1163,
+          156,
+          100,
+          250,
+          119,
+          120,
+          120,
+          300,
+          149,
+          118,
+          32,
+          150
+        ],
+        "municipality_median": 180,
+        "state_median": 306
+      },
+      "flags": {
+        "engine_reliable": true,
+        "ml_applied": false
+      },
+      "strengths": [
+        "Feb 1–10 succeeded in 75% of 40 simulated seasons on average.",
+        "The best simulated window sits inside the official ZARC window.",
+        "Legume: it can fix nitrogen, which helps the next crop."
+      ],
+      "risks": [
+        "Narrow window: only 1 dekad reaches 70% success.",
+        "Recorded yields here (median 180 kg/ha) are below the state median (306 kg/ha)."
+      ],
+      "missing_data": [
+        "Soil water capacity is assumed (0.11 m³/m³), not measured."
+      ],
+      "sources": [
+        {
+          "id": "nasa-power",
+          "name": "NASA POWER daily (1984–2024)",
+          "url": "https://power.larc.nasa.gov/docs/services/api/temporal/daily/",
+          "version": "daily, 0.5° × 0.625°"
+        },
+        {
+          "id": "zarc",
+          "name": "MAPA ZARC risk table, season 2025/2026",
+          "url": "https://dados.agricultura.gov.br/dataset/tabua-de-risco-zoneamento-agricola-de-risco-climatico",
+          "version": "2025/2026"
+        },
+        {
+          "id": "ibge-pam",
+          "name": "IBGE PAM yield, 2005–2024",
+          "url": "https://sidra.ibge.gov.br/tabela/5457",
+          "version": "2005-2024"
+        },
+        {
+          "id": "fao56",
+          "name": "FAO-56 crop coefficients and stage lengths",
+          "url": "https://www.fao.org/4/x0490e/x0490e00.htm",
+          "version": null
+        },
+        {
+          "id": "mock-synthetic",
+          "name": "Synthetic mock values (not real results)",
+          "url": null,
+          "version": "mock-2026-11-14"
+        }
+      ],
+      "confidence": {
+        "level": "high",
+        "reasons": [
+          "The engine's best dekad (Feb 1–10) is in ZARC's best class (value 40)."
+        ]
+      },
+      "rank": 2
+    },
+    {
+      "crop_id": "peanut",
+      "name": "Peanut",
+      "eligible": true,
+      "legume": true,
+      "best_windows": [
+        {
+          "start_dekad": 9,
+          "end_dekad": 11,
+          "mean_p": 0.392
+        }
+      ],
+      "p_success": [
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0.025,
+          "lo": 0.004,
+          "hi": 0.129
+        },
+        {
+          "p": 0.075,
+          "lo": 0.026,
+          "hi": 0.199
+        },
+        {
+          "p": 0.175,
+          "lo": 0.087,
+          "hi": 0.32
+        },
+        {
+          "p": 0.375,
+          "lo": 0.242,
+          "hi": 0.53
+        },
+        {
+          "p": 0.4,
+          "lo": 0.263,
+          "hi": 0.554
+        },
+        {
+          "p": 0.4,
+          "lo": 0.263,
+          "hi": 0.554
+        },
+        {
+          "p": 0.375,
+          "lo": 0.242,
+          "hi": 0.53
+        },
+        {
+          "p": 0.375,
+          "lo": 0.242,
+          "hi": 0.53
+        },
+        {
+          "p": 0.4,
+          "lo": 0.263,
+          "hi": 0.554
+        },
+        {
+          "p": 0.4,
+          "lo": 0.263,
+          "hi": 0.554
+        },
+        {
+          "p": 0.375,
+          "lo": 0.242,
+          "hi": 0.53
+        },
+        {
+          "p": 0.375,
+          "lo": 0.242,
+          "hi": 0.53
+        },
+        {
+          "p": 0.375,
+          "lo": 0.242,
+          "hi": 0.53
+        },
+        {
+          "p": 0.175,
+          "lo": 0.087,
+          "hi": 0.32
+        },
+        {
+          "p": 0.05,
+          "lo": 0.014,
+          "hi": 0.165
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0.025,
+          "lo": 0.004,
+          "hi": 0.129
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        },
+        {
+          "p": 0.025,
+          "lo": 0.004,
+          "hi": 0.129
+        },
+        {
+          "p": 0.025,
+          "lo": 0.004,
+          "hi": 0.129
+        },
+        {
+          "p": 0.025,
+          "lo": 0.004,
+          "hi": 0.129
+        },
+        {
+          "p": 0,
+          "lo": 0,
+          "hi": 0.088
+        }
+      ],
+      "zarc": {
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "cycle_code": "21",
+        "soil_code": 2,
+        "ordinance": "Port.103_de_30-04-2025",
+        "season": "2025/2026"
+      },
+      "pam": null,
+      "flags": {
+        "engine_reliable": true,
+        "ml_applied": false
+      },
+      "strengths": [
+        "Legume: it can fix nitrogen, which helps the next crop."
+      ],
+      "risks": [
+        "No dekad reaches 70% success in the simulation.",
+        "Success drops below 50% from Apr 21–30: planting late is risky."
+      ],
+      "missing_data": [
+        "No PAM yield series for this crop in this municipality.",
+        "Soil water capacity is assumed (0.11 m³/m³), not measured."
+      ],
+      "sources": [
+        {
+          "id": "nasa-power",
+          "name": "NASA POWER daily (1984–2024)",
+          "url": "https://power.larc.nasa.gov/docs/services/api/temporal/daily/",
+          "version": "daily, 0.5° × 0.625°"
+        },
+        {
+          "id": "zarc",
+          "name": "MAPA ZARC risk table, season 2025/2026",
+          "url": "https://dados.agricultura.gov.br/dataset/tabua-de-risco-zoneamento-agricola-de-risco-climatico",
+          "version": "2025/2026"
+        },
+        {
+          "id": "fao56",
+          "name": "FAO-56 crop coefficients and stage lengths",
+          "url": "https://www.fao.org/4/x0490e/x0490e00.htm",
+          "version": null
+        },
+        {
+          "id": "mock-synthetic",
+          "name": "Synthetic mock values (not real results)",
+          "url": null,
+          "version": "mock-2026-11-14"
+        }
+      ],
+      "confidence": {
+        "level": "low",
+        "reasons": [
+          "The engine's best dekad (Apr 1–10) is outside the ZARC window."
+        ]
+      },
+      "rank": 3
+    }
+  ],
+  "excluded": [
+    {
+      "crop_id": "maize",
+      "name": "Maize (1st season)",
+      "eligible": false,
+      "reason_code": "engine_not_run",
+      "reason": "Not ranked yet: the water-balance engine has not been validated for this crop.",
+      "zarc": null,
+      "pam": {
+        "crop_label": "milho",
+        "years": [
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "yield_kg_ha": [
+          400,
+          342,
+          300,
+          200,
+          600,
+          200,
+          320,
+          700,
+          450,
+          100,
+          100,
+          59,
+          400,
+          118,
+          120,
+          60,
+          120
+        ],
+        "municipality_median": 200,
+        "state_median": 401
+      },
+      "sources": [
+        {
+          "id": "nasa-power",
+          "name": "NASA POWER daily (1984–2024)",
+          "url": "https://power.larc.nasa.gov/docs/services/api/temporal/daily/",
+          "version": "daily, 0.5° × 0.625°"
+        },
+        {
+          "id": "ibge-pam",
+          "name": "IBGE PAM yield, 2005–2024",
+          "url": "https://sidra.ibge.gov.br/tabela/5457",
+          "version": "2005-2024"
+        },
+        {
+          "id": "fao56",
+          "name": "FAO-56 crop coefficients and stage lengths",
+          "url": "https://www.fao.org/4/x0490e/x0490e00.htm",
+          "version": null
+        }
+      ]
+    },
+    {
+      "crop_id": "common_bean",
+      "name": "Common bean",
+      "eligible": false,
+      "reason_code": "engine_not_run",
+      "reason": "Not ranked yet: the water-balance engine has not been validated for this crop.",
+      "zarc": null,
+      "pam": {
+        "crop_label": "feijao",
+        "years": [
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "yield_kg_ha": [
+          380,
+          401,
+          368,
+          395,
+          341,
+          180,
+          300,
+          1163,
+          156,
+          100,
+          250,
+          119,
+          120,
+          120,
+          300,
+          149,
+          118,
+          32,
+          150
+        ],
+        "municipality_median": 180,
+        "state_median": 306
+      },
+      "sources": [
+        {
+          "id": "nasa-power",
+          "name": "NASA POWER daily (1984–2024)",
+          "url": "https://power.larc.nasa.gov/docs/services/api/temporal/daily/",
+          "version": "daily, 0.5° × 0.625°"
+        },
+        {
+          "id": "ibge-pam",
+          "name": "IBGE PAM yield, 2005–2024",
+          "url": "https://sidra.ibge.gov.br/tabela/5457",
+          "version": "2005-2024"
+        },
+        {
+          "id": "fao56",
+          "name": "FAO-56 crop coefficients and stage lengths",
+          "url": "https://www.fao.org/4/x0490e/x0490e00.htm",
+          "version": null
+        }
+      ]
+    },
+    {
+      "crop_id": "sunflower",
+      "name": "Sunflower",
+      "eligible": false,
+      "reason_code": "engine_not_run",
+      "reason": "Not ranked yet: the water-balance engine has not been validated for this crop.",
+      "zarc": null,
+      "pam": null,
+      "sources": [
+        {
+          "id": "nasa-power",
+          "name": "NASA POWER daily (1984–2024)",
+          "url": "https://power.larc.nasa.gov/docs/services/api/temporal/daily/",
+          "version": "daily, 0.5° × 0.625°"
+        },
+        {
+          "id": "fao56",
+          "name": "FAO-56 crop coefficients and stage lengths",
+          "url": "https://www.fao.org/4/x0490e/x0490e00.htm",
+          "version": null
+        }
+      ]
+    },
+    {
+      "crop_id": "castor",
+      "name": "Castor bean",
+      "eligible": false,
+      "reason_code": "gate_failed",
+      "reason": "Own estimate not reliable: the engine does not reproduce ZARC for this crop (rank correlation -0.25).",
+      "zarc": {
+        "values": [
+          40,
+          40,
+          30,
+          30,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "cycle_code": "21",
+        "soil_code": 2,
+        "ordinance": "Port.350_de_12-06-2025",
+        "season": "2025/2026"
+      },
+      "pam": {
+        "crop_label": "mamona",
+        "years": [
+          2005,
+          2006,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011
+        ],
+        "yield_kg_ha": [
+          500,
+          380,
+          360,
+          300,
+          600,
+          300,
+          460
+        ],
+        "municipality_median": 380,
+        "state_median": 500
+      },
+      "sources": [
+        {
+          "id": "nasa-power",
+          "name": "NASA POWER daily (1984–2024)",
+          "url": "https://power.larc.nasa.gov/docs/services/api/temporal/daily/",
+          "version": "daily, 0.5° × 0.625°"
+        },
+        {
+          "id": "zarc",
+          "name": "MAPA ZARC risk table, season 2025/2026",
+          "url": "https://dados.agricultura.gov.br/dataset/tabua-de-risco-zoneamento-agricola-de-risco-climatico",
+          "version": "2025/2026"
+        },
+        {
+          "id": "ibge-pam",
+          "name": "IBGE PAM yield, 2005–2024",
+          "url": "https://sidra.ibge.gov.br/tabela/5457",
+          "version": "2005-2024"
+        },
+        {
+          "id": "fao56",
+          "name": "FAO-56 crop coefficients and stage lengths",
+          "url": "https://www.fao.org/4/x0490e/x0490e00.htm",
+          "version": null
+        }
+      ]
+    }
+  ],
+  "disclaimers": [
+    {
+      "id": "mock",
+      "text": "Demo data: success probabilities are synthetic. ZARC windows and PAM yields are real public data."
+    },
+    {
+      "id": "scale",
+      "text": "Climate comes from NASA POWER cells of 0.5° × 0.625° (about 55 × 69 km). It does not describe your field."
+    },
+    {
+      "id": "soil",
+      "text": "Soil water is an assumption (0.11 m³/m³ available water, sandy loam), not a measurement."
+    },
+    {
+      "id": "rain",
+      "text": "Rainfall is POWER's; in 2024 IMERG measured about 37% less at the test point. Results depend on the rain source."
+    },
+    {
+      "id": "validation",
+      "text": "Independent validation against PAM yields is weak to moderate (rank correlation +0.33 to +0.48, one point)."
+    },
+    {
+      "id": "zarc",
+      "text": "ZARC is also built from a water balance, so agreeing with it shows consistency with the official method, not field success."
+    },
+    {
+      "id": "dekad",
+      "text": "Dekad 1 is assumed to be Jan 1–10, and ZARC values 20/30/40 are shown as-is; their meaning as risk % is not confirmed."
+    }
+  ]
+}
