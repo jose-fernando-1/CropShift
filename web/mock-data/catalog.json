@@ -1,0 +1,15 @@
+{
+  "_note": "Quality-gate status from plan v2 sections 2 and 5 (prototype at -36.40, -8.60). Replace with track C's gate report; the web reads only this file.",
+  "method_version": "engine-0.1-prototype",
+  "data_version": "mock-2026-11-14",
+  "gate_threshold": 0.7,
+  "crops": [
+    { "crop_id": "cowpea", "name": "Cowpea", "scientific_name": "Vigna unguiculata", "family": "Fabaceae", "legume": true, "cycle_days": 110, "pam_crop": "feijao", "gate": { "status": "passed", "value": 0.9, "note": "Water-balance engine reproduces the ZARC window (prototype, one point)." } },
+    { "crop_id": "peanut", "name": "Peanut", "scientific_name": "Arachis hypogaea", "family": "Fabaceae", "legume": true, "cycle_days": 130, "pam_crop": "amendoim", "gate": { "status": "passed", "value": 0.86, "note": "Water-balance engine reproduces the ZARC window (prototype, one point)." } },
+    { "crop_id": "sorghum", "name": "Grain sorghum", "scientific_name": "Sorghum bicolor", "family": "Poaceae", "legume": false, "cycle_days": 130, "pam_crop": "sorgo", "gate": { "status": "passed", "value": 0.82, "note": "Water-balance engine reproduces the ZARC window (prototype, one point)." } },
+    { "crop_id": "maize", "name": "Maize (1st season)", "scientific_name": "Zea mays", "family": "Poaceae", "legume": false, "cycle_days": 180, "pam_crop": "milho", "gate": { "status": "not_run", "value": null, "note": "FAO-56 crop sheet ready; engine not run yet." } },
+    { "crop_id": "common_bean", "name": "Common bean", "scientific_name": "Phaseolus vulgaris", "family": "Fabaceae", "legume": true, "cycle_days": 110, "pam_crop": "feijao", "gate": { "status": "not_run", "value": null, "note": "FAO-56 crop sheet ready; engine not run yet. Rainfed ZARC uses AD soil classes only." } },
+    { "crop_id": "sunflower", "name": "Sunflower", "scientific_name": "Helianthus annuus", "family": "Asteraceae", "legume": false, "cycle_days": 130, "pam_crop": null, "gate": { "status": "not_run", "value": null, "note": "FAO-56 crop sheet ready; engine not run yet." } },
+    { "crop_id": "castor", "name": "Castor bean", "scientific_name": "Ricinus communis", "family": "Euphorbiaceae", "legume": false, "cycle_days": 180, "pam_crop": "mamona", "gate": { "status": "failed", "value": -0.25, "note": "Engine does not reproduce the ZARC window (best simulated dekads 7-11 vs ZARC 14-19)." } }
+  ]
+}

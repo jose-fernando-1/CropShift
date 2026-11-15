@@ -1,0 +1,2592 @@
+[
+ {
+  "code": "2600054",
+  "name": "Abreu e Lima",
+  "search": "abreu e lima",
+  "centroid": {
+   "lat": -7.87503,
+   "lon": -35.02716
+  },
+  "power_cell": {
+   "id": "r164c232",
+   "lat": -8,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2600104",
+  "name": "Afogados da Ingazeira",
+  "search": "afogados da ingazeira",
+  "centroid": {
+   "lat": -7.73688,
+   "lon": -37.62055
+  },
+  "power_cell": {
+   "id": "r165c228",
+   "lat": -7.5,
+   "lon": -37.5
+  }
+ },
+ {
+  "code": "2600203",
+  "name": "Afrânio",
+  "search": "afranio",
+  "centroid": {
+   "lat": -8.62047,
+   "lon": -41.00663
+  },
+  "power_cell": {
+   "id": "r163c222",
+   "lat": -8.5,
+   "lon": -41.25
+  }
+ },
+ {
+  "code": "2600302",
+  "name": "Agrestina",
+  "search": "agrestina",
+  "centroid": {
+   "lat": -8.45302,
+   "lon": -35.94688
+  },
+  "power_cell": {
+   "id": "r163c230",
+   "lat": -8.5,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2600401",
+  "name": "Água Preta",
+  "search": "agua preta",
+  "centroid": {
+   "lat": -8.73303,
+   "lon": -35.48086
+  },
+  "power_cell": {
+   "id": "r163c231",
+   "lat": -8.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2600500",
+  "name": "Águas Belas",
+  "search": "aguas belas",
+  "centroid": {
+   "lat": -9.08707,
+   "lon": -37.03916
+  },
+  "power_cell": {
+   "id": "r162c229",
+   "lat": -9,
+   "lon": -36.875
+  }
+ },
+ {
+  "code": "2600609",
+  "name": "Alagoinha",
+  "search": "alagoinha",
+  "centroid": {
+   "lat": -8.49088,
+   "lon": -36.7559
+  },
+  "power_cell": {
+   "id": "r163c229",
+   "lat": -8.5,
+   "lon": -36.875
+  }
+ },
+ {
+  "code": "2600708",
+  "name": "Aliança",
+  "search": "alianca",
+  "centroid": {
+   "lat": -7.60385,
+   "lon": -35.19417
+  },
+  "power_cell": {
+   "id": "r165c232",
+   "lat": -7.5,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2600807",
+  "name": "Altinho",
+  "search": "altinho",
+  "centroid": {
+   "lat": -8.49004,
+   "lon": -36.09698
+  },
+  "power_cell": {
+   "id": "r163c230",
+   "lat": -8.5,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2600906",
+  "name": "Amaraji",
+  "search": "amaraji",
+  "centroid": {
+   "lat": -8.36434,
+   "lon": -35.46267
+  },
+  "power_cell": {
+   "id": "r163c231",
+   "lat": -8.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2601003",
+  "name": "Angelim",
+  "search": "angelim",
+  "centroid": {
+   "lat": -8.89012,
+   "lon": -36.27774
+  },
+  "power_cell": {
+   "id": "r162c230",
+   "lat": -9,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2601052",
+  "name": "Araçoiaba",
+  "search": "aracoiaba",
+  "centroid": {
+   "lat": -7.79062,
+   "lon": -35.07508
+  },
+  "power_cell": {
+   "id": "r164c232",
+   "lat": -8,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2601102",
+  "name": "Araripina",
+  "search": "araripina",
+  "centroid": {
+   "lat": -7.60703,
+   "lon": -40.48469
+  },
+  "power_cell": {
+   "id": "r165c223",
+   "lat": -7.5,
+   "lon": -40.625
+  }
+ },
+ {
+  "code": "2601201",
+  "name": "Arcoverde",
+  "search": "arcoverde",
+  "centroid": {
+   "lat": -8.38631,
+   "lon": -37.00434
+  },
+  "power_cell": {
+   "id": "r163c229",
+   "lat": -8.5,
+   "lon": -36.875
+  }
+ },
+ {
+  "code": "2601300",
+  "name": "Barra de Guabiraba",
+  "search": "barra de guabiraba",
+  "centroid": {
+   "lat": -8.41731,
+   "lon": -35.63468
+  },
+  "power_cell": {
+   "id": "r163c231",
+   "lat": -8.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2601409",
+  "name": "Barreiros",
+  "search": "barreiros",
+  "centroid": {
+   "lat": -8.82063,
+   "lon": -35.25524
+  },
+  "power_cell": {
+   "id": "r162c232",
+   "lat": -9,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2601508",
+  "name": "Belém de Maria",
+  "search": "belem de maria",
+  "centroid": {
+   "lat": -8.60107,
+   "lon": -35.81446
+  },
+  "power_cell": {
+   "id": "r163c231",
+   "lat": -8.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2601607",
+  "name": "Belém do São Francisco",
+  "search": "belem do sao francisco",
+  "centroid": {
+   "lat": -8.58379,
+   "lon": -38.98245
+  },
+  "power_cell": {
+   "id": "r163c226",
+   "lat": -8.5,
+   "lon": -38.75
+  }
+ },
+ {
+  "code": "2601706",
+  "name": "Belo Jardim",
+  "search": "belo jardim",
+  "centroid": {
+   "lat": -8.2589,
+   "lon": -36.40452
+  },
+  "power_cell": {
+   "id": "r163c230",
+   "lat": -8.5,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2601805",
+  "name": "Betânia",
+  "search": "betania",
+  "centroid": {
+   "lat": -8.2653,
+   "lon": -37.98781
+  },
+  "power_cell": {
+   "id": "r163c227",
+   "lat": -8.5,
+   "lon": -38.125
+  }
+ },
+ {
+  "code": "2601904",
+  "name": "Bezerros",
+  "search": "bezerros",
+  "centroid": {
+   "lat": -8.21895,
+   "lon": -35.78143
+  },
+  "power_cell": {
+   "id": "r164c231",
+   "lat": -8,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2602001",
+  "name": "Bodocó",
+  "search": "bodoco",
+  "centroid": {
+   "lat": -7.65548,
+   "lon": -39.96512
+  },
+  "power_cell": {
+   "id": "r165c224",
+   "lat": -7.5,
+   "lon": -40
+  }
+ },
+ {
+  "code": "2602100",
+  "name": "Bom Conselho",
+  "search": "bom conselho",
+  "centroid": {
+   "lat": -9.20315,
+   "lon": -36.68439
+  },
+  "power_cell": {
+   "id": "r162c229",
+   "lat": -9,
+   "lon": -36.875
+  }
+ },
+ {
+  "code": "2602209",
+  "name": "Bom Jardim",
+  "search": "bom jardim",
+  "centroid": {
+   "lat": -7.78719,
+   "lon": -35.58551
+  },
+  "power_cell": {
+   "id": "r164c231",
+   "lat": -8,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2602308",
+  "name": "Bonito",
+  "search": "bonito",
+  "centroid": {
+   "lat": -8.49421,
+   "lon": -35.70627
+  },
+  "power_cell": {
+   "id": "r163c231",
+   "lat": -8.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2602407",
+  "name": "Brejão",
+  "search": "brejao",
+  "centroid": {
+   "lat": -9.02713,
+   "lon": -36.53129
+  },
+  "power_cell": {
+   "id": "r162c230",
+   "lat": -9,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2602506",
+  "name": "Brejinho",
+  "search": "brejinho",
+  "centroid": {
+   "lat": -7.33684,
+   "lon": -37.32465
+  },
+  "power_cell": {
+   "id": "r165c228",
+   "lat": -7.5,
+   "lon": -37.5
+  }
+ },
+ {
+  "code": "2602605",
+  "name": "Brejo da Madre de Deus",
+  "search": "brejo da madre de deus",
+  "centroid": {
+   "lat": -8.07626,
+   "lon": -36.28116
+  },
+  "power_cell": {
+   "id": "r164c230",
+   "lat": -8,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2602704",
+  "name": "Buenos Aires",
+  "search": "buenos aires",
+  "centroid": {
+   "lat": -7.73849,
+   "lon": -35.34083
+  },
+  "power_cell": {
+   "id": "r165c231",
+   "lat": -7.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2602803",
+  "name": "Buíque",
+  "search": "buique",
+  "centroid": {
+   "lat": -8.64935,
+   "lon": -37.12281
+  },
+  "power_cell": {
+   "id": "r163c229",
+   "lat": -8.5,
+   "lon": -36.875
+  }
+ },
+ {
+  "code": "2602902",
+  "name": "Cabo de Santo Agostinho",
+  "search": "cabo de santo agostinho",
+  "centroid": {
+   "lat": -8.26885,
+   "lon": -35.08389
+  },
+  "power_cell": {
+   "id": "r163c232",
+   "lat": -8.5,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2603009",
+  "name": "Cabrobó",
+  "search": "cabrobo",
+  "centroid": {
+   "lat": -8.38568,
+   "lon": -39.33027
+  },
+  "power_cell": {
+   "id": "r163c225",
+   "lat": -8.5,
+   "lon": -39.375
+  }
+ },
+ {
+  "code": "2603108",
+  "name": "Cachoeirinha",
+  "search": "cachoeirinha",
+  "centroid": {
+   "lat": -8.487,
+   "lon": -36.28965
+  },
+  "power_cell": {
+   "id": "r163c230",
+   "lat": -8.5,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2603207",
+  "name": "Caetés",
+  "search": "caetes",
+  "centroid": {
+   "lat": -8.80458,
+   "lon": -36.66013
+  },
+  "power_cell": {
+   "id": "r162c229",
+   "lat": -9,
+   "lon": -36.875
+  }
+ },
+ {
+  "code": "2603306",
+  "name": "Calçado",
+  "search": "calcado",
+  "centroid": {
+   "lat": -8.75007,
+   "lon": -36.32182
+  },
+  "power_cell": {
+   "id": "r162c230",
+   "lat": -9,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2603405",
+  "name": "Calumbi",
+  "search": "calumbi",
+  "centroid": {
+   "lat": -8.00481,
+   "lon": -38.07812
+  },
+  "power_cell": {
+   "id": "r164c227",
+   "lat": -8,
+   "lon": -38.125
+  }
+ },
+ {
+  "code": "2603454",
+  "name": "Camaragibe",
+  "search": "camaragibe",
+  "centroid": {
+   "lat": -7.98455,
+   "lon": -34.99451
+  },
+  "power_cell": {
+   "id": "r164c232",
+   "lat": -8,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2603504",
+  "name": "Camocim de São Félix",
+  "search": "camocim de sao felix",
+  "centroid": {
+   "lat": -8.34996,
+   "lon": -35.76907
+  },
+  "power_cell": {
+   "id": "r163c231",
+   "lat": -8.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2603603",
+  "name": "Camutanga",
+  "search": "camutanga",
+  "centroid": {
+   "lat": -7.43356,
+   "lon": -35.30184
+  },
+  "power_cell": {
+   "id": "r165c232",
+   "lat": -7.5,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2603702",
+  "name": "Canhotinho",
+  "search": "canhotinho",
+  "centroid": {
+   "lat": -8.89331,
+   "lon": -36.17487
+  },
+  "power_cell": {
+   "id": "r162c230",
+   "lat": -9,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2603801",
+  "name": "Capoeiras",
+  "search": "capoeiras",
+  "centroid": {
+   "lat": -8.68695,
+   "lon": -36.60203
+  },
+  "power_cell": {
+   "id": "r163c229",
+   "lat": -8.5,
+   "lon": -36.875
+  }
+ },
+ {
+  "code": "2603900",
+  "name": "Carnaíba",
+  "search": "carnaiba",
+  "centroid": {
+   "lat": -7.79303,
+   "lon": -37.72745
+  },
+  "power_cell": {
+   "id": "r164c228",
+   "lat": -8,
+   "lon": -37.5
+  }
+ },
+ {
+  "code": "2603926",
+  "name": "Carnaubeira da Penha",
+  "search": "carnaubeira da penha",
+  "centroid": {
+   "lat": -8.40916,
+   "lon": -38.72147
+  },
+  "power_cell": {
+   "id": "r163c226",
+   "lat": -8.5,
+   "lon": -38.75
+  }
+ },
+ {
+  "code": "2604007",
+  "name": "Carpina",
+  "search": "carpina",
+  "centroid": {
+   "lat": -7.81813,
+   "lon": -35.30573
+  },
+  "power_cell": {
+   "id": "r164c232",
+   "lat": -8,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2604106",
+  "name": "Caruaru",
+  "search": "caruaru",
+  "centroid": {
+   "lat": -8.17996,
+   "lon": -36.01785
+  },
+  "power_cell": {
+   "id": "r164c230",
+   "lat": -8,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2604155",
+  "name": "Casinhas",
+  "search": "casinhas",
+  "centroid": {
+   "lat": -7.75627,
+   "lon": -35.71935
+  },
+  "power_cell": {
+   "id": "r164c231",
+   "lat": -8,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2604205",
+  "name": "Catende",
+  "search": "catende",
+  "centroid": {
+   "lat": -8.6762,
+   "lon": -35.73364
+  },
+  "power_cell": {
+   "id": "r163c231",
+   "lat": -8.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2604304",
+  "name": "Cedro",
+  "search": "cedro",
+  "centroid": {
+   "lat": -7.74464,
+   "lon": -39.20347
+  },
+  "power_cell": {
+   "id": "r165c225",
+   "lat": -7.5,
+   "lon": -39.375
+  }
+ },
+ {
+  "code": "2604403",
+  "name": "Chã de Alegria",
+  "search": "cha de alegria",
+  "centroid": {
+   "lat": -7.99652,
+   "lon": -35.22271
+  },
+  "power_cell": {
+   "id": "r164c232",
+   "lat": -8,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2604502",
+  "name": "Chã Grande",
+  "search": "cha grande",
+  "centroid": {
+   "lat": -8.2285,
+   "lon": -35.4746
+  },
+  "power_cell": {
+   "id": "r164c231",
+   "lat": -8,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2604601",
+  "name": "Condado",
+  "search": "condado",
+  "centroid": {
+   "lat": -7.59867,
+   "lon": -35.10389
+  },
+  "power_cell": {
+   "id": "r165c232",
+   "lat": -7.5,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2604700",
+  "name": "Correntes",
+  "search": "correntes",
+  "centroid": {
+   "lat": -9.11486,
+   "lon": -36.34169
+  },
+  "power_cell": {
+   "id": "r162c230",
+   "lat": -9,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2604809",
+  "name": "Cortês",
+  "search": "cortes",
+  "centroid": {
+   "lat": -8.43017,
+   "lon": -35.5302
+  },
+  "power_cell": {
+   "id": "r163c231",
+   "lat": -8.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2604908",
+  "name": "Cumaru",
+  "search": "cumaru",
+  "centroid": {
+   "lat": -8.04084,
+   "lon": -35.71897
+  },
+  "power_cell": {
+   "id": "r164c231",
+   "lat": -8,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2605004",
+  "name": "Cupira",
+  "search": "cupira",
+  "centroid": {
+   "lat": -8.58262,
+   "lon": -35.93019
+  },
+  "power_cell": {
+   "id": "r163c231",
+   "lat": -8.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2605103",
+  "name": "Custódia",
+  "search": "custodia",
+  "centroid": {
+   "lat": -8.17377,
+   "lon": -37.68176
+  },
+  "power_cell": {
+   "id": "r164c228",
+   "lat": -8,
+   "lon": -37.5
+  }
+ },
+ {
+  "code": "2605152",
+  "name": "Dormentes",
+  "search": "dormentes",
+  "centroid": {
+   "lat": -8.4946,
+   "lon": -40.62003
+  },
+  "power_cell": {
+   "id": "r163c223",
+   "lat": -8.5,
+   "lon": -40.625
+  }
+ },
+ {
+  "code": "2605202",
+  "name": "Escada",
+  "search": "escada",
+  "centroid": {
+   "lat": -8.36998,
+   "lon": -35.26382
+  },
+  "power_cell": {
+   "id": "r163c232",
+   "lat": -8.5,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2605301",
+  "name": "Exu",
+  "search": "exu",
+  "centroid": {
+   "lat": -7.51567,
+   "lon": -39.74903
+  },
+  "power_cell": {
+   "id": "r165c224",
+   "lat": -7.5,
+   "lon": -40
+  }
+ },
+ {
+  "code": "2605400",
+  "name": "Feira Nova",
+  "search": "feira nova",
+  "centroid": {
+   "lat": -7.95102,
+   "lon": -35.38124
+  },
+  "power_cell": {
+   "id": "r164c231",
+   "lat": -8,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2605459",
+  "name": "Fernando de Noronha",
+  "search": "fernando de noronha",
+  "centroid": {
+   "lat": -3.85973,
+   "lon": -32.42757
+  },
+  "power_cell": {
+   "id": "r172c236",
+   "lat": -4,
+   "lon": -32.5
+  }
+ },
+ {
+  "code": "2605509",
+  "name": "Ferreiros",
+  "search": "ferreiros",
+  "centroid": {
+   "lat": -7.47793,
+   "lon": -35.24259
+  },
+  "power_cell": {
+   "id": "r165c232",
+   "lat": -7.5,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2605608",
+  "name": "Flores",
+  "search": "flores",
+  "centroid": {
+   "lat": -7.93991,
+   "lon": -37.89383
+  },
+  "power_cell": {
+   "id": "r164c227",
+   "lat": -8,
+   "lon": -38.125
+  }
+ },
+ {
+  "code": "2605707",
+  "name": "Floresta",
+  "search": "floresta",
+  "centroid": {
+   "lat": -8.56678,
+   "lon": -38.3105
+  },
+  "power_cell": {
+   "id": "r163c227",
+   "lat": -8.5,
+   "lon": -38.125
+  }
+ },
+ {
+  "code": "2605806",
+  "name": "Frei Miguelinho",
+  "search": "frei miguelinho",
+  "centroid": {
+   "lat": -7.93401,
+   "lon": -35.88391
+  },
+  "power_cell": {
+   "id": "r164c231",
+   "lat": -8,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2605905",
+  "name": "Gameleira",
+  "search": "gameleira",
+  "centroid": {
+   "lat": -8.6104,
+   "lon": -35.39565
+  },
+  "power_cell": {
+   "id": "r163c231",
+   "lat": -8.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2606002",
+  "name": "Garanhuns",
+  "search": "garanhuns",
+  "centroid": {
+   "lat": -8.92844,
+   "lon": -36.50113
+  },
+  "power_cell": {
+   "id": "r162c230",
+   "lat": -9,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2606101",
+  "name": "Glória do Goitá",
+  "search": "gloria do goita",
+  "centroid": {
+   "lat": -8.01341,
+   "lon": -35.33857
+  },
+  "power_cell": {
+   "id": "r164c231",
+   "lat": -8,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2606200",
+  "name": "Goiana",
+  "search": "goiana",
+  "centroid": {
+   "lat": -7.59743,
+   "lon": -34.94338
+  },
+  "power_cell": {
+   "id": "r165c232",
+   "lat": -7.5,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2606309",
+  "name": "Granito",
+  "search": "granito",
+  "centroid": {
+   "lat": -7.7876,
+   "lon": -39.69484
+  },
+  "power_cell": {
+   "id": "r164c224",
+   "lat": -8,
+   "lon": -40
+  }
+ },
+ {
+  "code": "2606408",
+  "name": "Gravatá",
+  "search": "gravata",
+  "centroid": {
+   "lat": -8.19996,
+   "lon": -35.56252
+  },
+  "power_cell": {
+   "id": "r164c231",
+   "lat": -8,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2606507",
+  "name": "Iati",
+  "search": "iati",
+  "centroid": {
+   "lat": -9.1405,
+   "lon": -36.90026
+  },
+  "power_cell": {
+   "id": "r162c229",
+   "lat": -9,
+   "lon": -36.875
+  }
+ },
+ {
+  "code": "2606606",
+  "name": "Ibimirim",
+  "search": "ibimirim",
+  "centroid": {
+   "lat": -8.58667,
+   "lon": -37.61067
+  },
+  "power_cell": {
+   "id": "r163c228",
+   "lat": -8.5,
+   "lon": -37.5
+  }
+ },
+ {
+  "code": "2606705",
+  "name": "Ibirajuba",
+  "search": "ibirajuba",
+  "centroid": {
+   "lat": -8.61264,
+   "lon": -36.20101
+  },
+  "power_cell": {
+   "id": "r163c230",
+   "lat": -8.5,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2606804",
+  "name": "Igarassu",
+  "search": "igarassu",
+  "centroid": {
+   "lat": -7.81704,
+   "lon": -34.96007
+  },
+  "power_cell": {
+   "id": "r164c232",
+   "lat": -8,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2606903",
+  "name": "Iguaracy",
+  "search": "iguaracy",
+  "centroid": {
+   "lat": -7.84548,
+   "lon": -37.40301
+  },
+  "power_cell": {
+   "id": "r164c228",
+   "lat": -8,
+   "lon": -37.5
+  }
+ },
+ {
+  "code": "2607604",
+  "name": "Ilha de Itamaracá",
+  "search": "ilha de itamaraca",
+  "centroid": {
+   "lat": -7.75751,
+   "lon": -34.85291
+  },
+  "power_cell": {
+   "id": "r164c232",
+   "lat": -8,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2607000",
+  "name": "Inajá",
+  "search": "inaja",
+  "centroid": {
+   "lat": -8.80637,
+   "lon": -37.83787
+  },
+  "power_cell": {
+   "id": "r162c227",
+   "lat": -9,
+   "lon": -38.125
+  }
+ },
+ {
+  "code": "2607109",
+  "name": "Ingazeira",
+  "search": "ingazeira",
+  "centroid": {
+   "lat": -7.71341,
+   "lon": -37.41504
+  },
+  "power_cell": {
+   "id": "r165c228",
+   "lat": -7.5,
+   "lon": -37.5
+  }
+ },
+ {
+  "code": "2607208",
+  "name": "Ipojuca",
+  "search": "ipojuca",
+  "centroid": {
+   "lat": -8.43782,
+   "lon": -35.08742
+  },
+  "power_cell": {
+   "id": "r163c232",
+   "lat": -8.5,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2607307",
+  "name": "Ipubi",
+  "search": "ipubi",
+  "centroid": {
+   "lat": -7.49766,
+   "lon": -40.21737
+  },
+  "power_cell": {
+   "id": "r165c224",
+   "lat": -7.5,
+   "lon": -40
+  }
+ },
+ {
+  "code": "2607406",
+  "name": "Itacuruba",
+  "search": "itacuruba",
+  "centroid": {
+   "lat": -8.74942,
+   "lon": -38.72904
+  },
+  "power_cell": {
+   "id": "r163c226",
+   "lat": -8.5,
+   "lon": -38.75
+  }
+ },
+ {
+  "code": "2607505",
+  "name": "Itaíba",
+  "search": "itaiba",
+  "centroid": {
+   "lat": -8.98454,
+   "lon": -37.29484
+  },
+  "power_cell": {
+   "id": "r162c228",
+   "lat": -9,
+   "lon": -37.5
+  }
+ },
+ {
+  "code": "2607653",
+  "name": "Itambé",
+  "search": "itambe",
+  "centroid": {
+   "lat": -7.45095,
+   "lon": -35.13291
+  },
+  "power_cell": {
+   "id": "r165c232",
+   "lat": -7.5,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2607703",
+  "name": "Itapetim",
+  "search": "itapetim",
+  "centroid": {
+   "lat": -7.39864,
+   "lon": -37.1438
+  },
+  "power_cell": {
+   "id": "r165c229",
+   "lat": -7.5,
+   "lon": -36.875
+  }
+ },
+ {
+  "code": "2607752",
+  "name": "Itapissuma",
+  "search": "itapissuma",
+  "centroid": {
+   "lat": -7.74828,
+   "lon": -34.90603
+  },
+  "power_cell": {
+   "id": "r165c232",
+   "lat": -7.5,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2607802",
+  "name": "Itaquitinga",
+  "search": "itaquitinga",
+  "centroid": {
+   "lat": -7.6864,
+   "lon": -35.03367
+  },
+  "power_cell": {
+   "id": "r165c232",
+   "lat": -7.5,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2607901",
+  "name": "Jaboatão dos Guararapes",
+  "search": "jaboatao dos guararapes",
+  "centroid": {
+   "lat": -8.15143,
+   "lon": -35.00539
+  },
+  "power_cell": {
+   "id": "r164c232",
+   "lat": -8,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2607950",
+  "name": "Jaqueira",
+  "search": "jaqueira",
+  "centroid": {
+   "lat": -8.74448,
+   "lon": -35.81123
+  },
+  "power_cell": {
+   "id": "r163c231",
+   "lat": -8.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2608008",
+  "name": "Jataúba",
+  "search": "jatauba",
+  "centroid": {
+   "lat": -8.05612,
+   "lon": -36.53425
+  },
+  "power_cell": {
+   "id": "r164c230",
+   "lat": -8,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2608057",
+  "name": "Jatobá",
+  "search": "jatoba",
+  "centroid": {
+   "lat": -9.208,
+   "lon": -38.21553
+  },
+  "power_cell": {
+   "id": "r162c227",
+   "lat": -9,
+   "lon": -38.125
+  }
+ },
+ {
+  "code": "2608107",
+  "name": "João Alfredo",
+  "search": "joao alfredo",
+  "centroid": {
+   "lat": -7.86181,
+   "lon": -35.59094
+  },
+  "power_cell": {
+   "id": "r164c231",
+   "lat": -8,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2608206",
+  "name": "Joaquim Nabuco",
+  "search": "joaquim nabuco",
+  "centroid": {
+   "lat": -8.56315,
+   "lon": -35.54435
+  },
+  "power_cell": {
+   "id": "r163c231",
+   "lat": -8.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2608255",
+  "name": "Jucati",
+  "search": "jucati",
+  "centroid": {
+   "lat": -8.74344,
+   "lon": -36.46058
+  },
+  "power_cell": {
+   "id": "r163c230",
+   "lat": -8.5,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2608305",
+  "name": "Jupi",
+  "search": "jupi",
+  "centroid": {
+   "lat": -8.71357,
+   "lon": -36.39406
+  },
+  "power_cell": {
+   "id": "r163c230",
+   "lat": -8.5,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2608404",
+  "name": "Jurema",
+  "search": "jurema",
+  "centroid": {
+   "lat": -8.75347,
+   "lon": -36.1426
+  },
+  "power_cell": {
+   "id": "r162c230",
+   "lat": -9,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2608503",
+  "name": "Lagoa de Itaenga",
+  "search": "lagoa de itaenga",
+  "centroid": {
+   "lat": -7.9087,
+   "lon": -35.28882
+  },
+  "power_cell": {
+   "id": "r164c232",
+   "lat": -8,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2608453",
+  "name": "Lagoa do Carro",
+  "search": "lagoa do carro",
+  "centroid": {
+   "lat": -7.85227,
+   "lon": -35.33817
+  },
+  "power_cell": {
+   "id": "r164c231",
+   "lat": -8,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2608602",
+  "name": "Lagoa do Ouro",
+  "search": "lagoa do ouro",
+  "centroid": {
+   "lat": -9.16256,
+   "lon": -36.46681
+  },
+  "power_cell": {
+   "id": "r162c230",
+   "lat": -9,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2608701",
+  "name": "Lagoa dos Gatos",
+  "search": "lagoa dos gatos",
+  "centroid": {
+   "lat": -8.6817,
+   "lon": -35.8951
+  },
+  "power_cell": {
+   "id": "r163c231",
+   "lat": -8.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2608750",
+  "name": "Lagoa Grande",
+  "search": "lagoa grande",
+  "centroid": {
+   "lat": -8.77829,
+   "lon": -40.22306
+  },
+  "power_cell": {
+   "id": "r162c224",
+   "lat": -9,
+   "lon": -40
+  }
+ },
+ {
+  "code": "2608800",
+  "name": "Lajedo",
+  "search": "lajedo",
+  "centroid": {
+   "lat": -8.67796,
+   "lon": -36.28548
+  },
+  "power_cell": {
+   "id": "r163c230",
+   "lat": -8.5,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2608909",
+  "name": "Limoeiro",
+  "search": "limoeiro",
+  "centroid": {
+   "lat": -7.84562,
+   "lon": -35.44669
+  },
+  "power_cell": {
+   "id": "r164c231",
+   "lat": -8,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2609006",
+  "name": "Macaparana",
+  "search": "macaparana",
+  "centroid": {
+   "lat": -7.52846,
+   "lon": -35.45011
+  },
+  "power_cell": {
+   "id": "r165c231",
+   "lat": -7.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2609105",
+  "name": "Machados",
+  "search": "machados",
+  "centroid": {
+   "lat": -7.70227,
+   "lon": -35.50066
+  },
+  "power_cell": {
+   "id": "r165c231",
+   "lat": -7.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2609154",
+  "name": "Manari",
+  "search": "manari",
+  "centroid": {
+   "lat": -8.89133,
+   "lon": -37.55013
+  },
+  "power_cell": {
+   "id": "r162c228",
+   "lat": -9,
+   "lon": -37.5
+  }
+ },
+ {
+  "code": "2609204",
+  "name": "Maraial",
+  "search": "maraial",
+  "centroid": {
+   "lat": -8.83504,
+   "lon": -35.76323
+  },
+  "power_cell": {
+   "id": "r162c231",
+   "lat": -9,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2609303",
+  "name": "Mirandiba",
+  "search": "mirandiba",
+  "centroid": {
+   "lat": -8.15663,
+   "lon": -38.7375
+  },
+  "power_cell": {
+   "id": "r164c226",
+   "lat": -8,
+   "lon": -38.75
+  }
+ },
+ {
+  "code": "2614303",
+  "name": "Moreilândia",
+  "search": "moreilandia",
+  "centroid": {
+   "lat": -7.61728,
+   "lon": -39.52404
+  },
+  "power_cell": {
+   "id": "r165c225",
+   "lat": -7.5,
+   "lon": -39.375
+  }
+ },
+ {
+  "code": "2609402",
+  "name": "Moreno",
+  "search": "moreno",
+  "centroid": {
+   "lat": -8.14148,
+   "lon": -35.14649
+  },
+  "power_cell": {
+   "id": "r164c232",
+   "lat": -8,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2609501",
+  "name": "Nazaré da Mata",
+  "search": "nazare da mata",
+  "centroid": {
+   "lat": -7.73839,
+   "lon": -35.23553
+  },
+  "power_cell": {
+   "id": "r165c232",
+   "lat": -7.5,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2609600",
+  "name": "Olinda",
+  "search": "olinda",
+  "centroid": {
+   "lat": -7.9946,
+   "lon": -34.86556
+  },
+  "power_cell": {
+   "id": "r164c232",
+   "lat": -8,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2609709",
+  "name": "Orobó",
+  "search": "orobo",
+  "centroid": {
+   "lat": -7.7058,
+   "lon": -35.59832
+  },
+  "power_cell": {
+   "id": "r165c231",
+   "lat": -7.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2609808",
+  "name": "Orocó",
+  "search": "oroco",
+  "centroid": {
+   "lat": -8.47213,
+   "lon": -39.59142
+  },
+  "power_cell": {
+   "id": "r163c225",
+   "lat": -8.5,
+   "lon": -39.375
+  }
+ },
+ {
+  "code": "2609907",
+  "name": "Ouricuri",
+  "search": "ouricuri",
+  "centroid": {
+   "lat": -7.96613,
+   "lon": -40.16551
+  },
+  "power_cell": {
+   "id": "r164c224",
+   "lat": -8,
+   "lon": -40
+  }
+ },
+ {
+  "code": "2610004",
+  "name": "Palmares",
+  "search": "palmares",
+  "centroid": {
+   "lat": -8.65754,
+   "lon": -35.63134
+  },
+  "power_cell": {
+   "id": "r163c231",
+   "lat": -8.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2610103",
+  "name": "Palmeirina",
+  "search": "palmeirina",
+  "centroid": {
+   "lat": -9.01118,
+   "lon": -36.27771
+  },
+  "power_cell": {
+   "id": "r162c230",
+   "lat": -9,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2610202",
+  "name": "Panelas",
+  "search": "panelas",
+  "centroid": {
+   "lat": -8.66513,
+   "lon": -36.0495
+  },
+  "power_cell": {
+   "id": "r163c230",
+   "lat": -8.5,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2610301",
+  "name": "Paranatama",
+  "search": "paranatama",
+  "centroid": {
+   "lat": -8.89533,
+   "lon": -36.70748
+  },
+  "power_cell": {
+   "id": "r162c229",
+   "lat": -9,
+   "lon": -36.875
+  }
+ },
+ {
+  "code": "2610400",
+  "name": "Parnamirim",
+  "search": "parnamirim",
+  "centroid": {
+   "lat": -8.15974,
+   "lon": -39.76799
+  },
+  "power_cell": {
+   "id": "r164c224",
+   "lat": -8,
+   "lon": -40
+  }
+ },
+ {
+  "code": "2610509",
+  "name": "Passira",
+  "search": "passira",
+  "centroid": {
+   "lat": -8.01178,
+   "lon": -35.54356
+  },
+  "power_cell": {
+   "id": "r164c231",
+   "lat": -8,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2610608",
+  "name": "Paudalho",
+  "search": "paudalho",
+  "centroid": {
+   "lat": -7.90593,
+   "lon": -35.15428
+  },
+  "power_cell": {
+   "id": "r164c232",
+   "lat": -8,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2610707",
+  "name": "Paulista",
+  "search": "paulista",
+  "centroid": {
+   "lat": -7.92736,
+   "lon": -34.88521
+  },
+  "power_cell": {
+   "id": "r164c232",
+   "lat": -8,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2610806",
+  "name": "Pedra",
+  "search": "pedra",
+  "centroid": {
+   "lat": -8.70053,
+   "lon": -36.89954
+  },
+  "power_cell": {
+   "id": "r163c229",
+   "lat": -8.5,
+   "lon": -36.875
+  }
+ },
+ {
+  "code": "2610905",
+  "name": "Pesqueira",
+  "search": "pesqueira",
+  "centroid": {
+   "lat": -8.38738,
+   "lon": -36.73597
+  },
+  "power_cell": {
+   "id": "r163c229",
+   "lat": -8.5,
+   "lon": -36.875
+  }
+ },
+ {
+  "code": "2611002",
+  "name": "Petrolândia",
+  "search": "petrolandia",
+  "centroid": {
+   "lat": -8.89826,
+   "lon": -38.30744
+  },
+  "power_cell": {
+   "id": "r162c227",
+   "lat": -9,
+   "lon": -38.125
+  }
+ },
+ {
+  "code": "2611101",
+  "name": "Petrolina",
+  "search": "petrolina",
+  "centroid": {
+   "lat": -9.01922,
+   "lon": -40.57211
+  },
+  "power_cell": {
+   "id": "r162c223",
+   "lat": -9,
+   "lon": -40.625
+  }
+ },
+ {
+  "code": "2611200",
+  "name": "Poção",
+  "search": "pocao",
+  "centroid": {
+   "lat": -8.22266,
+   "lon": -36.71102
+  },
+  "power_cell": {
+   "id": "r164c229",
+   "lat": -8,
+   "lon": -36.875
+  }
+ },
+ {
+  "code": "2611309",
+  "name": "Pombos",
+  "search": "pombos",
+  "centroid": {
+   "lat": -8.18419,
+   "lon": -35.38615
+  },
+  "power_cell": {
+   "id": "r164c231",
+   "lat": -8,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2611408",
+  "name": "Primavera",
+  "search": "primavera",
+  "centroid": {
+   "lat": -8.3266,
+   "lon": -35.39139
+  },
+  "power_cell": {
+   "id": "r163c231",
+   "lat": -8.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2611507",
+  "name": "Quipapá",
+  "search": "quipapa",
+  "centroid": {
+   "lat": -8.83453,
+   "lon": -36.02711
+  },
+  "power_cell": {
+   "id": "r162c230",
+   "lat": -9,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2611533",
+  "name": "Quixaba",
+  "search": "quixaba",
+  "centroid": {
+   "lat": -7.71855,
+   "lon": -37.85075
+  },
+  "power_cell": {
+   "id": "r165c227",
+   "lat": -7.5,
+   "lon": -38.125
+  }
+ },
+ {
+  "code": "2611606",
+  "name": "Recife",
+  "search": "recife",
+  "centroid": {
+   "lat": -8.04027,
+   "lon": -34.93331
+  },
+  "power_cell": {
+   "id": "r164c232",
+   "lat": -8,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2611705",
+  "name": "Riacho das Almas",
+  "search": "riacho das almas",
+  "centroid": {
+   "lat": -8.08299,
+   "lon": -35.88305
+  },
+  "power_cell": {
+   "id": "r164c231",
+   "lat": -8,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2611804",
+  "name": "Ribeirão",
+  "search": "ribeirao",
+  "centroid": {
+   "lat": -8.50483,
+   "lon": -35.36702
+  },
+  "power_cell": {
+   "id": "r163c231",
+   "lat": -8.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2611903",
+  "name": "Rio Formoso",
+  "search": "rio formoso",
+  "centroid": {
+   "lat": -8.67628,
+   "lon": -35.22204
+  },
+  "power_cell": {
+   "id": "r163c232",
+   "lat": -8.5,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2612000",
+  "name": "Sairé",
+  "search": "saire",
+  "centroid": {
+   "lat": -8.30239,
+   "lon": -35.68453
+  },
+  "power_cell": {
+   "id": "r163c231",
+   "lat": -8.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2612109",
+  "name": "Salgadinho",
+  "search": "salgadinho",
+  "centroid": {
+   "lat": -7.91654,
+   "lon": -35.59491
+  },
+  "power_cell": {
+   "id": "r164c231",
+   "lat": -8,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2612208",
+  "name": "Salgueiro",
+  "search": "salgueiro",
+  "centroid": {
+   "lat": -8.12821,
+   "lon": -39.0895
+  },
+  "power_cell": {
+   "id": "r164c225",
+   "lat": -8,
+   "lon": -39.375
+  }
+ },
+ {
+  "code": "2612307",
+  "name": "Saloá",
+  "search": "saloa",
+  "centroid": {
+   "lat": -8.99364,
+   "lon": -36.74013
+  },
+  "power_cell": {
+   "id": "r162c229",
+   "lat": -9,
+   "lon": -36.875
+  }
+ },
+ {
+  "code": "2612406",
+  "name": "Sanharó",
+  "search": "sanharo",
+  "centroid": {
+   "lat": -8.3639,
+   "lon": -36.54936
+  },
+  "power_cell": {
+   "id": "r163c230",
+   "lat": -8.5,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2612455",
+  "name": "Santa Cruz",
+  "search": "santa cruz",
+  "centroid": {
+   "lat": -8.2914,
+   "lon": -40.30245
+  },
+  "power_cell": {
+   "id": "r163c224",
+   "lat": -8.5,
+   "lon": -40
+  }
+ },
+ {
+  "code": "2612471",
+  "name": "Santa Cruz da Baixa Verde",
+  "search": "santa cruz da baixa verde",
+  "centroid": {
+   "lat": -7.85095,
+   "lon": -38.17553
+  },
+  "power_cell": {
+   "id": "r164c227",
+   "lat": -8,
+   "lon": -38.125
+  }
+ },
+ {
+  "code": "2612505",
+  "name": "Santa Cruz do Capibaribe",
+  "search": "santa cruz do capibaribe",
+  "centroid": {
+   "lat": -7.89069,
+   "lon": -36.32487
+  },
+  "power_cell": {
+   "id": "r164c230",
+   "lat": -8,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2612554",
+  "name": "Santa Filomena",
+  "search": "santa filomena",
+  "centroid": {
+   "lat": -8.22293,
+   "lon": -40.57103
+  },
+  "power_cell": {
+   "id": "r164c223",
+   "lat": -8,
+   "lon": -40.625
+  }
+ },
+ {
+  "code": "2612604",
+  "name": "Santa Maria da Boa Vista",
+  "search": "santa maria da boa vista",
+  "centroid": {
+   "lat": -8.63022,
+   "lon": -39.9154
+  },
+  "power_cell": {
+   "id": "r163c224",
+   "lat": -8.5,
+   "lon": -40
+  }
+ },
+ {
+  "code": "2612703",
+  "name": "Santa Maria do Cambucá",
+  "search": "santa maria do cambuca",
+  "centroid": {
+   "lat": -7.82543,
+   "lon": -35.88316
+  },
+  "power_cell": {
+   "id": "r164c231",
+   "lat": -8,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2612802",
+  "name": "Santa Terezinha",
+  "search": "santa terezinha",
+  "centroid": {
+   "lat": -7.4314,
+   "lon": -37.43698
+  },
+  "power_cell": {
+   "id": "r165c228",
+   "lat": -7.5,
+   "lon": -37.5
+  }
+ },
+ {
+  "code": "2612901",
+  "name": "São Benedito do Sul",
+  "search": "sao benedito do sul",
+  "centroid": {
+   "lat": -8.80779,
+   "lon": -35.90642
+  },
+  "power_cell": {
+   "id": "r162c231",
+   "lat": -9,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2613008",
+  "name": "São Bento do Una",
+  "search": "sao bento do una",
+  "centroid": {
+   "lat": -8.53692,
+   "lon": -36.45155
+  },
+  "power_cell": {
+   "id": "r163c230",
+   "lat": -8.5,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2613107",
+  "name": "São Caitano",
+  "search": "sao caitano",
+  "centroid": {
+   "lat": -8.32961,
+   "lon": -36.14925
+  },
+  "power_cell": {
+   "id": "r163c230",
+   "lat": -8.5,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2613206",
+  "name": "São João",
+  "search": "sao joao",
+  "centroid": {
+   "lat": -8.87793,
+   "lon": -36.37818
+  },
+  "power_cell": {
+   "id": "r162c230",
+   "lat": -9,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2613305",
+  "name": "São Joaquim do Monte",
+  "search": "sao joaquim do monte",
+  "centroid": {
+   "lat": -8.4536,
+   "lon": -35.84382
+  },
+  "power_cell": {
+   "id": "r163c231",
+   "lat": -8.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2613404",
+  "name": "São José da Coroa Grande",
+  "search": "sao jose da coroa grande",
+  "centroid": {
+   "lat": -8.8657,
+   "lon": -35.18396
+  },
+  "power_cell": {
+   "id": "r162c232",
+   "lat": -9,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2613503",
+  "name": "São José do Belmonte",
+  "search": "sao jose do belmonte",
+  "centroid": {
+   "lat": -7.86568,
+   "lon": -38.74478
+  },
+  "power_cell": {
+   "id": "r164c226",
+   "lat": -8,
+   "lon": -38.75
+  }
+ },
+ {
+  "code": "2613602",
+  "name": "São José do Egito",
+  "search": "sao jose do egito",
+  "centroid": {
+   "lat": -7.52818,
+   "lon": -37.27461
+  },
+  "power_cell": {
+   "id": "r165c228",
+   "lat": -7.5,
+   "lon": -37.5
+  }
+ },
+ {
+  "code": "2613701",
+  "name": "São Lourenço da Mata",
+  "search": "sao lourenco da mata",
+  "centroid": {
+   "lat": -8.02245,
+   "lon": -35.10332
+  },
+  "power_cell": {
+   "id": "r164c232",
+   "lat": -8,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2613800",
+  "name": "São Vicente Férrer",
+  "search": "sao vicente ferrer",
+  "centroid": {
+   "lat": -7.60842,
+   "lon": -35.48797
+  },
+  "power_cell": {
+   "id": "r165c231",
+   "lat": -7.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2613909",
+  "name": "Serra Talhada",
+  "search": "serra talhada",
+  "centroid": {
+   "lat": -8.03644,
+   "lon": -38.36989
+  },
+  "power_cell": {
+   "id": "r164c227",
+   "lat": -8,
+   "lon": -38.125
+  }
+ },
+ {
+  "code": "2614006",
+  "name": "Serrita",
+  "search": "serrita",
+  "centroid": {
+   "lat": -7.84918,
+   "lon": -39.38138
+  },
+  "power_cell": {
+   "id": "r164c225",
+   "lat": -8,
+   "lon": -39.375
+  }
+ },
+ {
+  "code": "2614105",
+  "name": "Sertânia",
+  "search": "sertania",
+  "centroid": {
+   "lat": -8.21125,
+   "lon": -37.33746
+  },
+  "power_cell": {
+   "id": "r164c228",
+   "lat": -8,
+   "lon": -37.5
+  }
+ },
+ {
+  "code": "2614204",
+  "name": "Sirinhaém",
+  "search": "sirinhaem",
+  "centroid": {
+   "lat": -8.57348,
+   "lon": -35.17107
+  },
+  "power_cell": {
+   "id": "r163c232",
+   "lat": -8.5,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2614402",
+  "name": "Solidão",
+  "search": "solidao",
+  "centroid": {
+   "lat": -7.58414,
+   "lon": -37.64728
+  },
+  "power_cell": {
+   "id": "r165c228",
+   "lat": -7.5,
+   "lon": -37.5
+  }
+ },
+ {
+  "code": "2614501",
+  "name": "Surubim",
+  "search": "surubim",
+  "centroid": {
+   "lat": -7.89028,
+   "lon": -35.75571
+  },
+  "power_cell": {
+   "id": "r164c231",
+   "lat": -8,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2614600",
+  "name": "Tabira",
+  "search": "tabira",
+  "centroid": {
+   "lat": -7.578,
+   "lon": -37.51312
+  },
+  "power_cell": {
+   "id": "r165c228",
+   "lat": -7.5,
+   "lon": -37.5
+  }
+ },
+ {
+  "code": "2614709",
+  "name": "Tacaimbó",
+  "search": "tacaimbo",
+  "centroid": {
+   "lat": -8.3468,
+   "lon": -36.27008
+  },
+  "power_cell": {
+   "id": "r163c230",
+   "lat": -8.5,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2614808",
+  "name": "Tacaratu",
+  "search": "tacaratu",
+  "centroid": {
+   "lat": -8.95639,
+   "lon": -38.07685
+  },
+  "power_cell": {
+   "id": "r162c227",
+   "lat": -9,
+   "lon": -38.125
+  }
+ },
+ {
+  "code": "2614857",
+  "name": "Tamandaré",
+  "search": "tamandare",
+  "centroid": {
+   "lat": -8.74645,
+   "lon": -35.22875
+  },
+  "power_cell": {
+   "id": "r163c232",
+   "lat": -8.5,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2615003",
+  "name": "Taquaritinga do Norte",
+  "search": "taquaritinga do norte",
+  "centroid": {
+   "lat": -7.86833,
+   "lon": -36.13164
+  },
+  "power_cell": {
+   "id": "r164c230",
+   "lat": -8,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2615102",
+  "name": "Terezinha",
+  "search": "terezinha",
+  "centroid": {
+   "lat": -9.07709,
+   "lon": -36.63158
+  },
+  "power_cell": {
+   "id": "r162c229",
+   "lat": -9,
+   "lon": -36.875
+  }
+ },
+ {
+  "code": "2615201",
+  "name": "Terra Nova",
+  "search": "terra nova",
+  "centroid": {
+   "lat": -8.15518,
+   "lon": -39.39571
+  },
+  "power_cell": {
+   "id": "r164c225",
+   "lat": -8,
+   "lon": -39.375
+  }
+ },
+ {
+  "code": "2615300",
+  "name": "Timbaúba",
+  "search": "timbauba",
+  "centroid": {
+   "lat": -7.53391,
+   "lon": -35.34107
+  },
+  "power_cell": {
+   "id": "r165c231",
+   "lat": -7.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2615409",
+  "name": "Toritama",
+  "search": "toritama",
+  "centroid": {
+   "lat": -7.99825,
+   "lon": -36.06206
+  },
+  "power_cell": {
+   "id": "r164c230",
+   "lat": -8,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2615508",
+  "name": "Tracunhaém",
+  "search": "tracunhaem",
+  "centroid": {
+   "lat": -7.75949,
+   "lon": -35.16071
+  },
+  "power_cell": {
+   "id": "r164c232",
+   "lat": -8,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2615607",
+  "name": "Trindade",
+  "search": "trindade",
+  "centroid": {
+   "lat": -7.72826,
+   "lon": -40.29489
+  },
+  "power_cell": {
+   "id": "r165c224",
+   "lat": -7.5,
+   "lon": -40
+  }
+ },
+ {
+  "code": "2615706",
+  "name": "Triunfo",
+  "search": "triunfo",
+  "centroid": {
+   "lat": -7.84708,
+   "lon": -38.06576
+  },
+  "power_cell": {
+   "id": "r164c227",
+   "lat": -8,
+   "lon": -38.125
+  }
+ },
+ {
+  "code": "2615805",
+  "name": "Tupanatinga",
+  "search": "tupanatinga",
+  "centroid": {
+   "lat": -8.68231,
+   "lon": -37.28
+  },
+  "power_cell": {
+   "id": "r163c228",
+   "lat": -8.5,
+   "lon": -37.5
+  }
+ },
+ {
+  "code": "2615904",
+  "name": "Tuparetama",
+  "search": "tuparetama",
+  "centroid": {
+   "lat": -7.68833,
+   "lon": -37.26466
+  },
+  "power_cell": {
+   "id": "r165c228",
+   "lat": -7.5,
+   "lon": -37.5
+  }
+ },
+ {
+  "code": "2616001",
+  "name": "Venturosa",
+  "search": "venturosa",
+  "centroid": {
+   "lat": -8.61343,
+   "lon": -36.80575
+  },
+  "power_cell": {
+   "id": "r163c229",
+   "lat": -8.5,
+   "lon": -36.875
+  }
+ },
+ {
+  "code": "2616100",
+  "name": "Verdejante",
+  "search": "verdejante",
+  "centroid": {
+   "lat": -7.97326,
+   "lon": -38.98777
+  },
+  "power_cell": {
+   "id": "r164c226",
+   "lat": -8,
+   "lon": -38.75
+  }
+ },
+ {
+  "code": "2616183",
+  "name": "Vertente do Lério",
+  "search": "vertente do lerio",
+  "centroid": {
+   "lat": -7.7785,
+   "lon": -35.81513
+  },
+  "power_cell": {
+   "id": "r164c231",
+   "lat": -8,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2616209",
+  "name": "Vertentes",
+  "search": "vertentes",
+  "centroid": {
+   "lat": -7.8951,
+   "lon": -35.98168
+  },
+  "power_cell": {
+   "id": "r164c230",
+   "lat": -8,
+   "lon": -36.25
+  }
+ },
+ {
+  "code": "2616308",
+  "name": "Vicência",
+  "search": "vicencia",
+  "centroid": {
+   "lat": -7.6621,
+   "lon": -35.35629
+  },
+  "power_cell": {
+   "id": "r165c231",
+   "lat": -7.5,
+   "lon": -35.625
+  }
+ },
+ {
+  "code": "2616407",
+  "name": "Vitória de Santo Antão",
+  "search": "vitoria de santo antao",
+  "centroid": {
+   "lat": -8.15125,
+   "lon": -35.2871
+  },
+  "power_cell": {
+   "id": "r164c232",
+   "lat": -8,
+   "lon": -35
+  }
+ },
+ {
+  "code": "2616506",
+  "name": "Xexéu",
+  "search": "xexeu",
+  "centroid": {
+   "lat": -8.83401,
+   "lon": -35.65134
+  },
+  "power_cell": {
+   "id": "r162c231",
+   "lat": -9,
+   "lon": -35.625
+  }
+ }
+]
