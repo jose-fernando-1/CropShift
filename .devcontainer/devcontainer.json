@@ -1,27 +1,35 @@
 {
-  "name": "Cropshift (web)",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
+  "name": "Cropshift (web + backend)",
+  "dockerComposeFile": ["../docker-compose.yml", "docker-compose.yml"],
+  "service": "dev",
+  "runServices": ["dev", "db"],
+  "workspaceFolder": "/workspaces/Rurotation",
+  "shutdownAction": "stopCompose",
   "features": {
+    "ghcr.io/devcontainers/features/node:1": { "version": "22" },
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
   },
-  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-  "remoteUser": "node",
-  "mounts": [
-    "source=cropshift-web-node-modules-${devcontainerId},target=/workspaces/${localWorkspaceFolderBasename}/web/node_modules,type=volume"
-  ],
-  "containerEnv": {
-    "API_MODE": "mock",
-    "NEXT_TELEMETRY_DISABLED": "1"
-  },
   "postCreateCommand": "bash .devcontainer/post-create.sh",
-  "forwardPorts": [3000, 3001],
+  "forwardPorts": [3000, 3001, 8000],
   "portsAttributes": {
     "3000": { "label": "web (next dev)", "onAutoForward": "notify" },
-    "3001": { "label": "web, second instance (live-mode test)", "onAutoForward": "silent" }
+    "3001": { "label": "web, second instance (live-mode test)", "onAutoForward": "silent" },
+    "8000": { "label": "api (uvicorn)", "onAutoForward": "notify" }
   },
   "customizations": {
     "vscode": {
-      "extensions": ["dbaeumer.vscode-eslint", "bradlc.vscode-tailwindcss", "ms-playwright.playwright", "esbenp.prettier-vscode"]
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "bradlc.vscode-tailwindcss",
+        "ms-playwright.playwright",
+        "esbenp.prettier-vscode",
+        "ms-python.python",
+        "charliermarsh.ruff"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/workspaces/Rurotation/backend/.venv/bin/python",
+        "[python]": { "editor.defaultFormatter": "charliermarsh.ruff", "editor.tabSize": 4 }
+      }
     }
   }
 }

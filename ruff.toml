@@ -1,0 +1,23 @@
+# One Python style for backend/ and data/ (run from anywhere: `make lint`).
+line-length = 120
+target-version = "py313"
+extend-exclude = [".venv", "backend/alembic/versions", "web"]
+
+[lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+ignore = ["B008"]  # FastAPI's `Depends(...)` in argument defaults is the framework idiom.
+
+[lint.isort]
+known-first-party = ["app", "data"]
+
+[lint.per-file-ignores]
+# Prose catalogs: long sentences are clearer unbroken, and en dashes / ° / × are intentional typography.
+"backend/app/services/recommendation_text.py" = ["E501", "RUF001"]
+"backend/app/core/messages.py" = ["E501", "RUF001"]
+"backend/app/services/explain_template.py" = ["E501", "RUF001"]
+"backend/app/integrations/gemini.py" = ["E501"]
+"backend/app/engines/calibration/features.py" = ["E501"]
+"data/sources/earthdata_appeears/parse.py" = ["E501"]  # layer table
+"backend/app/services/recommendation_service.py" = ["RUF001"]  # dataset names keep the typography the web mock uses
+"data/validate/report.py" = ["E501"]  # report prose
+"backend/app/integrations/appeears.py" = ["E501"]

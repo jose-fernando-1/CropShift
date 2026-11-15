@@ -1,0 +1,12 @@
+crop_id,ficha_row,name_en,name_pt,family,pam_crop,zarc_name
+cowpea,Feijão-caupi,Cowpea,Feijão-caupi,Fabaceae,feijao,Feijão Caupi
+peanut,Amendoim,Peanut,Amendoim,Fabaceae,amendoim,Amendoim
+sorghum,Sorgo (grão),Grain sorghum,Sorgo granífero,Poaceae,sorgo,Sorgo Granífero
+maize,Milho (grão),Maize (1st season),Milho (1ª safra),Poaceae,milho,Milho 1ª Safra
+common_bean,Feijão comum,Common bean,Feijão comum,Fabaceae,feijao,Feijão 2ª Safra
+sunflower,Girassol,Sunflower,Girassol,Asteraceae,,Girassol
+castor,Mamona,Castor bean,Mamona,Euphorbiaceae,mamona,Mamona
+cotton,Algodão,Cotton,Algodão,Malvaceae,algodao_herb,Algodão Herbáceo
+pearl_millet,Milheto/painço,Pearl millet,Milheto,Poaceae,,
+cassava,Mandioca (ano 1),Cassava (year 1),Mandioca (1º ano),Euphorbiaceae,mandioca,
+sweet_potato,Batata-doce,Sweet potato,Batata-doce,Convolvulaceae,batata_doce,

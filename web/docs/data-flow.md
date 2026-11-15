@@ -13,7 +13,7 @@ flowchart TD
   H -->|"API_MODE=mock (default)"| M["Mock handlers<br/>src/mocks/handlers.ts"]
   M --> F[("Fixtures<br/>mock-data/*.json")]
   H -->|"API_MODE=live"| P["Live proxy<br/>src/lib/server/live-proxy.ts"]
-  P -->|"API_ORIGIN"| A["FastAPI backend<br/>(not built yet)"]
+  P -->|"API_ORIGIN"| A["FastAPI backend<br/>backend/app"]
   C -.->|"every call"| L["Request log<br/>inspector"]
 ```
 
@@ -70,7 +70,7 @@ Rules that are also mock behavior, not real engine output:
 
 ## Swap the mock for the real API
 
-1. Run the FastAPI backend implementing [the contract](../../contract/README.md).
+1. Run the FastAPI backend implementing [the contract](../../contract/README.md) (`make stack`, or `make run`; see [the backend README](../../backend/README.md)).
 2. Start the web with `API_MODE=live` and `API_ORIGIN=<backend origin>` (see [the env table](../README.md#environment-variables)). No rebuild.
 3. Check `GET /api/health` returns the backend's `/health` payload with `mock: false`.
 

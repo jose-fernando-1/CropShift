@@ -1,6 +1,17 @@
-# Cropshift: local/production stack.
-#   docker compose up --build web          -> http://localhost:3000 (mock API)
-# To use the real backend, uncomment `api`, set API_MODE=live on `web`.
+# Cropshift stack.
+#
+#   docker compose up --build web
+#       web alone on http://localhost:3000 with the in-process mock API (no database).
+#
+#   make stack            (or: API_MODE=live API_ORIGIN=http://api:8000 docker compose --profile live up --build)
+#       db + migrations + api + web in live mode: web http://localhost:3000, API http://localhost:8000/docs.
+#
+#   make seed             (or: docker compose --profile live run --rm seed)
+#       loads the committed demo dataset (data/demo) into the database. No network, no credentials.
+#
+# Never `docker compose down -v`: it deletes the PostgreSQL volume. Plain `down` keeps the data.
+# All values below have development defaults; copy .env.example to .env to override them.
+
 services:
   web:
     build:
@@ -14,13 +25,79 @@ services:
       SHOW_DATA_FLOW: ${SHOW_DATA_FLOW:-true}
     restart: unless-stopped
 
-  # api:
-  #   build:
-  #     context: ./app            # FastAPI backend (track A/C), not part of this branch
-  #   environment:
-  #     GEMINI_API_KEY: ${GEMINI_API_KEY:-}
-  #   expose:
-  #     - "8000"
-  #
-  # With the api service enabled, run the web in live mode:
-  #   API_MODE=live API_ORIGIN=http://api:8000 docker compose up --build
+  db:
+    profiles: [live]
+    image: postgis/postgis:16-3.5
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-rurotation}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_me}
+      POSTGRES_DB: ${POSTGRES_DB:-rurotation}
+    ports:
+      # Host port 5433 -> container 5432, so a local PostgreSQL on 5432 never conflicts.
+      - "127.0.0.1:${DB_PORT:-5433}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", 'pg_isready -h 127.0.0.1 -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  migrate:
+    profiles: [live]
+    image: cropshift-api
+    build: &api-build
+      context: .
+      dockerfile: backend/Dockerfile
+      target: runtime
+    command: ["alembic", "upgrade", "head"]
+    environment: &api-env
+      POSTGRES_HOST: db
+      POSTGRES_PORT: "5432"
+      POSTGRES_USER: ${POSTGRES_USER:-rurotation}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_me}
+      POSTGRES_DB: ${POSTGRES_DB:-rurotation}
+      APP_ENV: ${APP_ENV:-production}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      CORS_ORIGINS: ${CORS_ORIGINS:-}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  api:
+    profiles: [live]
+    image: cropshift-api
+    build: *api-build
+    environment:
+      <<: *api-env
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-}
+      GEMINI_FALLBACK_MODELS: ${GEMINI_FALLBACK_MODELS:-}
+      RATE_LIMIT_PER_MIN: ${RATE_LIMIT_PER_MIN:-60}
+      TRUSTED_PROXIES: ${TRUSTED_PROXIES:-}
+    ports:
+      - "127.0.0.1:${API_PORT:-8000}:8000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  seed:
+    profiles: [live]
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+      target: tools
+    command: ["load-demo", "--force"]
+    environment: *api-env
+    volumes:
+      - ./data:/srv/data:ro
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: "no"
+
+volumes:
+  postgres_data:

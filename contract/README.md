@@ -1,6 +1,6 @@
 # Cropshift API contract
 
-Version 0.1, DRAFT. To be ratified by the three tracks (Entrega 0) before the FastAPI backend implements it. Until then the web mock API is the reference implementation.
+Version 0.1, DRAFT. The FastAPI backend in [`../backend`](../backend/README.md) implements it and is tested against these schemas and examples. The web mock API stays the reference implementation until the three tracks (Entrega 0) ratify the contract.
 
 The source of truth is the zod schemas in `web/src/contract/schemas.ts`. The files here are generated from them and are never hand-edited:
 
@@ -62,6 +62,16 @@ Every error uses the envelope:
 Codes: `invalid_request`, `invalid_coordinates`, `out_of_coverage`, `not_found`, `no_data`, `upstream_unavailable`, `rate_limited`, `internal`. See `examples/api-error.out-of-coverage.json`.
 
 FastAPI must override its default `422 {"detail": [...]}` (the `RequestValidationError` handler) and its `HTTPException` handler so they return this envelope. The Next proxy wraps non-contract error bodies as a safety net, but the original code and message are lost when it does.
+
+## Backend notes
+
+Behavior of the implemented backend that the schemas do not express. See [../backend/README.md](../backend/README.md) for the full list.
+
+- Routes beyond the table above: `GET /api/v1/crops/{id}` (one crop, `404 not_found` when unknown) and `GET /api/v1/recommendations/{id}` (re-derives an analysis from its id). `GET /health/db` is a readiness check, outside the contract.
+- `analysis_id` is decodable and coordinate-free (`csa_<method>_<code>.<soil>.<u|d>.<r|i>.<u|d>.<p|m>.<0|1>`). Nothing is stored per analysis: the same id recomputes the same analysis.
+- Irrigated regime: every crop is excluded with `reason_code: no_data_for_regime` and `zarc` is `null`. Only the rainfed water balance is simulated.
+- The quality gate is applied per location: a crop is ranked only when the Spearman correlation between its 36 simulated frequencies and the ZARC window of that municipality and soil is at least 0.7, otherwise it is excluded as `gate_failed`; with no ZARC row it is `engine_not_run`. The crop-level `gate` object is the statewide median.
+- Error messages are localized per `Accept-Language` and never echo request values. Status codes: `invalid_request` and `invalid_coordinates` 422 (framework errors such as 405 keep their status), `out_of_coverage` 422, `not_found` 404, `no_data` 404, `rate_limited` 429, `upstream_unavailable` 503, `internal` 500.
 
 ## Using it from FastAPI
 
