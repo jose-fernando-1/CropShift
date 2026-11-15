@@ -1,31 +1,79 @@
+import logging
+import time
 
-from fastapi import Depends, FastAPI
-from sqlalchemy import text
-from sqlalchemy.orm import Session
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 
-from app.core.database import get_db
+from app.api.v1.health import router as health_router
+from app.api.v1.router import router as api_router
+from app.core.config import settings
+from app.core.exceptions import (
+    AppError,
+    app_error_handler,
+)
+from app.core.logging import configure_logging
+
+
+configure_logging()
+
+logger = logging.getLogger(__name__)
 
 app = FastAPI(
-    title="Rurotation API",
+    title=settings.app_name,
     description=(
-        "Agricultural environmental suitability "
-        "and planting window recommendation API"
+        "Agricultural environmental suitability and planting window recommendation API"
     ),
     version="0.1.0",
+    debug=settings.debug,
 )
 
 
-@app.get("/health", tags=["Health"])
-def health_check():
-    return {"status": "ok"}
+# CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.cors_origins,
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type", "Accept"],
+)
 
-@app.get("/health/db", tags=["Health"])
-def database_health(
-    db: Session = Depends(get_db),
+
+# Request logging
+@app.middleware("http")
+async def log_requests(
+    request: Request,
+    call_next,
 ):
-    db.execute(text("SELECT 1"))
+    start_time = time.perf_counter()
 
-    return {
-        "status": "ok",
-        "database": "connected",
-    }
+    response = await call_next(request)
+
+    duration_ms = (time.perf_counter() - start_time) * 1000
+
+    logger.info(
+        "%s %s | %s | %.2f ms",
+        request.method,
+        request.url.path,
+        response.status_code,
+        duration_ms,
+    )
+
+    return response
+
+
+# Error handling
+app.add_exception_handler(
+    AppError,
+    app_error_handler,
+)
+
+
+# Operational endpoints
+app.include_router(health_router)
+
+
+# Versioned API
+app.include_router(
+    api_router,
+    prefix=settings.api_v1_prefix,
+)
