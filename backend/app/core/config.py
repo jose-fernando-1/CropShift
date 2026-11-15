@@ -8,6 +8,11 @@ BACKEND_DIR = Path(__file__).resolve().parents[2]
 REPO_ROOT = BACKEND_DIR.parent
 
 
+# Used after the configured models. Names change as Google retires and adds models, so `python -m data doctor`
+# checks the configured chain with real calls; override with GEMINI_MODEL / GEMINI_FALLBACK_MODELS.
+DEFAULT_GEMINI_MODELS = ["gemini-3.6-flash", "gemini-3.5-flash-lite", "gemini-3.8-flash"]
+
+
 class Settings(BaseSettings):
     """Runtime configuration, read from the environment and `backend/.env`.
 
@@ -49,10 +54,12 @@ class Settings(BaseSettings):
 
     # Optional Gemini explanation layer; without a key the template is used.
     gemini_api_key: SecretStr | None = None
-    gemini_model: str = ""
-    gemini_timeout_s: float = 20.0
+    gemini_model: str = ""  # first choice
+    gemini_fallback_models: list[str] = []  # tried in order when the first choice fails (retired, overloaded, quota)
+    gemini_timeout_s: float = 12.0  # per model call
+    gemini_total_timeout_s: float = 30.0  # budget for the whole chain, so /explain never waits longer than this
 
-    @field_validator("cors_origins", "trusted_proxies", mode="before")
+    @field_validator("cors_origins", "trusted_proxies", "gemini_fallback_models", mode="before")
     @classmethod
     def split_comma_list(cls, value):
         if isinstance(value, str):
@@ -63,6 +70,12 @@ class Settings(BaseSettings):
     @classmethod
     def empty_key_is_none(cls, value):
         return value or None
+
+    @property
+    def gemini_models(self) -> list[str]:
+        """Ordered, de-duplicated model chain: the chosen model, its fallbacks, then the built-in defaults."""
+        chain = [m for m in [self.gemini_model, *self.gemini_fallback_models, *DEFAULT_GEMINI_MODELS] if m]
+        return list(dict.fromkeys(chain))
 
     @model_validator(mode="after")
     def compose_database_url(self):

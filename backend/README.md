@@ -47,9 +47,11 @@ Read from the environment and `backend/.env` (copy `backend/.env.example`; git-i
 | `POSTGRES_HOST`, `POSTGRES_PORT` | `localhost`, `5433` | Host port 5433 maps to 5432 in the `db` container. Inside compose the host is `db` and the port 5432. |
 | `RATE_LIMIT_PER_MIN` | `60` | Token bucket per client IP on the POST routes. `0` disables it. |
 | `TRUSTED_PROXIES` | empty | Peer IPs whose `X-Forwarded-For` is believed. Without it the direct peer IP is the client. |
-| `GEMINI_API_KEY` | empty | Enables AI-written explanations together with `GEMINI_MODEL`. Secret: never commit it. See [../docs/api-keys.md](../docs/api-keys.md). |
-| `GEMINI_MODEL` | empty | Gemini model name. |
-| `GEMINI_TIMEOUT_S` | `20.0` | Gemini call timeout in seconds. |
+| `GEMINI_API_KEY` | empty | Enables AI-written explanations (the model chain below is tried in order). Secret: never commit it. See [../docs/api-keys.md](../docs/api-keys.md). |
+| `GEMINI_MODEL` | empty | First-choice Gemini model. |
+| `GEMINI_FALLBACK_MODELS` | empty | Comma-separated models tried in order when the previous one fails (retired, 5xx, timeout, quota, bad JSON). Built-in defaults (`gemini-3.6-flash`, `gemini-3.5-flash-lite`, `gemini-3.8-flash`) are appended; duplicates are dropped. |
+| `GEMINI_TIMEOUT_S` | `12.0` | Timeout of one model call in seconds. |
+| `GEMINI_TOTAL_TIMEOUT_S` | `30.0` | Budget for the whole chain; `/explain` never waits longer, then answers with the template. A model that just failed is skipped for 60 s. |
 
 The rate limiter is in-process, so it assumes one uvicorn worker (the compose default); behind several workers limit at the proxy.
 
@@ -79,7 +81,7 @@ Behavior worth knowing:
 - The quality gate runs per location: the Spearman correlation between a crop's 36 simulated frequencies and the ZARC window at that municipality and soil must be at least 0.7, else `gate_failed`; no ZARC row gives `engine_not_run`. The `gate` in the crops response is the statewide median written by `python -m data validate gate`.
 - Crops are ranked by the highest mean frequency over any 3 consecutive dekads (wrapping), ties by `crop_id`.
 - `analysis_id` is `csa_<method>_<code>.<soil>.<u|d>.<r|i>.<u|d>.<p|m>.<0|1>`: municipality code, soil class and source, regime and source, input mode, near-centroid flag. It holds no coordinates and nothing is stored per analysis.
-- Explanations: the template is deterministic. With `GEMINI_API_KEY` and `GEMINI_MODEL` set, Gemini rewrites the already computed payload; the answer is discarded for the template if it fails validation, states a percentage that is not derivable from the payload, or the call fails. Accepted answers are cached in memory per (id, language). Gemini receives no coordinates or personal data.
+- Explanations: the template is deterministic. With `GEMINI_API_KEY` set, Gemini (through the model chain above) rewrites the already computed payload; the answer is discarded for the template if it fails validation, states a percentage that is not derivable from the payload, or the call fails. Accepted answers are cached in memory per (id, language). Gemini receives no coordinates or personal data.
 - ML is scaffolded only: every ranked crop has `flags.ml_applied = false`. `app/engines/calibration/` holds the `Calibrator` interface, an identity implementation and the documented feature list; the recommendation service passes every curve through a `Calibrator`, which is the identity one today. Plan: [../data/ml/README.md](../data/ml/README.md).
 
 ## Errors

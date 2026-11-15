@@ -8,6 +8,7 @@ from dataclasses import dataclass
 
 import httpx
 
+from app.core.config import DEFAULT_GEMINI_MODELS
 from data._common.env import load_env, secret
 from data._common.http import ExternalServiceError, get_with_retry, make_client
 
@@ -116,36 +117,43 @@ def check_gemini(client: httpx.Client) -> Check:
             "GEMINI_API_KEY not set",
             "Optional: create a key in Google AI Studio, put it in backend/.env. Without it the template is used.",
         )
-    response = client.get(GEMINI_MODELS_URL, params={"pageSize": 100}, headers={"x-goog-api-key": key})
-    if response.status_code != 200:
+    listing = client.get(GEMINI_MODELS_URL, params={"pageSize": 200}, headers={"x-goog-api-key": key})
+    if listing.status_code != 200:
         return Check(
-            "Gemini API", FAIL, f"HTTP {response.status_code}", "Key rejected or the project has no API access."
+            "Gemini API", FAIL, f"HTTP {listing.status_code}", "Key rejected or the project has no API access."
         )
-    names = [m["name"].removeprefix("models/") for m in response.json().get("models", [])]
-    wanted = secret("GEMINI_MODEL")
-    flash = sorted(n for n in names if "flash" in n)
-    if wanted and wanted not in names:
+    offered = {m["name"].removeprefix("models/") for m in listing.json().get("models", [])}
+    chain = [
+        m
+        for m in [secret("GEMINI_MODEL"), *(secret("GEMINI_FALLBACK_MODELS") or "").split(","), *DEFAULT_GEMINI_MODELS]
+        if m
+    ]
+    chain = list(dict.fromkeys(m.strip() for m in chain))
+    answered, failed = [], []
+    for model in chain:
+        probe = client.post(
+            f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
+            headers={"x-goog-api-key": key},
+            json={"contents": [{"parts": [{"text": "Reply with the word ok."}]}]},
+        )
+        (answered if probe.status_code == 200 else failed).append(
+            model if probe.status_code == 200 else f"{model} (HTTP {probe.status_code})"
+        )
+    if not answered:
+        flash = sorted(n for n in offered if "flash" in n)
         return Check(
             "Gemini API",
             FAIL,
-            f"GEMINI_MODEL '{wanted}' not offered to this key",
-            f"Available flash models: {flash[:6]}",
+            f"no model of the chain answered: {failed}",
+            f"Set GEMINI_MODEL / GEMINI_FALLBACK_MODELS from: {flash[:8]}",
         )
-    if not wanted:
-        return Check("Gemini API", OK, "key works; GEMINI_MODEL not set", f"Set GEMINI_MODEL to one of: {flash[:6]}")
-    probe = client.post(
-        f"https://generativelanguage.googleapis.com/v1beta/models/{wanted}:generateContent",
-        headers={"x-goog-api-key": key},
-        json={"contents": [{"parts": [{"text": "Reply with the word ok."}]}]},
+    detail = f"chain answers: {answered}" + (f"; not answering now: {failed}" if failed else "")
+    hint = (
+        "A failing model is skipped for a minute and the next one is tried; the template is the last resort."
+        if failed
+        else ""
     )
-    if probe.status_code != 200:
-        return Check(
-            "Gemini API",
-            FAIL,
-            f"model '{wanted}' is listed but a test call returned HTTP {probe.status_code}",
-            f"Models can be retired for new users or overloaded. Try another one of: {flash[:6]}",
-        )
-    return Check("Gemini API", OK, f"key works; model '{wanted}' answered a test call")
+    return Check("Gemini API", OK, detail, hint)
 
 
 def check_database() -> Check:

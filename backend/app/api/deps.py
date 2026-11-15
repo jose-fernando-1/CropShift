@@ -69,10 +69,12 @@ _gemini_instance: GeminiExplainer | None = None
 
 
 def _gemini() -> GeminiExplainer | None:
-    """One Gemini client config per process; None (template only) without a key and a model."""
+    """One Gemini client config per process; None (template only) without a key."""
     global _gemini_instance
-    if _gemini_instance is None and settings.gemini_api_key and settings.gemini_model:
-        _gemini_instance = GeminiExplainer(settings.gemini_api_key, settings.gemini_model, settings.gemini_timeout_s)
+    if _gemini_instance is None and settings.gemini_api_key:
+        _gemini_instance = GeminiExplainer(
+            settings.gemini_api_key, settings.gemini_models, settings.gemini_timeout_s, settings.gemini_total_timeout_s
+        )
     return _gemini_instance
 
 

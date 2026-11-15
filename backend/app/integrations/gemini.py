@@ -7,6 +7,7 @@ Any failure returns None so the caller falls back to the deterministic template.
 
 import json
 import logging
+import time
 from typing import Any
 
 from pydantic import BaseModel, SecretStr
@@ -56,33 +57,63 @@ class AiExplanation(ContractModel):
 
 
 class GeminiExplainer:
-    def __init__(self, api_key: SecretStr, model: str, timeout_s: float):
+    """Tries an ordered chain of models: a retired, overloaded or rate-limited model falls through to the next."""
+
+    FAILURE_COOLDOWN_S = 60.0  # a model that just failed is skipped for this long, so users do not each pay its timeout
+
+    def __init__(
+        self, api_key: SecretStr, models: list[str], timeout_s: float, total_timeout_s: float, clock=time.monotonic
+    ):
         self._api_key = api_key
-        self.model = model
+        self.models = models
         self.timeout_s = timeout_s
+        self.total_timeout_s = total_timeout_s
+        self._clock = clock
+        self._skip_until: dict[str, float] = {}
+        self.last_model: str | None = None  # model that produced the latest answer
 
     def explain(self, recommendation: dict[str, Any], locale: Locale) -> AiExplanation | None:
-        """Ask Gemini for the explanation of `recommendation` (a JSON-able dict). None on any failure."""
-        try:
-            from google import genai
-            from google.genai import types
+        """Ask Gemini for the explanation of `recommendation` (a JSON-able dict). None when every model fails."""
+        deadline = self._clock() + self.total_timeout_s
+        for model in self.models:
+            remaining = deadline - self._clock()
+            if remaining < 2:
+                break
+            if self._skip_until.get(model, 0.0) > self._clock():
+                continue
+            try:
+                answer = self._call(model, recommendation, locale, min(self.timeout_s, remaining))
+            except Exception as exc:  # network, quota, 404/503, safety block, bad JSON: try the next model
+                self._skip_until[model] = self._clock() + self.FAILURE_COOLDOWN_S
+                status = getattr(exc, "code", None)  # HTTP status of an API error (no secret in it)
+                logger.warning(
+                    "Gemini model %s failed (%s %s); trying the next one", model, type(exc).__name__, status or ""
+                )
+                continue
+            self.last_model = model
+            return answer
+        logger.warning("Gemini explanation failed on every model; using the template")
+        return None
 
-            client = genai.Client(
-                api_key=self._api_key.get_secret_value(),
-                http_options=types.HttpOptions(api_version="v1beta", timeout=int(self.timeout_s * 1000)),
-            )
-            response = client.models.generate_content(
-                model=self.model,
-                contents=json.dumps(recommendation, ensure_ascii=False),
-                config=types.GenerateContentConfig(
-                    system_instruction=SYSTEM_INSTRUCTION[locale],
-                    response_mime_type="application/json",
-                    response_schema=_GeminiAnswer,
-                    temperature=0.2,
-                ),
-            )
-            answer = _GeminiAnswer.model_validate_json(response.text or "")
-            return AiExplanation.model_validate(answer.model_dump())
-        except Exception as exc:  # network, quota, safety block, bad JSON: all mean "use the template"
-            logger.warning("Gemini explanation failed (%s); using the template", type(exc).__name__)
-            return None
+    def _call(self, model: str, recommendation: dict[str, Any], locale: Locale, timeout_s: float) -> AiExplanation:
+        from google import genai
+        from google.genai import types
+
+        client = genai.Client(
+            api_key=self._api_key.get_secret_value(),
+            http_options=types.HttpOptions(api_version="v1beta", timeout=int(timeout_s * 1000)),
+        )
+        response = client.models.generate_content(
+            model=model,
+            contents=json.dumps(recommendation, ensure_ascii=False),
+            config=types.GenerateContentConfig(
+                system_instruction=SYSTEM_INSTRUCTION[locale],
+                response_mime_type="application/json",
+                response_schema=_GeminiAnswer,
+                temperature=0.2,
+            ),
+        )
+        answer = _GeminiAnswer.model_validate_json(response.text or "")
+        if not answer.sections:
+            raise ValueError("empty answer")
+        return AiExplanation.model_validate(answer.model_dump())

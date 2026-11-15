@@ -32,9 +32,10 @@ EARTHDATA_PASSWORD=your_password
 ```bash
 GEMINI_API_KEY=your_key
 GEMINI_MODEL=a_model_offered_to_your_key
+GEMINI_FALLBACK_MODELS=second_choice,third_choice
 ```
 
-`doctor` lists the flash models your key can use and flags a `GEMINI_MODEL` that is not offered. With either value empty, `POST /api/v1/recommendations/{id}/explain` returns the deterministic template.
+`doctor` makes a real test call to every model of the chain and reports which answer. With either value empty, `POST /api/v1/recommendations/{id}/explain` returns the deterministic template.
 
 Privacy: the free tier of the Gemini API may use content to improve Google products, so the backend sends only the already computed, coordinate-free recommendation JSON, never coordinates or personal data. Answers are validated and any percentage not derivable from the payload makes the backend fall back to the template. Details: [../backend/README.md](../backend/README.md).
 
@@ -47,3 +48,7 @@ Privacy: the free tier of the Gemini API may use content to improve Google produ
 ## Gemini model choice
 
 `GEMINI_MODEL` must be a model your key can still call: Google retires models for new accounts (`gemini-2.5-flash` returned 404 on 2026-11-15) and large ones can answer `503 high demand`. `python -m data doctor` makes one tiny test call with the configured model and fails if it does not answer. On 2026-11-15 `gemini-3.6-flash` and `gemini-3.5-flash-lite` answered in 4-7 s while `gemini-3.8-flash` was overloaded. The API always falls back to the template when Gemini fails, so an unavailable model never breaks `/explain`.
+
+### Fallback chain
+
+The API tries `GEMINI_MODEL`, then each of `GEMINI_FALLBACK_MODELS`, then built-in defaults, in that order, with a 12 s limit per call and 30 s for the whole chain. A model that just failed (retired 404, overloaded 503, timeout 504, quota, malformed JSON) is skipped for 60 s, so users do not each wait for it. If every model fails, `/explain` returns the deterministic template. Verified live on 2026-11-15: with `gemini-3.6-flash` answering 504, `gemini-3.5-flash-lite` produced the AI explanation in 14 s.
