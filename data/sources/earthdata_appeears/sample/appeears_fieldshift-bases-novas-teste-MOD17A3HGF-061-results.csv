@@ -1,0 +1,3 @@
+Category,ID,Latitude,Longitude,Date,MODIS_Tile,MOD17A3HGF_061_Line_Y_500m,MOD17A3HGF_061_Sample_X_500m,MOD17A3HGF_061_Npp_500m,MOD17A3HGF_061_Npp_QC_500m,MOD17A3HGF_061_Npp_QC_500m_bitmask,MOD17A3HGF_061_Npp_QC_500m_ContinuousLayer,MOD17A3HGF_061_Npp_QC_500m_ContinuousLayer_Description
+ponto_teste,0,-8.6,-36.4,2023-01-01,h14v09,2064.0,962.0,1.0228,36.0,0b00100100,0b0,Continuous
+ponto_teste,0,-8.6,-36.4,2024-01-01,h14v09,2064.0,962.0,0.9696,27.0,0b00011011,0b0,Continuous

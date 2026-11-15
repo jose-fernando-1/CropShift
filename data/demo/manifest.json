@@ -1,0 +1,72 @@
+{
+  "built_at": "2026-11-15T22:04:47+00:00",
+  "note": "Derived tables of the Cropshift pipeline. See data/README.md. Loaded by `python -m data load-demo`.",
+  "tables": [
+    {
+      "name": "crops",
+      "rows": 11,
+      "sha256": "745572b2c38829079a296798a2103303f68290178075f7e325ac7a07b66a351b",
+      "bytes": 926
+    },
+    {
+      "name": "crop_requirements",
+      "rows": 11,
+      "sha256": "216e95ac31710c3a85ac339d81ffeb3555a9910fec1849f1f7f542839c6ee0fd",
+      "bytes": 868
+    },
+    {
+      "name": "crop_growth_stages",
+      "rows": 44,
+      "sha256": "2bc8e6b9ddd268b6225b8b806cfd884d1be392013f1d73c1919faa10dc7d5d62",
+      "bytes": 598
+    },
+    {
+      "name": "crop_parameter_sources",
+      "rows": 86,
+      "sha256": "9b2af86529647d1ecc966cf83a68f7a0e1bd4c6f6e3553d4b0fd67c04e93a13a",
+      "bytes": 1237
+    },
+    {
+      "name": "climate_cells",
+      "rows": 38,
+      "sha256": "e4263d51666c937fe15995e091b8b6ac50d55d00c03e64b70de0c0704f9b01a6",
+      "bytes": 387
+    },
+    {
+      "name": "municipalities",
+      "rows": 185,
+      "sha256": "bff2c9cd8219631fd946119a554acbd79b86eb5bdabdc86b483e92e3b57970ce",
+      "bytes": 31751
+    },
+    {
+      "name": "zarc_windows",
+      "rows": 3594,
+      "sha256": "8f02c07b4a393a56623108f444ab2086684222c513debda797a25294b7267c7c",
+      "bytes": 32689
+    },
+    {
+      "name": "pam_yields",
+      "rows": 10855,
+      "sha256": "b7d66adc11d9dbf860fc54db46f13497ee3e854ec983bfbc3e60813241e63436",
+      "bytes": 94761
+    },
+    {
+      "name": "soil_profiles",
+      "rows": 555,
+      "sha256": "3468dc4f303946150d58658cd71a2b7e3b1a82d96c3df33d938c47f7bf8b4c7c",
+      "bytes": 8973
+    },
+    {
+      "name": "planting_window_results",
+      "rows": 45144,
+      "sha256": "abc242ed8a91078f08a71d67bb75bbfe53dced7142109524e3899a98104464a5",
+      "bytes": 1972257
+    },
+    {
+      "name": "dataset_versions",
+      "rows": 6,
+      "sha256": "3d3ee4fad6a3ff3f47c3fed2711c9c4cc6f74fd20b4513f2cb3a1208a78aa7e4",
+      "bytes": 561
+    }
+  ]
+}

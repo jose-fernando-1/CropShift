@@ -1,0 +1,6 @@
+# Tools for the data/ extraction + ETL + validation scripts, on top of backend/requirements.txt.
+# Extraction scripts themselves need only httpx (already a backend dependency).
+pandas==3.1.1
+pyarrow==26.0.1
+python-dateutil==4.0.0
+scipy==1.18.1
