@@ -4,11 +4,11 @@
  */
 import type { z } from "zod";
 import * as S from "@/contract/schemas";
-import type { ErrorCode, SoilClass } from "@/contract/types";
+import type { CropsResponse, ErrorCode, SoilClass } from "@/contract/types";
 import { localeFromAcceptLanguage, type Locale } from "@/i18n";
 import { templateExplanation } from "@/lib/explain/template";
 import { buildRecommendation, cropName, decodeAnalysisId, type AnalysisParams } from "./build-recommendation";
-import { catalog, municipalityByCode } from "./data";
+import { catalog, municipalityByCode, requirements } from "./data";
 import { mockMessages } from "./messages";
 import { findMunicipality, isNearCentroid } from "./resolve";
 import { scenarioFrom } from "./scenarios";
@@ -43,9 +43,10 @@ function latency() {
   return ms > 0 ? new Promise((r) => setTimeout(r, ms)) : Promise.resolve();
 }
 
-function crops(locale: Locale) {
+/** The /v1/crops body; also written to contract/examples/crops.json. */
+export function cropCatalog(locale: Locale): CropsResponse {
   const notes = mockMessages(locale).gateNotes;
-  return ok(S.CropsResponse, {
+  return {
     contract_version: S.CONTRACT_VERSION,
     mock: true,
     crops: catalog.crops.map((c) => ({
@@ -65,8 +66,13 @@ function crops(locale: Locale) {
       },
       has_zarc: c.crop_id !== "common_bean",
       has_pam: c.pam_crop !== null,
+      requirements: requirements[c.crop_id] ?? null,
     })),
-  });
+  };
+}
+
+function crops(locale: Locale) {
+  return ok(S.CropsResponse, cropCatalog(locale));
 }
 
 async function resolve(request: Request, locale: Locale) {

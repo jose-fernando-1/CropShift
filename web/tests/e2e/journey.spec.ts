@@ -28,6 +28,12 @@ test.describe("main journey (mock mode)", () => {
     await expect(page).not.toHaveURL(/crop=/);
     await expect(page.getByTestId("mock-banner")).toBeVisible();
   });
+    const requirements = sheet.getByTestId("crop-requirements");
+    await expect(requirements.getByRole("heading", { name: "Crop requirements" })).toBeVisible();
+    await expect(requirements.getByRole("row", { name: /Depletion fraction p.*0\.45/ })).toBeVisible();
+    await expect(requirements.getByRole("row", { name: /Optimal temperature\s*25–35 °C/ })).toBeVisible();
+    const axe = await new AxeBuilder({ page }).include('[role="dialog"]').analyze();
+    expect(axe.violations.filter((v) => v.impact === "serious" || v.impact === "critical").map((v) => v.id)).toEqual([]);
 
   test("municipality search", async ({ page }) => {
     await page.goto("/");

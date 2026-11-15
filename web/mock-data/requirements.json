@@ -1,0 +1,439 @@
+{
+  "cowpea": {
+    "fao56": {
+      "stage_days": {
+        "initial": 20,
+        "development": 30,
+        "mid_season": 30,
+        "late_season": 20,
+        "total": 110
+      },
+      "kc": {
+        "initial": null,
+        "mid": {
+          "min": 1.05,
+          "max": 1.05
+        },
+        "end": {
+          "min": 0.35,
+          "max": 0.6
+        }
+      },
+      "max_height_m": {
+        "min": 0.4,
+        "max": 0.4
+      },
+      "max_root_depth_m": {
+        "min": 0.6,
+        "max": 1
+      },
+      "depletion_fraction": 0.45,
+      "salinity_threshold_ece_ds_m": {
+        "min": 4.9,
+        "max": 4.9
+      }
+    },
+    "ecocrop": {
+      "species": "Vigna unguiculata",
+      "temperature_optimal_c": {
+        "min": 25,
+        "max": 35
+      },
+      "temperature_absolute_c": {
+        "min": 15,
+        "max": 40
+      },
+      "rainfall_optimal_mm": {
+        "min": 500,
+        "max": 1500
+      },
+      "rainfall_absolute_mm": {
+        "min": 300,
+        "max": 4100
+      },
+      "ph_optimal": {
+        "min": 5.5,
+        "max": 7.5
+      },
+      "cycle_days": {
+        "min": 30,
+        "max": 240
+      },
+      "tolerances": [
+        "drought"
+      ]
+    }
+  },
+  "common_bean": {
+    "fao56": {
+      "stage_days": {
+        "initial": 20,
+        "development": 30,
+        "mid_season": 40,
+        "late_season": 20,
+        "total": 110
+      },
+      "kc": {
+        "initial": 0.4,
+        "mid": {
+          "min": 1.15,
+          "max": 1.15
+        },
+        "end": {
+          "min": 0.35,
+          "max": 0.35
+        }
+      },
+      "max_height_m": {
+        "min": 0.4,
+        "max": 0.4
+      },
+      "max_root_depth_m": {
+        "min": 0.6,
+        "max": 0.9
+      },
+      "depletion_fraction": 0.45,
+      "salinity_threshold_ece_ds_m": {
+        "min": 1,
+        "max": 1
+      }
+    },
+    "ecocrop": {
+      "species": "Phaseolus vulgaris",
+      "temperature_optimal_c": {
+        "min": 16,
+        "max": 25
+      },
+      "temperature_absolute_c": {
+        "min": 7,
+        "max": 32
+      },
+      "rainfall_optimal_mm": {
+        "min": 500,
+        "max": 2000
+      },
+      "rainfall_absolute_mm": {
+        "min": 300,
+        "max": 4300
+      },
+      "ph_optimal": {
+        "min": 5.5,
+        "max": 7.5
+      },
+      "cycle_days": {
+        "min": 50,
+        "max": 270
+      },
+      "tolerances": []
+    }
+  },
+  "peanut": {
+    "fao56": {
+      "stage_days": {
+        "initial": 25,
+        "development": 35,
+        "mid_season": 45,
+        "late_season": 25,
+        "total": 130
+      },
+      "kc": {
+        "initial": null,
+        "mid": {
+          "min": 1.15,
+          "max": 1.15
+        },
+        "end": {
+          "min": 0.6,
+          "max": 0.6
+        }
+      },
+      "max_height_m": {
+        "min": 0.4,
+        "max": 0.4
+      },
+      "max_root_depth_m": {
+        "min": 0.5,
+        "max": 1
+      },
+      "depletion_fraction": 0.5,
+      "salinity_threshold_ece_ds_m": {
+        "min": 3.2,
+        "max": 3.2
+      }
+    },
+    "ecocrop": {
+      "species": "Arachis hypogaea",
+      "temperature_optimal_c": {
+        "min": 22,
+        "max": 32
+      },
+      "temperature_absolute_c": {
+        "min": 10,
+        "max": 45
+      },
+      "rainfall_optimal_mm": {
+        "min": 600,
+        "max": 1500
+      },
+      "rainfall_absolute_mm": {
+        "min": 400,
+        "max": 4000
+      },
+      "ph_optimal": {
+        "min": 5.5,
+        "max": 6.5
+      },
+      "cycle_days": {
+        "min": 90,
+        "max": 150
+      },
+      "tolerances": []
+    }
+  },
+  "maize": {
+    "fao56": {
+      "stage_days": {
+        "initial": 30,
+        "development": 50,
+        "mid_season": 60,
+        "late_season": 40,
+        "total": 180
+      },
+      "kc": {
+        "initial": null,
+        "mid": {
+          "min": 1.2,
+          "max": 1.2
+        },
+        "end": {
+          "min": 0.35,
+          "max": 0.6
+        }
+      },
+      "max_height_m": {
+        "min": 2,
+        "max": 2
+      },
+      "max_root_depth_m": {
+        "min": 1,
+        "max": 1.7
+      },
+      "depletion_fraction": 0.55,
+      "salinity_threshold_ece_ds_m": {
+        "min": 1.7,
+        "max": 1.7
+      }
+    },
+    "ecocrop": {
+      "species": "Zea mays",
+      "temperature_optimal_c": {
+        "min": 18,
+        "max": 33
+      },
+      "temperature_absolute_c": {
+        "min": 10,
+        "max": 47
+      },
+      "rainfall_optimal_mm": {
+        "min": 600,
+        "max": 1200
+      },
+      "rainfall_absolute_mm": {
+        "min": 400,
+        "max": 1800
+      },
+      "ph_optimal": {
+        "min": 5,
+        "max": 7
+      },
+      "cycle_days": {
+        "min": 65,
+        "max": 365
+      },
+      "tolerances": []
+    }
+  },
+  "sorghum": {
+    "fao56": {
+      "stage_days": {
+        "initial": 20,
+        "development": 35,
+        "mid_season": 40,
+        "late_season": 30,
+        "total": 130
+      },
+      "kc": {
+        "initial": null,
+        "mid": {
+          "min": 1,
+          "max": 1.1
+        },
+        "end": {
+          "min": 0.55,
+          "max": 0.55
+        }
+      },
+      "max_height_m": {
+        "min": 2,
+        "max": 4
+      },
+      "max_root_depth_m": {
+        "min": 1,
+        "max": 2
+      },
+      "depletion_fraction": 0.55,
+      "salinity_threshold_ece_ds_m": {
+        "min": 6.8,
+        "max": 6.8
+      }
+    },
+    "ecocrop": {
+      "species": "Sorghum bicolor",
+      "temperature_optimal_c": {
+        "min": 22,
+        "max": 35
+      },
+      "temperature_absolute_c": {
+        "min": 8,
+        "max": 40
+      },
+      "rainfall_optimal_mm": {
+        "min": 400,
+        "max": 600
+      },
+      "rainfall_absolute_mm": {
+        "min": 300,
+        "max": 700
+      },
+      "ph_optimal": {
+        "min": 5.5,
+        "max": 7.5
+      },
+      "cycle_days": {
+        "min": 90,
+        "max": 300
+      },
+      "tolerances": []
+    }
+  },
+  "castor": {
+    "fao56": {
+      "stage_days": {
+        "initial": 25,
+        "development": 40,
+        "mid_season": 65,
+        "late_season": 50,
+        "total": 180
+      },
+      "kc": {
+        "initial": null,
+        "mid": {
+          "min": 1.15,
+          "max": 1.15
+        },
+        "end": {
+          "min": 0.55,
+          "max": 0.55
+        }
+      },
+      "max_height_m": {
+        "min": 0.3,
+        "max": 0.3
+      },
+      "max_root_depth_m": {
+        "min": 1,
+        "max": 2
+      },
+      "depletion_fraction": 0.5,
+      "salinity_threshold_ece_ds_m": null
+    },
+    "ecocrop": {
+      "species": "Ricinus communis",
+      "temperature_optimal_c": {
+        "min": 20,
+        "max": 30
+      },
+      "temperature_absolute_c": {
+        "min": 15,
+        "max": 39
+      },
+      "rainfall_optimal_mm": {
+        "min": 600,
+        "max": 1000
+      },
+      "rainfall_absolute_mm": {
+        "min": 400,
+        "max": 2000
+      },
+      "ph_optimal": {
+        "min": 5,
+        "max": 6.5
+      },
+      "cycle_days": {
+        "min": 140,
+        "max": 210
+      },
+      "tolerances": []
+    }
+  },
+  "sunflower": {
+    "fao56": {
+      "stage_days": {
+        "initial": 25,
+        "development": 35,
+        "mid_season": 45,
+        "late_season": 25,
+        "total": 130
+      },
+      "kc": {
+        "initial": null,
+        "mid": {
+          "min": 1,
+          "max": 1.15
+        },
+        "end": {
+          "min": 0.35,
+          "max": 0.35
+        }
+      },
+      "max_height_m": {
+        "min": 2,
+        "max": 2
+      },
+      "max_root_depth_m": {
+        "min": 0.8,
+        "max": 1.5
+      },
+      "depletion_fraction": 0.45,
+      "salinity_threshold_ece_ds_m": null
+    },
+    "ecocrop": {
+      "species": "Helianthus annuus",
+      "temperature_optimal_c": {
+        "min": 17,
+        "max": 34
+      },
+      "temperature_absolute_c": {
+        "min": 5,
+        "max": 45
+      },
+      "rainfall_optimal_mm": {
+        "min": 600,
+        "max": 1000
+      },
+      "rainfall_absolute_mm": {
+        "min": 300,
+        "max": 1600
+      },
+      "ph_optimal": {
+        "min": 6,
+        "max": 7.5
+      },
+      "cycle_days": {
+        "min": 70,
+        "max": 200
+      },
+      "tolerances": []
+    }
+  }
+}

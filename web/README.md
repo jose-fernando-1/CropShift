@@ -90,11 +90,11 @@ Run from `web/`.
 | `npm run e2e` | Playwright E2E. |
 | `npm run check` | lint, typecheck, test and `gen:contract -- --check`. |
 | `npm run gen:geo` | Downloads the Pernambuco municipal mesh and names from public IBGE APIs; writes `public/geo/pe-municipalities.json` and `mock-data/municipalities.json`. |
-| `npm run gen:fixtures -- --zarc <csv> --pam <csv>` | Compacts the real ZARC and PAM CSVs into `mock-data/zarc.json` and `mock-data/pam.json`. Both args are required. |
+| `npm run gen:fixtures -- [--zarc <csv>] [--pam <csv>] [--ficha <csv>]` | Compacts the real ZARC, PAM and crop-sheet CSVs into `mock-data/zarc.json`, `mock-data/pam.json` and `mock-data/requirements.json`. Every arg is optional; only the outputs for the inputs given are written. |
 | `npm run gen:contract` | Regenerates `../contract/` (JSON Schemas and examples) from the zod schemas. |
 | `npm run gen:contract -- --check` | Fails if the files in `../contract/` are stale. |
 
-`gen:fixtures` inputs are the challenge data CSVs, not stored in the repo (the maintainers keep them in `~/Downloads`): the ZARC risk table for Pernambuco, season 2025/26 (`zarc_tabua_risco_safra2025_2026_PE.csv`, `;`-separated) and the PAM yield table 2005-2024 (`ibge_pam_PE_2005_2024_culturas_chave.csv`). The generated JSON files are committed; you only need the CSVs to rebuild them.
+`gen:fixtures` inputs are the challenge data CSVs, not stored in the repo (the maintainers keep them in `~/Downloads`): the ZARC risk table for Pernambuco, season 2025/26 (`zarc_tabua_risco_safra2025_2026_PE.csv`, `;`-separated), the PAM yield table 2005-2024 (`ibge_pam_PE_2005_2024_culturas_chave.csv`) and the crop requirements sheet (`ficha_exigencias_culturas_FAO56_EcoCrop.csv`, FAO-56 and FAO EcoCrop). The generated JSON files are committed; you only need the CSVs to rebuild them.
 
 ## Languages
 
@@ -152,7 +152,7 @@ web/
       state/        analysis state (URL params)
     mocks/          mock API: handlers, engine, synthetic curves, scenarios, localized text
     i18n/           locales, message catalogs (en, pt-BR), locale store and hooks
-  mock-data/        fixtures: catalog, municipalities, zarc, pam, prototype
+  mock-data/        fixtures: catalog, municipalities, zarc, pam, requirements, prototype
   public/geo/       municipal mesh for the map
   scripts/          generators (geo, fixtures, contract), standalone starter
   tests/            unit (Vitest) and e2e (Playwright)

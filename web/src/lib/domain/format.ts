@@ -17,3 +17,13 @@ export function kgPerHaNumber(value: number, locale: Locale = "en") {
 export function kgPerHa(value: number, locale: Locale = "en") {
   return `${kgPerHaNumber(value, locale)} kg/ha`;
 }
+
+/** Up to `digits` decimals in the locale's style: "0.45" (en) / "0,45" (pt-BR). */
+export function decimal(value: number, locale: Locale = "en", digits = 2) {
+  return value.toLocaleString(getMessages(locale).numberLocale, { maximumFractionDigits: digits, useGrouping: false });
+}
+
+/** "0.6–1" or "1.05" when min == max. */
+export function numberRange(range: { min: number; max: number }, locale: Locale = "en") {
+  return range.min === range.max ? decimal(range.min, locale) : `${decimal(range.min, locale)}–${decimal(range.max, locale)}`;
+}

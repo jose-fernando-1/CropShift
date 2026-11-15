@@ -16,6 +16,20 @@ describe("mock API", () => {
     expect(crops.crops.find((c) => c.crop_id === "castor")?.gate.status).toBe("failed");
   });
 
+  it("serves the raw crop sheet with every catalog crop", async () => {
+    const crops = S.CropsResponse.parse(await (await get("v1/crops")).json());
+    for (const c of crops.crops) expect(c.requirements, c.crop_id).not.toBeNull();
+    const cowpea = crops.crops.find((c) => c.crop_id === "cowpea")!.requirements!;
+    // Values as published in the FAO-56/EcoCrop sheet, including a total that differs from the stage sum.
+    expect(cowpea.fao56.stage_days).toEqual({ initial: 20, development: 30, mid_season: 30, late_season: 20, total: 110 });
+    expect(cowpea.fao56.kc).toEqual({ initial: null, mid: { min: 1.05, max: 1.05 }, end: { min: 0.35, max: 0.6 } });
+    expect(cowpea.fao56.depletion_fraction).toBe(0.45);
+    expect(cowpea.ecocrop.temperature_optimal_c).toEqual({ min: 25, max: 35 });
+    expect(cowpea.ecocrop.tolerances).toEqual(["drought"]);
+    const sunflower = crops.crops.find((c) => c.crop_id === "sunflower")!.requirements!;
+    expect(sunflower.fao56.salinity_threshold_ece_ds_m).toBeNull();
+  });
+
   it("resolves covered and out-of-state points", async () => {
     const covered = S.ResolveResponse.parse(await (await post("v1/locations/resolve", { lat: -8.6, lon: -36.4 })).json());
     expect(covered.coverage).toBe("covered");

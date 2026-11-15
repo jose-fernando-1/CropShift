@@ -3,7 +3,7 @@ import * as S from "@/contract/schemas";
 import { getMessages, localeFromAcceptLanguage } from "@/i18n";
 import { en } from "@/i18n/messages/en";
 import { dekadLabel, windowLabel } from "@/lib/domain/dekads";
-import { kgPerHa } from "@/lib/domain/format";
+import { kgPerHa, numberRange } from "@/lib/domain/format";
 import { templateExplanation } from "@/lib/explain/template";
 import { buildRecommendation, type AnalysisParams } from "@/mocks/build-recommendation";
 import { municipalityByCode } from "@/mocks/data";
@@ -106,5 +106,14 @@ describe("pt-BR template phrasing", () => {
     const text = templateExplanation(rec, new Date(0), "pt-BR").sections[0].paragraphs[0];
     expect(text).toContain("e cultivo irrigado,");
     expect(text).not.toContain("cultivo de irrigado");
+  });
+});
+
+describe("locale number formats for the crop sheet", () => {
+  it("formats raw ranges and single values", () => {
+    expect(numberRange({ min: 0.35, max: 0.6 }, "en")).toBe("0.35–0.6");
+    expect(numberRange({ min: 0.35, max: 0.6 }, "pt-BR")).toBe("0,35–0,6");
+    expect(numberRange({ min: 1.05, max: 1.05 }, "en")).toBe("1.05");
+    expect(numberRange({ min: 300, max: 4100 }, "pt-BR")).toBe("300–4100");
   });
 });

@@ -82,6 +82,324 @@
           },
           "has_pam": {
             "type": "boolean"
+          },
+          "requirements": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "fao56": {
+                    "type": "object",
+                    "properties": {
+                      "stage_days": {
+                        "type": "object",
+                        "properties": {
+                          "initial": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 9007199254740991
+                          },
+                          "development": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 9007199254740991
+                          },
+                          "mid_season": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 9007199254740991
+                          },
+                          "late_season": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 9007199254740991
+                          },
+                          "total": {
+                            "type": "integer",
+                            "exclusiveMinimum": 0,
+                            "maximum": 9007199254740991,
+                            "description": "as listed; may differ from the stage sum"
+                          }
+                        },
+                        "required": [
+                          "initial",
+                          "development",
+                          "mid_season",
+                          "late_season",
+                          "total"
+                        ],
+                        "additionalProperties": false,
+                        "description": "FAO-56 Table 11 stage lengths, days"
+                      },
+                      "kc": {
+                        "type": "object",
+                        "properties": {
+                          "initial": {
+                            "description": "null: not listed (FAO-56 derives Kc ini from wetting frequency)",
+                            "type": [
+                              "number",
+                              "null"
+                            ]
+                          },
+                          "mid": {
+                            "type": "object",
+                            "properties": {
+                              "min": {
+                                "type": "number"
+                              },
+                              "max": {
+                                "type": "number"
+                              }
+                            },
+                            "required": [
+                              "min",
+                              "max"
+                            ],
+                            "additionalProperties": false,
+                            "description": "inclusive range as the source lists it; min == max for a single value"
+                          },
+                          "end": {
+                            "type": "object",
+                            "properties": {
+                              "min": {
+                                "type": "number"
+                              },
+                              "max": {
+                                "type": "number"
+                              }
+                            },
+                            "required": [
+                              "min",
+                              "max"
+                            ],
+                            "additionalProperties": false,
+                            "description": "inclusive range as the source lists it; min == max for a single value"
+                          }
+                        },
+                        "required": [
+                          "initial",
+                          "mid",
+                          "end"
+                        ],
+                        "additionalProperties": false,
+                        "description": "FAO-56 single crop coefficients"
+                      },
+                      "max_height_m": {
+                        "type": "object",
+                        "properties": {
+                          "min": {
+                            "type": "number"
+                          },
+                          "max": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "min",
+                          "max"
+                        ],
+                        "additionalProperties": false,
+                        "description": "inclusive range as the source lists it; min == max for a single value"
+                      },
+                      "max_root_depth_m": {
+                        "type": "object",
+                        "properties": {
+                          "min": {
+                            "type": "number"
+                          },
+                          "max": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "min",
+                          "max"
+                        ],
+                        "additionalProperties": false,
+                        "description": "inclusive range as the source lists it; min == max for a single value"
+                      },
+                      "depletion_fraction": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1,
+                        "description": "FAO-56 p: share of available water used before stress"
+                      },
+                      "salinity_threshold_ece_ds_m": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "min": {
+                                "type": "number"
+                              },
+                              "max": {
+                                "type": "number"
+                              }
+                            },
+                            "required": [
+                              "min",
+                              "max"
+                            ],
+                            "additionalProperties": false,
+                            "description": "inclusive range as the source lists it; min == max for a single value"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "description": "soil salinity (ECe, dS/m) at which yield starts to drop"
+                      }
+                    },
+                    "required": [
+                      "stage_days",
+                      "kc",
+                      "max_height_m",
+                      "max_root_depth_m",
+                      "depletion_fraction",
+                      "salinity_threshold_ece_ds_m"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "ecocrop": {
+                    "type": "object",
+                    "properties": {
+                      "species": {
+                        "type": "string"
+                      },
+                      "temperature_optimal_c": {
+                        "type": "object",
+                        "properties": {
+                          "min": {
+                            "type": "number"
+                          },
+                          "max": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "min",
+                          "max"
+                        ],
+                        "additionalProperties": false,
+                        "description": "inclusive range as the source lists it; min == max for a single value"
+                      },
+                      "temperature_absolute_c": {
+                        "type": "object",
+                        "properties": {
+                          "min": {
+                            "type": "number"
+                          },
+                          "max": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "min",
+                          "max"
+                        ],
+                        "additionalProperties": false,
+                        "description": "inclusive range as the source lists it; min == max for a single value"
+                      },
+                      "rainfall_optimal_mm": {
+                        "type": "object",
+                        "properties": {
+                          "min": {
+                            "type": "number"
+                          },
+                          "max": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "min",
+                          "max"
+                        ],
+                        "additionalProperties": false,
+                        "description": "annual rainfall, mm"
+                      },
+                      "rainfall_absolute_mm": {
+                        "type": "object",
+                        "properties": {
+                          "min": {
+                            "type": "number"
+                          },
+                          "max": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "min",
+                          "max"
+                        ],
+                        "additionalProperties": false,
+                        "description": "annual rainfall, mm"
+                      },
+                      "ph_optimal": {
+                        "type": "object",
+                        "properties": {
+                          "min": {
+                            "type": "number"
+                          },
+                          "max": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "min",
+                          "max"
+                        ],
+                        "additionalProperties": false,
+                        "description": "inclusive range as the source lists it; min == max for a single value"
+                      },
+                      "cycle_days": {
+                        "type": "object",
+                        "properties": {
+                          "min": {
+                            "type": "number"
+                          },
+                          "max": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "min",
+                          "max"
+                        ],
+                        "additionalProperties": false,
+                        "description": "inclusive range as the source lists it; min == max for a single value"
+                      },
+                      "tolerances": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "description": "EcoCrop tolerance tags, e.g. 'drought'"
+                      }
+                    },
+                    "required": [
+                      "species",
+                      "temperature_optimal_c",
+                      "temperature_absolute_c",
+                      "rainfall_optimal_mm",
+                      "rainfall_absolute_mm",
+                      "ph_optimal",
+                      "cycle_days",
+                      "tolerances"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "fao56",
+                  "ecocrop"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "null when the crop sheet has no row for this crop"
           }
         },
         "required": [
@@ -93,7 +411,8 @@
           "cycle_days",
           "gate",
           "has_zarc",
-          "has_pam"
+          "has_pam",
+          "requirements"
         ],
         "additionalProperties": false
       }

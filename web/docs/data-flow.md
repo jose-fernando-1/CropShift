@@ -41,8 +41,9 @@ All fixtures are in `web/mock-data/` and committed. `src/mocks/data.ts` loads th
 
 | Fixture | Content | Origin |
 | --- | --- | --- |
-| `zarc.json` | ZARC risk table, 36 values per municipality, crop and soil | Real. MAPA ZARC, season 2025/26, CC BY. Built by `npm run gen:fixtures`. |
-| `pam.json` | Yield (kg/ha) per municipality and crop, 2005-2024, plus state medians | Real. IBGE PAM. Built by `npm run gen:fixtures`. |
+| `zarc.json` | ZARC risk table, 36 values per municipality, crop and soil | Real. MAPA ZARC, season 2025/26, CC BY. Built by `npm run gen:fixtures -- --zarc <csv>`. |
+| `pam.json` | Yield (kg/ha) per municipality and crop, 2005-2024, plus state medians | Real. IBGE PAM. Built by `npm run gen:fixtures -- --pam <csv>`. |
+| `requirements.json` | Raw FAO-56 and EcoCrop requirements per crop (served as `Crop.requirements`, shown in the crop detail sheet) | Real. FAO-56 (Allen et al. 1998) and FAO EcoCrop, from the team's crop sheet CSV. Built by `npm run gen:fixtures -- --ficha <csv>`. |
 | `municipalities.json`, `public/geo/pe-municipalities.json` | 185 municipalities: code, name, centroid, POWER cell; map polygons | Real. IBGE malhas v3 (`qualidade=minima`) and localidades API. Built by `npm run gen:geo`. The POWER cell id is derived from the centroid by `src/lib/domain/geo.ts`. |
 | `prototype.json` | Cowpea `p_success` for São Bento do Una (2613008), soil 2, rainfed, 40 seasons | Digitized from the proposal chart (page 8), not exported numbers. Plus per-crop summaries used to shape other curves. |
 | `catalog.json` | Crop list, cycle length, PAM crop name, quality-gate status per crop, `method_version`, `data_version` | Hand-written from the plan; placeholder for track C's gate report. |

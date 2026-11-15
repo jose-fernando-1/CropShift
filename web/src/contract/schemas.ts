@@ -72,6 +72,46 @@ export const PowerCell = z.object({
 
 /* ---------- crops catalog ---------- */
 
+export const NumberRange = z
+  .object({ min: z.number(), max: z.number() })
+  .describe("inclusive range as the source lists it; min == max for a single value");
+
+/** Raw crop sheet (FAO-56 + FAO EcoCrop), values as published. Static per crop, not per location. */
+export const CropRequirements = z.object({
+  fao56: z.object({
+    stage_days: z
+      .object({
+        initial: z.number().int().nonnegative(),
+        development: z.number().int().nonnegative(),
+        mid_season: z.number().int().nonnegative(),
+        late_season: z.number().int().nonnegative(),
+        total: z.number().int().positive().describe("as listed; may differ from the stage sum"),
+      })
+      .describe("FAO-56 Table 11 stage lengths, days"),
+    kc: z
+      .object({
+        initial: z.number().nullable().describe("null: not listed (FAO-56 derives Kc ini from wetting frequency)"),
+        mid: NumberRange,
+        end: NumberRange,
+      })
+      .describe("FAO-56 single crop coefficients"),
+    max_height_m: NumberRange,
+    max_root_depth_m: NumberRange,
+    depletion_fraction: z.number().min(0).max(1).describe("FAO-56 p: share of available water used before stress"),
+    salinity_threshold_ece_ds_m: NumberRange.nullable().describe("soil salinity (ECe, dS/m) at which yield starts to drop"),
+  }),
+  ecocrop: z.object({
+    species: z.string(),
+    temperature_optimal_c: NumberRange,
+    temperature_absolute_c: NumberRange,
+    rainfall_optimal_mm: NumberRange.describe("annual rainfall, mm"),
+    rainfall_absolute_mm: NumberRange.describe("annual rainfall, mm"),
+    ph_optimal: NumberRange,
+    cycle_days: NumberRange,
+    tolerances: z.array(z.string()).describe("EcoCrop tolerance tags, e.g. 'drought'"),
+  }),
+});
+
 export const QualityGate = z.object({
   passed: z.boolean(),
   status: z.enum(["passed", "failed", "not_run"]),
@@ -91,6 +131,7 @@ export const Crop = z.object({
   gate: QualityGate,
   has_zarc: z.boolean(),
   has_pam: z.boolean(),
+  requirements: CropRequirements.nullable().describe("null when the crop sheet has no row for this crop"),
 });
 
 export const CropsResponse = z.object({

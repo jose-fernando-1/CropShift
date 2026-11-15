@@ -2,10 +2,12 @@
  * Typed access to the committed mock fixtures (mock-data/*.json).
  * Static imports, so the standalone server bundle always contains them.
  */
+import type { CropRequirements } from "@/contract/types";
 import catalogJson from "../../mock-data/catalog.json";
 import municipalitiesJson from "../../mock-data/municipalities.json";
 import pamJson from "../../mock-data/pam.json";
 import prototypeJson from "../../mock-data/prototype.json";
+import requirementsJson from "../../mock-data/requirements.json";
 import zarcJson from "../../mock-data/zarc.json";
 
 export type MunicipalityRecord = {
@@ -35,6 +37,9 @@ export const catalog = catalogJson as unknown as {
   gate_threshold: number;
   crops: CatalogCrop[];
 };
+
+/** Raw FAO-56 + EcoCrop crop sheet per crop_id (scripts/build-mock-fixtures.ts --ficha). */
+export const requirements = requirementsJson as unknown as Partial<Record<string, CropRequirements>>;
 
 export const municipalities = municipalitiesJson as unknown as MunicipalityRecord[];
 export const municipalityByCode = new Map(municipalities.map((m) => [m.code, m]));

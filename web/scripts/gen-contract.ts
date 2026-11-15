@@ -15,6 +15,7 @@ import type { Locale } from "../src/i18n";
 import { templateExplanation } from "../src/lib/explain/template";
 import { buildRecommendation, type AnalysisParams } from "../src/mocks/build-recommendation";
 import { municipalityByCode } from "../src/mocks/data";
+import { cropCatalog } from "../src/mocks/handlers";
 
 const contractDir = path.resolve(import.meta.dirname, "../../contract");
 const FIXED_NOW = new Date("2026-11-14T12:00:00Z");
@@ -61,6 +62,7 @@ function files(): Record<string, unknown> {
     FIXED_NOW,
     "pt-BR",
   );
+  out["examples/crops.json"] = cropCatalog("en");
   out["examples/recommendation-request.point.json"] = { lat: -8.6, lon: -36.4, soil_class: 2, regime: "rainfed" };
   out["examples/recommendation-request.municipality.json"] = { municipality_code: SBU };
   out["examples/resolve-response.covered.json"] = {

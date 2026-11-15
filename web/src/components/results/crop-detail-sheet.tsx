@@ -11,6 +11,7 @@ import { windowLabel } from "@/lib/domain/dekads";
 import { kgPerHaNumber, percent } from "@/lib/domain/format";
 import { fieldChecks } from "@/lib/explain/template";
 import { ConfidenceBadge } from "./confidence-badge";
+import { CropRequirementsSection } from "./crop-requirements";
 import { Metric } from "./metric";
 
 export function CropDetailSheet({
@@ -72,6 +73,8 @@ export function CropDetailSheet({
               <BulletList icon={<CircleHelp className="size-4 text-ink-2" aria-hidden />} title={t.missing} items={crop.missing_data} empty={t.noMissing} />
               <BulletList icon={<ListChecks className="size-4 text-brand" aria-hidden />} title={t.checks} items={fieldChecks(locale)} empty="" />
             </div>
+
+            <CropRequirementsSection cropId={crop.crop_id} />
 
             {crop.zarc ? (
               <p className="text-xs text-ink-2">
