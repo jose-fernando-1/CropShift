@@ -4,9 +4,14 @@
  * ZARC dictionary does not state; the UI shows it in the limits panel.
  */
 
+import { getMessages, type Locale } from "@/i18n";
+
 export const DEKADS = Array.from({ length: 36 }, (_, i) => i + 1);
 
-export const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] as const;
+/** Month abbreviations from the message catalog (static tables, not Intl, so output never depends on ICU). */
+export function monthNames(locale: Locale = "en") {
+  return getMessages(locale).months;
+}
 
 /** Days per month in a non-leap year; Feb dekad 3 ends on the 28th. */
 const MONTH_DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -23,28 +28,28 @@ export function dekadRange(dekad: number) {
   return { month, startDay, endDay };
 }
 
-/** "Apr 21–30" */
-export function dekadLabel(dekad: number) {
+/** "Apr 21–30" (en) / "abr 21–30" (pt-BR) */
+export function dekadLabel(dekad: number, locale: Locale = "en") {
   const { month, startDay, endDay } = dekadRange(dekad);
-  return `${MONTHS[month]} ${startDay}–${endDay}`;
+  return `${monthNames(locale)[month]} ${startDay}–${endDay}`;
 }
 
 /** "Apr 21" */
-export function dekadStartLabel(dekad: number) {
+export function dekadStartLabel(dekad: number, locale: Locale = "en") {
   const { month, startDay } = dekadRange(dekad);
-  return `${MONTHS[month]} ${startDay}`;
+  return `${monthNames(locale)[month]} ${startDay}`;
 }
 
 /** "May 31" */
-export function dekadEndLabel(dekad: number) {
+export function dekadEndLabel(dekad: number, locale: Locale = "en") {
   const { month, endDay } = dekadRange(dekad);
-  return `${MONTHS[month]} ${endDay}`;
+  return `${monthNames(locale)[month]} ${endDay}`;
 }
 
 /** "Apr 21 – May 31"; a single dekad renders as "Apr 21–30". */
-export function windowLabel(start: number, end: number) {
-  if (start === end) return dekadLabel(start);
-  return `${dekadStartLabel(start)} – ${dekadEndLabel(end)}`;
+export function windowLabel(start: number, end: number, locale: Locale = "en") {
+  if (start === end) return dekadLabel(start, locale);
+  return `${dekadStartLabel(start, locale)} – ${dekadEndLabel(end, locale)}`;
 }
 
 /** Number of dekads in a window, handling wrap past dekad 36. */
