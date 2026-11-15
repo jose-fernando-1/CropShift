@@ -1,0 +1,12 @@
+cultura,fao56_fases_ini_dev_mid_late_total_dias,kc_ini,kc_mid,kc_end,altura_max_m,raiz_max_m,fracao_depleção_p,salinidade_ECe_limiar_dSm,eco_especie,eco_T_otima,eco_T_abs,eco_chuva_otima_mm,eco_chuva_abs_mm,eco_pH_otimo,eco_ciclo_dias,eco_familia_leguminosa,eco_tolerancia
+Feijão-caupi,20/30/30/20/110,,1.05,0.60-0.35,0.4,0.6-1.0,0.45,4.9,Vigna unguiculata,25-35,15-40,500-1500,300-4100,5.5-7.5,30-240,sim,drought
+Feijão comum,20/30/40/20/110,0.4,1.15,0.35,0.4,0.6-0.9,0.45,1.0,Phaseolus vulgaris,16-25,7-32,500-2000,300-4300,5.5-7.5,50-270,sim,
+Amendoim,25/35/45/25/130,,1.15,0.60,0.4,0.5-1.0,0.50,3.2,Arachis hypogaea,22-32,10-45,600-1500,400-4000,5.5-6.5,90-150,sim,
+Milho (grão),30/50/60/40/180,,1.20,0.60-0.35,2,1.0-1.7,0.55,1.7,Zea mays,18-33,10-47,600-1200,400-1800,5-7,65-365,não,
+Sorgo (grão),20/35/40/30/130,,1.00-1.10,0.55,2-4,1.0-2.0,0.55,6.8,Sorghum bicolor,22-35,8-40,400-600,300-700,5.5-7.5,90-300,não,
+Algodão,30/50/60/55/195,,1.15-1.20,0.70-0.50,1.2-1.5,1.0-1.7,0.65,7.7,Gossypium hirsutum,22-36,15-42,750-1200,450-1500,6-7.5,150-200,não,
+Mamona,25/40/65/50/180,,1.15,0.55,0.3,1.0-2.0,0.50,,Ricinus communis,20-30,15-39,600-1000,400-2000,5-6.5,140-210,não,
+Girassol,25/35/45/25/130,,1.0-1.15,0.35,2.0,0.8-1.5,0.45,-,Helianthus annuus,17-34,5-45,600-1000,300-1600,6-7.5,70-200,não,
+Milheto/painço,15/25/40/25/105,,1.00,0.30,1.5,1.0-2.0,0.55,-,Pennisetum glaucum,25-35,12-40,400-900,200-1700,5-6.5,60-120,não,
+Mandioca (ano 1),20/40/90/60/210,0.3,0.80,0.30,1.0,0.5-0.8,0.35,,Manihot esculenta,20-29,10-35,1000-1500,500-5000,5.5-8,180-365,não,
+Batata-doce,20/30/60/40/150,,1.15,0.65,0.4,1.0-1.5,0.65,1.5-2.5,Ipomoea batatas,18-28,10-38,750-2000,350-5000,5-7,80-170,não,
