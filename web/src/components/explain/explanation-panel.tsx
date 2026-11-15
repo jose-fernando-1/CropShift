@@ -1,10 +1,8 @@
 "use client";
 
-import { useQueryClient } from "@tanstack/react-query";
-import { Bot, FileText, RefreshCw } from "lucide-react";
+import { Bot, FileText } from "lucide-react";
 import { useMemo } from "react";
 import type { Recommendation } from "@/contract/types";
-import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLocale, useMessages } from "@/i18n/use-i18n";
 import { useExplanation } from "@/lib/api/queries";
@@ -19,7 +17,6 @@ export function ExplanationPanel({ rec }: { rec: Recommendation }) {
   const locale = useLocale();
   const t = useMessages().explain;
   const query = useExplanation(rec.analysis_id);
-  const queryClient = useQueryClient();
   const fallback = useMemo(() => (query.isError ? templateExplanation(rec, new Date(), locale) : null), [query.isError, rec, locale]);
   const explanation = query.data ?? fallback;
 
@@ -31,19 +28,9 @@ export function ExplanationPanel({ rec }: { rec: Recommendation }) {
 
   return (
     <section aria-labelledby="explain-title" className="rounded-lg border border-border bg-surface p-4" data-testid="explanation">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 id="explain-title" className="font-semibold">
-          {t.title}
-        </h2>
-        <Button
-          size="sm"
-          variant="ghost"
-          onClick={() => queryClient.invalidateQueries({ queryKey: ["explanation", rec.analysis_id] })}
-          disabled={query.isFetching}
-        >
-          <RefreshCw aria-hidden className={query.isFetching ? "animate-spin" : undefined} /> {t.regenerate}
-        </Button>
-      </div>
+      <h2 id="explain-title" className="font-semibold">
+        {t.title}
+      </h2>
       {label ? (
         <p className="mt-1 flex items-center gap-1.5 text-xs text-ink-2" data-testid="explanation-source">
           {label.icon} {label.text}
