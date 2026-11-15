@@ -12,8 +12,7 @@ export function MockBanner() {
       data-testid="mock-banner"
       className="sticky top-0 z-30 border-b border-warning bg-warning-soft text-warning-ink"
       style={{
-        backgroundImage:
-          "repeating-linear-gradient(135deg, transparent 0 14px, rgba(250,178,25,0.18) 14px 28px)",
+        backgroundImage: "repeating-linear-gradient(135deg, transparent 0 14px, rgba(250,178,25,0.18) 14px 28px)",
       }}
     >
       <div className="mx-auto flex max-w-7xl items-center gap-2 px-4 py-1.5 text-sm">

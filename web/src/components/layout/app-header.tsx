@@ -7,13 +7,7 @@ import { LanguageSwitcher } from "./language-switcher";
 
 const APP_VERSION = process.env.NEXT_PUBLIC_APP_VERSION;
 
-export function AppHeader({
-  inspectorEnabled,
-  onOpenInspector,
-}: {
-  inspectorEnabled: boolean;
-  onOpenInspector: () => void;
-}) {
+export function AppHeader({ inspectorEnabled, onOpenInspector }: { inspectorEnabled: boolean; onOpenInspector: () => void }) {
   const m = useMessages();
   return (
     <header className="border-b border-border bg-surface">

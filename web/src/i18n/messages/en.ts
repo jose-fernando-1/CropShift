@@ -107,9 +107,18 @@ export const en = {
     allow: "Allow and continue",
     notices: {
       outOfState: { title: "Outside Pernambuco", text: "Cropshift only covers Pernambuco for now. Pick a point inside the state." },
-      denied: { title: "Location permission denied", text: "No problem: tap the map, search your municipality or type coordinates instead." },
-      unavailable: { title: "Could not get your location", text: "Your device did not return a position. Tap the map, search, or type coordinates." },
-      unsupported: { title: "Location not supported", text: "This browser cannot share a location. Tap the map, search, or type coordinates." },
+      denied: {
+        title: "Location permission denied",
+        text: "No problem: tap the map, search your municipality or type coordinates instead.",
+      },
+      unavailable: {
+        title: "Could not get your location",
+        text: "Your device did not return a position. Tap the map, search, or type coordinates.",
+      },
+      unsupported: {
+        title: "Location not supported",
+        text: "This browser cannot share a location. Tap the map, search, or type coordinates.",
+      },
       resolveError: "Could not check this point",
     },
   },
@@ -167,7 +176,10 @@ export const en = {
     upstream_unavailable: { title: "API unavailable", text: "The Cropshift API did not answer. Try again in a minute." },
     network: { title: "No connection", text: "Could not reach the server. Check your connection." },
     rate_limited: { title: "Too many requests", text: "Wait a moment and try again." },
-    schema_mismatch: { title: "Unexpected answer from the API", text: "The answer does not match the expected format. The data flow inspector shows the details." },
+    schema_mismatch: {
+      title: "Unexpected answer from the API",
+      text: "The answer does not match the expected format. The data flow inspector shows the details.",
+    },
     invalid_request: { title: "Request not accepted", text: "The API rejected these inputs." },
     invalid_coordinates: { title: "Invalid coordinates", text: "Latitude must be between -90 and 90, longitude between -180 and 180." },
     not_found: { title: "Not found", text: "The API has no such result." },

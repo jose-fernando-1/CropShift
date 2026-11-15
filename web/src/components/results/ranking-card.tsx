@@ -22,7 +22,10 @@ export function RankingCard({ crop, onOpen }: { crop: RankedCrop; onOpen: () => 
     <li className="rounded-lg border border-border bg-surface p-4 shadow-sm" data-testid={`rank-card-${crop.crop_id}`}>
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-start gap-3">
-          <span className="grid size-8 shrink-0 place-items-center rounded-full bg-surface-3 text-sm font-semibold tabular-nums" aria-label={t.rank(crop.rank)}>
+          <span
+            className="grid size-8 shrink-0 place-items-center rounded-full bg-surface-3 text-sm font-semibold tabular-nums"
+            aria-label={t.rank(crop.rank)}
+          >
             {crop.rank}
           </span>
           <div className="min-w-0">
@@ -54,7 +57,9 @@ export function RankingCard({ crop, onOpen }: { crop: RankedCrop; onOpen: () => 
           <dt className="text-xs text-ink-2">{t.bestWindow}</dt>
           <dd className="font-medium">{best ? windowLabel(best.start_dekad, best.end_dekad, locale) : t.noneFound}</dd>
           {second ? (
-            <dd className="text-xs text-ink-2">{t.also(windowLabel(second.start_dekad, second.end_dekad, locale), percent(second.mean_p))}</dd>
+            <dd className="text-xs text-ink-2">
+              {t.also(windowLabel(second.start_dekad, second.end_dekad, locale), percent(second.mean_p))}
+            </dd>
           ) : null}
         </div>
         <div>

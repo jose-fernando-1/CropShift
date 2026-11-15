@@ -94,7 +94,12 @@ function RequirementTables({ requirements: { fao56, ecocrop } }: { requirements:
     { label: t.cycle, value: range(ecocrop.cycle_days, u.days) },
     {
       label: t.tolerances,
-      value: ecocrop.tolerances.length > 0 ? ecocrop.tolerances.map((x) => t.tolerance[x] ?? x).join(", ") : <span className="text-muted">{t.noneListed}</span>,
+      value:
+        ecocrop.tolerances.length > 0 ? (
+          ecocrop.tolerances.map((x) => t.tolerance[x] ?? x).join(", ")
+        ) : (
+          <span className="text-muted">{t.noneListed}</span>
+        ),
     },
   ];
 

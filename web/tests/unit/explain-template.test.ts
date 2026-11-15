@@ -5,7 +5,15 @@ import { buildRecommendation } from "@/mocks/build-recommendation";
 import { municipalityByCode } from "@/mocks/data";
 
 const rec = buildRecommendation(
-  { code: "2613008", soil: 2, soilSource: "default", regime: "rainfed", regimeSource: "user", inputMode: "municipality", nearCentroid: true },
+  {
+    code: "2613008",
+    soil: 2,
+    soilSource: "default",
+    regime: "rainfed",
+    regimeSource: "user",
+    inputMode: "municipality",
+    nearCentroid: true,
+  },
   municipalityByCode.get("2613008")!,
 );
 

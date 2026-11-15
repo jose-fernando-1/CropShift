@@ -69,7 +69,15 @@ export function YieldChart({ pam, municipalityName }: { pam: Pam; municipalityNa
         ))}
         {pam.state_median !== null ? (
           <g>
-            <line x1={M.left} x2={M.left + plotW} y1={y(pam.state_median)} y2={y(pam.state_median)} stroke="var(--muted)" strokeDasharray="2 3" strokeWidth={1.5} />
+            <line
+              x1={M.left}
+              x2={M.left + plotW}
+              y1={y(pam.state_median)}
+              y2={y(pam.state_median)}
+              stroke="var(--muted)"
+              strokeDasharray="2 3"
+              strokeWidth={1.5}
+            />
             <text x={M.left + plotW + 6} y={y(pam.state_median)} dy="0.32em" fontSize={11} fill="var(--ink-2)">
               {t.stateMedian(kgPerHaNumber(pam.state_median, locale))}
             </text>
@@ -77,7 +85,15 @@ export function YieldChart({ pam, municipalityName }: { pam: Pam; municipalityNa
         ) : null}
         {pam.municipality_median !== null ? (
           <g>
-            <line x1={M.left} x2={M.left + plotW} y1={y(pam.municipality_median)} y2={y(pam.municipality_median)} stroke="var(--ink-2)" strokeDasharray="6 3" strokeWidth={1.5} />
+            <line
+              x1={M.left}
+              x2={M.left + plotW}
+              y1={y(pam.municipality_median)}
+              y2={y(pam.municipality_median)}
+              stroke="var(--ink-2)"
+              strokeDasharray="6 3"
+              strokeWidth={1.5}
+            />
             <text
               x={M.left + plotW + 6}
               y={y(pam.municipality_median)}
@@ -128,7 +144,9 @@ export function YieldChart({ pam, municipalityName }: { pam: Pam; municipalityNa
         ))}
         <tr className="border-t border-border">
           <td className="px-2 py-1">{t.legendLocal}</td>
-          <td className="px-2 py-1 tabular-nums">{pam.municipality_median === null ? "—" : kgPerHaNumber(pam.municipality_median, locale)}</td>
+          <td className="px-2 py-1 tabular-nums">
+            {pam.municipality_median === null ? "—" : kgPerHaNumber(pam.municipality_median, locale)}
+          </td>
         </tr>
         <tr className="border-t border-border/60">
           <td className="px-2 py-1">{t.legendState}</td>

@@ -5,7 +5,14 @@ import type { RecommendationRequest, ResolveRequest } from "@/contract/types";
 import { useLocale } from "@/i18n/use-i18n";
 import { api, ApiClientError } from "./client";
 
-const NO_RETRY: ReadonlySet<string> = new Set(["out_of_coverage", "invalid_request", "invalid_coordinates", "no_data", "not_found", "schema_mismatch"]);
+const NO_RETRY: ReadonlySet<string> = new Set([
+  "out_of_coverage",
+  "invalid_request",
+  "invalid_coordinates",
+  "no_data",
+  "not_found",
+  "schema_mismatch",
+]);
 
 function retryPolicy(failureCount: number, error: unknown) {
   if (error instanceof ApiClientError && NO_RETRY.has(error.code)) return false;

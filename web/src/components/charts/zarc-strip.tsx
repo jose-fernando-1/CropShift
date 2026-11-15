@@ -11,7 +11,15 @@ export function ZarcStrip({ zarc }: { zarc: Zarc }) {
   const window = DEKADS.filter((d) => zarc.values[d - 1] > 0);
   return (
     <div>
-      <div className="grid grid-cols-[repeat(36,minmax(0,1fr))] gap-px" role="img" aria-label={window.length > 0 ? t.zarcStripAria(dekadLabel(window[0], locale), dekadLabel(window[window.length - 1], locale)) : t.zarcStripNone}>
+      <div
+        className="grid grid-cols-[repeat(36,minmax(0,1fr))] gap-px"
+        role="img"
+        aria-label={
+          window.length > 0
+            ? t.zarcStripAria(dekadLabel(window[0], locale), dekadLabel(window[window.length - 1], locale))
+            : t.zarcStripNone
+        }
+      >
         {DEKADS.map((d) => {
           const v = zarc.values[d - 1];
           return (

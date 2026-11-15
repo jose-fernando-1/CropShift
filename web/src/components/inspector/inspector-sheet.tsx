@@ -18,7 +18,15 @@ const EMPTY: LoggedRequest[] = [];
  * Data-flow inspector (mock mode or ?debug=1): every API call with its
  * request, response, timing and contract check, plus failure scenarios.
  */
-export function InspectorSheet({ open, onOpenChange, mode }: { open: boolean; onOpenChange: (v: boolean) => void; mode: "mock" | "live" | "unknown" }) {
+export function InspectorSheet({
+  open,
+  onOpenChange,
+  mode,
+}: {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  mode: "mock" | "live" | "unknown";
+}) {
   const t = useMessages().inspector;
   const entries = useSyncExternalStore(requestLog.subscribe, requestLog.snapshot, () => EMPTY);
   const [scenario, setScenario] = useState(getMockScenario);
@@ -48,7 +56,12 @@ export function InspectorSheet({ open, onOpenChange, mode }: { open: boolean; on
           <ol className="flex flex-wrap items-center gap-1 text-xs" aria-label={t.pipeline}>
             {layers.map((l, i) => (
               <li key={l.name} className="flex items-center gap-1">
-                <span className={cn("rounded-md border px-2 py-1", l.mocked ? "border-warning bg-warning-soft text-warning-ink" : "border-border bg-surface-2")}>
+                <span
+                  className={cn(
+                    "rounded-md border px-2 py-1",
+                    l.mocked ? "border-warning bg-warning-soft text-warning-ink" : "border-border bg-surface-2",
+                  )}
+                >
                   <span className="font-medium">{l.name}</span> <span className="opacity-75">{l.note}</span>
                   {l.mocked ? <span className="ml-1 font-semibold">MOCK</span> : null}
                 </span>
@@ -93,8 +106,12 @@ export function InspectorSheet({ open, onOpenChange, mode }: { open: boolean; on
                 >
                   <span className="w-10 font-mono text-xs text-ink-2">{e.method}</span>
                   <span className="min-w-0 flex-1 truncate font-mono text-xs">{e.path}</span>
-                  <span className={cn("font-mono text-xs", e.status && e.status >= 400 ? "text-critical-ink" : "text-ink-2")}>{e.status ?? "…"}</span>
-                  <span className="w-14 text-right font-mono text-xs text-muted">{e.durationMs !== null ? `${Math.round(e.durationMs)} ms` : ""}</span>
+                  <span className={cn("font-mono text-xs", e.status && e.status >= 400 ? "text-critical-ink" : "text-ink-2")}>
+                    {e.status ?? "…"}
+                  </span>
+                  <span className="w-14 text-right font-mono text-xs text-muted">
+                    {e.durationMs !== null ? `${Math.round(e.durationMs)} ms` : ""}
+                  </span>
                   {e.schemaOk === null ? null : e.schemaOk ? (
                     <CircleCheck className="size-4 text-good-ink" aria-label={t.matches} />
                   ) : (

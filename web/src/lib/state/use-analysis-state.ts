@@ -4,9 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useRef, useState } from "react";
 import type { RecommendationRequest, Regime, SoilClass } from "@/contract/types";
 
-export type Selection =
-  | { kind: "municipality"; code: string }
-  | { kind: "point"; code: string; lat: number; lon: number };
+export type Selection = { kind: "municipality"; code: string } | { kind: "point"; code: string; lat: number; lon: number };
 
 /**
  * Analysis inputs. The URL holds what makes a result shareable (municipality,

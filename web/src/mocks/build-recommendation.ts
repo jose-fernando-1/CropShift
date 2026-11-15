@@ -3,17 +3,7 @@
  * the real version lives in the FastAPI backend and reads track A's table.
  */
 import { CONTRACT_VERSION } from "@/contract/schemas";
-import type {
-  DekadProbability,
-  ExcludedCrop,
-  Pam,
-  RankedCrop,
-  Recommendation,
-  Regime,
-  SoilClass,
-  Source,
-  Zarc,
-} from "@/contract/types";
+import type { DekadProbability, ExcludedCrop, Pam, RankedCrop, Recommendation, Regime, SoilClass, Source, Zarc } from "@/contract/types";
 import type { Locale } from "@/i18n";
 import { windowLabel, dekadLabel } from "@/lib/domain/dekads";
 import { kgPerHa, percent } from "@/lib/domain/format";
@@ -36,15 +26,7 @@ export type AnalysisParams = {
 /* ---------- analysis id: opaque to clients, decodable by the mock ---------- */
 
 export function encodeAnalysisId(p: AnalysisParams) {
-  const raw = [
-    p.code,
-    p.soil,
-    p.soilSource[0],
-    p.regime[0],
-    p.regimeSource[0],
-    p.inputMode[0],
-    p.nearCentroid ? 1 : 0,
-  ].join(".");
+  const raw = [p.code, p.soil, p.soilSource[0], p.regime[0], p.regimeSource[0], p.inputMode[0], p.nearCentroid ? 1 : 0].join(".");
   return `csm_${catalog.data_version.replace(/[^0-9]/g, "")}_${raw}`;
 }
 
@@ -67,10 +49,30 @@ export function decodeAnalysisId(id: string): AnalysisParams | null {
 const RETRIEVED = "2026-11-14";
 
 export const SOURCES = {
-  power: { id: "nasa-power", name: "NASA POWER daily (1984–2024)", url: "https://power.larc.nasa.gov/docs/services/api/temporal/daily/", version: "daily, 0.5° × 0.625°" },
-  zarc: { id: "zarc", name: `MAPA ZARC risk table, season ${zarcSeason}`, url: "https://dados.agricultura.gov.br/dataset/tabua-de-risco-zoneamento-agricola-de-risco-climatico", version: zarcSeason },
-  pam: { id: "ibge-pam", name: `IBGE PAM yield, ${pamYears[0]}–${pamYears[1]}`, url: "https://sidra.ibge.gov.br/tabela/5457", version: `${pamYears[0]}-${pamYears[1]}` },
-  fao56: { id: "fao56", name: "FAO-56 crop coefficients and stage lengths", url: "https://www.fao.org/4/x0490e/x0490e00.htm", version: null },
+  power: {
+    id: "nasa-power",
+    name: "NASA POWER daily (1984–2024)",
+    url: "https://power.larc.nasa.gov/docs/services/api/temporal/daily/",
+    version: "daily, 0.5° × 0.625°",
+  },
+  zarc: {
+    id: "zarc",
+    name: `MAPA ZARC risk table, season ${zarcSeason}`,
+    url: "https://dados.agricultura.gov.br/dataset/tabua-de-risco-zoneamento-agricola-de-risco-climatico",
+    version: zarcSeason,
+  },
+  pam: {
+    id: "ibge-pam",
+    name: `IBGE PAM yield, ${pamYears[0]}–${pamYears[1]}`,
+    url: "https://sidra.ibge.gov.br/tabela/5457",
+    version: `${pamYears[0]}-${pamYears[1]}`,
+  },
+  fao56: {
+    id: "fao56",
+    name: "FAO-56 crop coefficients and stage lengths",
+    url: "https://www.fao.org/4/x0490e/x0490e00.htm",
+    version: null,
+  },
 } satisfies Record<string, Source>;
 
 const DATASET_VERSIONS = [

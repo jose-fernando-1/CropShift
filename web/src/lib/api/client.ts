@@ -69,7 +69,11 @@ async function call<T extends z.ZodType>(
     const err = S.ApiError.safeParse(json);
     finish({ schema: "api-error", schemaOk: err.success, schemaIssues: err.success ? [] : issues(err.error) });
     if (err.success) throw new ApiClientError(err.data.error.code, err.data.error.message, res.status);
-    throw new ApiClientError(res.status >= 500 ? "upstream_unavailable" : "internal", `Unexpected API error (HTTP ${res.status}).`, res.status);
+    throw new ApiClientError(
+      res.status >= 500 ? "upstream_unavailable" : "internal",
+      `Unexpected API error (HTTP ${res.status}).`,
+      res.status,
+    );
   }
 
   const parsed = schema.safeParse(json);

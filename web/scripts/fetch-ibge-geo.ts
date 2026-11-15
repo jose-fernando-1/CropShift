@@ -34,9 +34,7 @@ async function main() {
 
   const nameByCode = new Map(names.map((m) => [String(m.id), m.nome]));
   if (mesh.features.length !== EXPECTED_MUNICIPALITIES || nameByCode.size !== EXPECTED_MUNICIPALITIES) {
-    throw new Error(
-      `expected ${EXPECTED_MUNICIPALITIES} municipalities, got mesh=${mesh.features.length} names=${nameByCode.size}`,
-    );
+    throw new Error(`expected ${EXPECTED_MUNICIPALITIES} municipalities, got mesh=${mesh.features.length} names=${nameByCode.size}`);
   }
 
   const features = mesh.features.map((f: MeshFeature) => {
@@ -61,10 +59,7 @@ async function main() {
 
   await mkdir(path.join(root, "public/geo"), { recursive: true });
   await mkdir(path.join(root, "mock-data"), { recursive: true });
-  await writeFile(
-    path.join(root, "public/geo/pe-municipalities.json"),
-    JSON.stringify({ type: "FeatureCollection", features }),
-  );
+  await writeFile(path.join(root, "public/geo/pe-municipalities.json"), JSON.stringify({ type: "FeatureCollection", features }));
   await writeFile(path.join(root, "mock-data/municipalities.json"), JSON.stringify(municipalities, null, 1) + "\n");
   const cells = new Set(municipalities.map((m) => m.power_cell.id));
   console.log(`wrote ${features.length} municipalities across ${cells.size} POWER cells`);

@@ -125,15 +125,7 @@ export function DekadChart({ crop }: { crop: RankedCrop }) {
                 />
               ) : null}
               {bw >= 6 ? (
-                <line
-                  x1={x(d) + bw / 2}
-                  x2={x(d) + bw / 2}
-                  y1={y(v.lo)}
-                  y2={y(v.hi)}
-                  stroke="var(--ink-2)"
-                  strokeWidth={1}
-                  opacity={0.7}
-                />
+                <line x1={x(d) + bw / 2} x2={x(d) + bw / 2} y1={y(v.lo)} y2={y(v.hi)} stroke="var(--ink-2)" strokeWidth={1} opacity={0.7} />
               ) : null}
               {/* hit target: the whole column */}
               <rect
@@ -199,19 +191,12 @@ export function DekadChart({ crop }: { crop: RankedCrop }) {
               {i + 1}. {dekadLabel(i + 1, locale)}
             </th>
             <td className="px-2 py-1 tabular-nums">{percentWithBand(v.p, v.lo, v.hi)}</td>
-            <td className="px-2 py-1 tabular-nums">{crop.zarc ? (zarcAt(i + 1) || t.notRecommended) : "—"}</td>
+            <td className="px-2 py-1 tabular-nums">{crop.zarc ? zarcAt(i + 1) || t.notRecommended : "—"}</td>
           </tr>
         ))}
       </tbody>
     </table>
   );
 
-  return (
-    <ChartFrame
-      title={t.dekadTitle}
-      legend={legend}
-      chart={chart}
-      table={table}
-    />
-  );
+  return <ChartFrame title={t.dekadTitle} legend={legend} chart={chart} table={table} />;
 }

@@ -35,7 +35,10 @@ const ZARC_DIGIT: Record<string, string> = { "0": "0", "20": "2", "30": "3", "40
 type ZarcEntry = { v: string; cycle: string; ordinance: string; climate: string };
 
 function parseDelimited(text: string, delimiter: string): Record<string, string>[] {
-  const lines = text.replace(/^﻿/, "").split(/\r?\n/).filter((l) => l.length > 0);
+  const lines = text
+    .replace(/^﻿/, "")
+    .split(/\r?\n/)
+    .filter((l) => l.length > 0);
   const header = lines[0].split(delimiter);
   return lines.slice(1).map((line, i) => {
     const cells = line.split(delimiter);

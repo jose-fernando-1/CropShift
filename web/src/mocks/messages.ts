@@ -136,7 +136,8 @@ const ptBR: MockMessages = {
     rain: "A chuva é a do POWER; em 2024 o IMERG mediu cerca de 37% menos no ponto de teste. Os resultados dependem da fonte de chuva.",
     validation: "A validação independente contra a PAM é fraca a moderada (correlação de postos de +0,33 a +0,48, um ponto).",
     zarc: "O ZARC também vem de balanço hídrico; concordar com ele mostra coerência com o método oficial, não sucesso no campo.",
-    dekad: "Assume-se que o decêndio 1 é 1–10 de janeiro, e os valores 20/30/40 do ZARC aparecem como estão; o significado como risco em % não foi confirmado.",
+    dekad:
+      "Assume-se que o decêndio 1 é 1–10 de janeiro, e os valores 20/30/40 do ZARC aparecem como estão; o significado como risco em % não foi confirmado.",
   },
   errors: {
     powerDown: "O NASA POWER não respondeu a tempo. Tente de novo em um minuto.",

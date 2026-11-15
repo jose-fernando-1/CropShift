@@ -10,7 +10,15 @@ import { municipalityByCode } from "@/mocks/data";
 import { handleMock } from "@/mocks/handlers";
 
 const SBU = "2613008";
-const params: AnalysisParams = { code: SBU, soil: 1, soilSource: "user", regime: "rainfed", regimeSource: "default", inputMode: "point", nearCentroid: false };
+const params: AnalysisParams = {
+  code: SBU,
+  soil: 1,
+  soilSource: "user",
+  regime: "rainfed",
+  regimeSource: "default",
+  inputMode: "point",
+  nearCentroid: false,
+};
 const build = (locale: "en" | "pt-BR") => buildRecommendation(params, municipalityByCode.get(SBU)!, new Date(0), locale);
 
 /** Every leaf key path of a message object (functions count as leaves). */

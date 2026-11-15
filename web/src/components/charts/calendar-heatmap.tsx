@@ -22,15 +22,16 @@ export function CalendarHeatmap({ crops, onSelect }: { crops: RankedCrop[]; onSe
   const today = dekadOfDate(new Date());
   const hovered = hover ? crops.find((c) => c.crop_id === hover.cropId) : undefined;
 
-  const readout = hovered && hover ? (
-    <>
-      <strong className="font-semibold text-ink">{percentWithBand(...pBand(hovered, hover.dekad))}</strong>{" "}
-      {t.success} · {hovered.name} · {dekadLabel(hover.dekad, locale)}
-      {hovered.zarc ? ` · ${t.zarcValue(hovered.zarc.values[hover.dekad - 1])}` : ` · ${t.noZarc}`}
-    </>
-  ) : (
-    <span>{t.calendarHint}</span>
-  );
+  const readout =
+    hovered && hover ? (
+      <>
+        <strong className="font-semibold text-ink">{percentWithBand(...pBand(hovered, hover.dekad))}</strong> {t.success} · {hovered.name} ·{" "}
+        {dekadLabel(hover.dekad, locale)}
+        {hovered.zarc ? ` · ${t.zarcValue(hovered.zarc.values[hover.dekad - 1])}` : ` · ${t.noZarc}`}
+      </>
+    ) : (
+      <span>{t.calendarHint}</span>
+    );
 
   const chart = (
     <div>
@@ -68,7 +69,12 @@ export function CalendarHeatmap({ crops, onSelect }: { crops: RankedCrop[]; onSe
                   type="button"
                   onClick={() => onSelect(c.crop_id)}
                   className="group grid w-full grid-cols-[minmax(92px,128px)_repeat(36,minmax(0,1fr))] items-stretch rounded-sm text-left hover:bg-surface-2"
-                  aria-label={t.rowLabel(c.rank, c.name, best ? windowLabel(best.start_dekad, best.end_dekad, locale) : t.none, best ? percent(best.mean_p) : null)}
+                  aria-label={t.rowLabel(
+                    c.rank,
+                    c.name,
+                    best ? windowLabel(best.start_dekad, best.end_dekad, locale) : t.none,
+                    best ? percent(best.mean_p) : null,
+                  )}
                 >
                   <span className="truncate pr-2 text-sm font-medium group-hover:underline">
                     <span className="text-ink-2 tabular-nums">{c.rank}.</span> {c.name}
@@ -147,15 +153,7 @@ export function CalendarHeatmap({ crops, onSelect }: { crops: RankedCrop[]; onSe
     </table>
   );
 
-  return (
-    <ChartFrame
-      title={t.calendarTitle}
-      subtitle={t.calendarSubtitle}
-      legend={legend}
-      chart={chart}
-      table={table}
-    />
-  );
+  return <ChartFrame title={t.calendarTitle} subtitle={t.calendarSubtitle} legend={legend} chart={chart} table={table} />;
 }
 
 function pBand(c: RankedCrop, d: number): [number, number, number] {

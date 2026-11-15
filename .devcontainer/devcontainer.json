@@ -21,12 +21,7 @@
   },
   "customizations": {
     "vscode": {
-      "extensions": [
-        "dbaeumer.vscode-eslint",
-        "bradlc.vscode-tailwindcss",
-        "ms-playwright.playwright",
-        "esbenp.prettier-vscode"
-      ]
+      "extensions": ["dbaeumer.vscode-eslint", "bradlc.vscode-tailwindcss", "ms-playwright.playwright", "esbenp.prettier-vscode"]
     }
   }
 }

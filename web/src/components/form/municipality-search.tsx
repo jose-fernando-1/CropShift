@@ -84,7 +84,11 @@ export function MunicipalitySearch({
         />
       </div>
       {expanded ? (
-        <ul id={`${id}-list`} role="listbox" className="absolute z-20 mt-1 max-h-72 w-full overflow-auto rounded-md border border-border bg-surface py-1 shadow-lg">
+        <ul
+          id={`${id}-list`}
+          role="listbox"
+          className="absolute z-20 mt-1 max-h-72 w-full overflow-auto rounded-md border border-border bg-surface py-1 shadow-lg"
+        >
           {results.map((o, i) => (
             <li
               key={o.code}

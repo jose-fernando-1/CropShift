@@ -52,7 +52,8 @@ export const ptBR: Messages = {
       "As explicações são escritas a partir dos resultados por modelo de texto; quando ativado, o Gemini só reescreve e é conferido contra os números.",
     ],
     gateTitle: "Porta de qualidade",
-    gateText: "Uma cultura só entra no ranking se o motor reproduzir a janela do ZARC em municípios deixados de fora (correlação de postos ≥ 0,70).",
+    gateText:
+      "Uma cultura só entra no ranking se o motor reproduzir a janela do ZARC em municípios deixados de fora (correlação de postos ≥ 0,70).",
     gateColumns: { crop: "Cultura", gate: "Porta", correlation: "Correlação", note: "Observação" },
     gateStatus: { passed: "Aprovada", failed: "Reprovada", not_run: "Ainda não rodada" },
     loading: "Carregando o catálogo de culturas…",
@@ -105,9 +106,18 @@ export const ptBR: Messages = {
     allow: "Permitir e continuar",
     notices: {
       outOfState: { title: "Fora de Pernambuco", text: "Por enquanto o Cropshift cobre só Pernambuco. Escolha um ponto dentro do estado." },
-      denied: { title: "Permissão de localização negada", text: "Tudo bem: toque no mapa, busque o seu município ou digite as coordenadas." },
-      unavailable: { title: "Não foi possível obter a localização", text: "O aparelho não informou uma posição. Toque no mapa, busque ou digite as coordenadas." },
-      unsupported: { title: "Localização não suportada", text: "Este navegador não compartilha localização. Toque no mapa, busque ou digite as coordenadas." },
+      denied: {
+        title: "Permissão de localização negada",
+        text: "Tudo bem: toque no mapa, busque o seu município ou digite as coordenadas.",
+      },
+      unavailable: {
+        title: "Não foi possível obter a localização",
+        text: "O aparelho não informou uma posição. Toque no mapa, busque ou digite as coordenadas.",
+      },
+      unsupported: {
+        title: "Localização não suportada",
+        text: "Este navegador não compartilha localização. Toque no mapa, busque ou digite as coordenadas.",
+      },
       resolveError: "Não foi possível verificar este ponto",
     },
   },
@@ -134,7 +144,10 @@ export const ptBR: Messages = {
     steps: [
       { title: "1. Local", text: "Toque no mapa, busque o seu município, digite coordenadas ou use a sua localização." },
       { title: "2. Sua propriedade", text: "Tipo de solo e irrigação são opcionais. Se você pular, usamos o padrão e mostramos qual foi." },
-      { title: "3. Resultados", text: "Um calendário de plantio, o ranking das culturas, a janela oficial, o histórico de rendimento e um resumo em linguagem simples." },
+      {
+        title: "3. Resultados",
+        text: "Um calendário de plantio, o ranking das culturas, a janela oficial, o histórico de rendimento e um resumo em linguagem simples.",
+      },
     ],
   },
   context: {
@@ -154,7 +167,8 @@ export const ptBR: Messages = {
     rankedText: "Ordenado pelo melhor trecho de 30 dias para plantar. Só entram no ranking as culturas que passaram na porta de qualidade.",
     noneRanked: "Nenhuma cultura passou na porta de qualidade neste local.",
     notRankedTitle: "Fora do ranking",
-    notRankedText: "Estas culturas aparecem só com a janela oficial e o rendimento registrado. O Cropshift ainda não faz estimativa para elas.",
+    notRankedText:
+      "Estas culturas aparecem só com a janela oficial e o rendimento registrado. O Cropshift ainda não faz estimativa para elas.",
     loading: "Carregando resultados",
     tryAgain: "Tentar de novo",
     openInspector: "Abrir o inspetor de fluxo de dados",
@@ -165,7 +179,10 @@ export const ptBR: Messages = {
     upstream_unavailable: { title: "API indisponível", text: "A API do Cropshift não respondeu. Tente de novo em um minuto." },
     network: { title: "Sem conexão", text: "Não foi possível falar com o servidor. Verifique a sua conexão." },
     rate_limited: { title: "Muitas requisições", text: "Aguarde um pouco e tente de novo." },
-    schema_mismatch: { title: "Resposta inesperada da API", text: "A resposta não segue o formato esperado. O inspetor de fluxo de dados mostra os detalhes." },
+    schema_mismatch: {
+      title: "Resposta inesperada da API",
+      text: "A resposta não segue o formato esperado. O inspetor de fluxo de dados mostra os detalhes.",
+    },
     invalid_request: { title: "Requisição não aceita", text: "A API recusou estes dados." },
     invalid_coordinates: { title: "Coordenadas inválidas", text: "A latitude deve ficar entre -90 e 90 e a longitude entre -180 e 180." },
     not_found: { title: "Não encontrado", text: "A API não tem este resultado." },

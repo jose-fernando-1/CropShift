@@ -30,6 +30,7 @@ export function numberRange(range: { min: number; max: number }, locale: Locale 
 
 /** "-8.6000, -36.4000" (en) / "-8,6000; -36,4000" (pt-BR, same form the coordinate box accepts). */
 export function coordinates(lat: number, lon: number, locale: Locale = "en") {
-  const f = (v: number) => v.toLocaleString(getMessages(locale).numberLocale, { minimumFractionDigits: 4, maximumFractionDigits: 4, useGrouping: false });
+  const f = (v: number) =>
+    v.toLocaleString(getMessages(locale).numberLocale, { minimumFractionDigits: 4, maximumFractionDigits: 4, useGrouping: false });
   return `${f(lat)}${locale === "pt-BR" ? ";" : ","} ${f(lon)}`;
 }

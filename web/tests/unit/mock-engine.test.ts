@@ -106,7 +106,13 @@ describe("helpers", () => {
 
   it("confidence follows the plan's rule", () => {
     const p = Array.from({ length: 36 }, (_, i) => ({ p: i === 11 ? 1 : 0.1, lo: 0, hi: 1 }));
-    const zarc = { values: Array.from({ length: 36 }, (_, i) => (i === 11 ? 20 : i === 12 ? 30 : 0)) as (0 | 20 | 30 | 40)[], cycle_code: "21", soil_code: 2, ordinance: "x", season: "2025/2026" };
+    const zarc = {
+      values: Array.from({ length: 36 }, (_, i) => (i === 11 ? 20 : i === 12 ? 30 : 0)) as (0 | 20 | 30 | 40)[],
+      cycle_code: "21",
+      soil_code: 2,
+      ordinance: "x",
+      season: "2025/2026",
+    };
     expect(confidenceFor({ gatePassed: true, p, zarc, nearCentroid: true }).level).toBe("high");
     expect(confidenceFor({ gatePassed: true, p, zarc, nearCentroid: false }).level).toBe("medium");
     expect(confidenceFor({ gatePassed: false, p, zarc, nearCentroid: true }).level).toBe("low");

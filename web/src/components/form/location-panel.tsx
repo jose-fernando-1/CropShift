@@ -115,9 +115,7 @@ export function LocationPanel({ state }: { state: AnalysisState }) {
           <MapPin className="size-4 shrink-0 text-brand" aria-hidden />
           <span>
             <strong>{selectedName ?? state.selection.code}</strong>
-            <span className="text-ink-2">
-              {state.selection.kind === "point" ? t.yourPoint : t.centre}
-            </span>
+            <span className="text-ink-2">{state.selection.kind === "point" ? t.yourPoint : t.centre}</span>
           </span>
         </p>
       ) : null}
@@ -133,9 +131,7 @@ export function LocationPanel({ state }: { state: AnalysisState }) {
           {municipalities.data ? (
             <LocationMap geojson={municipalities.data.geojson} selectedCode={selectedCode} pin={shownPin} focus={focus} onPick={pick} />
           ) : municipalities.isError ? (
-            <div className="grid h-full place-items-center p-4 text-center text-sm text-ink-2">
-              {t.mapError}
-            </div>
+            <div className="grid h-full place-items-center p-4 text-center text-sm text-ink-2">{t.mapError}</div>
           ) : (
             <Skeleton className="h-full w-full" />
           )}
@@ -152,10 +148,16 @@ export function LocationPanel({ state }: { state: AnalysisState }) {
             data-testid={NOTICE_TEST_IDS[notice.kind]}
             className={cn(
               "flex gap-2 rounded-md border p-3 text-sm",
-              notice.kind === "resolveError" ? "border-critical/40 bg-critical-soft text-critical-ink" : "border-warning bg-warning-soft text-warning-ink",
+              notice.kind === "resolveError"
+                ? "border-critical/40 bg-critical-soft text-critical-ink"
+                : "border-warning bg-warning-soft text-warning-ink",
             )}
           >
-            {notice.kind === "outOfState" ? <MapPinOff className="mt-0.5 size-4 shrink-0" aria-hidden /> : <TriangleAlert className="mt-0.5 size-4 shrink-0" aria-hidden />}
+            {notice.kind === "outOfState" ? (
+              <MapPinOff className="mt-0.5 size-4 shrink-0" aria-hidden />
+            ) : (
+              <TriangleAlert className="mt-0.5 size-4 shrink-0" aria-hidden />
+            )}
             <div>
               <p className="font-medium">{noticeCopy.title}</p>
               <p>{noticeCopy.text}</p>

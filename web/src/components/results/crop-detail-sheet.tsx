@@ -14,15 +14,7 @@ import { ConfidenceBadge } from "./confidence-badge";
 import { CropRequirementsSection } from "./crop-requirements";
 import { Metric } from "./metric";
 
-export function CropDetailSheet({
-  rec,
-  cropId,
-  onClose,
-}: {
-  rec: Recommendation;
-  cropId: string | null;
-  onClose: () => void;
-}) {
+export function CropDetailSheet({ rec, cropId, onClose }: { rec: Recommendation; cropId: string | null; onClose: () => void }) {
   const locale = useLocale();
   const m = useMessages();
   const t = m.detail;
@@ -56,10 +48,20 @@ export function CropDetailSheet({
                 />
               ) : null}
               {crop.pam?.municipality_median != null ? (
-                <Metric label={t.localMedian} value={kgPerHaNumber(crop.pam.municipality_median, locale)} unit="kg/ha" source={t.pamSource(crop.pam.crop_label)} />
+                <Metric
+                  label={t.localMedian}
+                  value={kgPerHaNumber(crop.pam.municipality_median, locale)}
+                  unit="kg/ha"
+                  source={t.pamSource(crop.pam.crop_label)}
+                />
               ) : null}
               {crop.pam?.state_median != null ? (
-                <Metric label={t.stateMedian} value={kgPerHaNumber(crop.pam.state_median, locale)} unit="kg/ha" source={t.pamSource(crop.pam.crop_label)} />
+                <Metric
+                  label={t.stateMedian}
+                  value={kgPerHaNumber(crop.pam.state_median, locale)}
+                  unit="kg/ha"
+                  source={t.pamSource(crop.pam.crop_label)}
+                />
               ) : null}
             </dl>
 
@@ -68,10 +70,30 @@ export function CropDetailSheet({
             {crop.pam ? <YieldChart pam={crop.pam} municipalityName={rec.location.municipality_name} /> : null}
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <BulletList icon={<ThumbsUp className="size-4 text-good-ink" aria-hidden />} title={t.strengths} items={crop.strengths} empty={t.noStrengths} />
-              <BulletList icon={<TriangleAlert className="size-4 text-warning-ink" aria-hidden />} title={t.risks} items={crop.risks} empty={t.noRisks} />
-              <BulletList icon={<CircleHelp className="size-4 text-ink-2" aria-hidden />} title={t.missing} items={crop.missing_data} empty={t.noMissing} />
-              <BulletList icon={<ListChecks className="size-4 text-brand" aria-hidden />} title={t.checks} items={fieldChecks(locale)} empty="" />
+              <BulletList
+                icon={<ThumbsUp className="size-4 text-good-ink" aria-hidden />}
+                title={t.strengths}
+                items={crop.strengths}
+                empty={t.noStrengths}
+              />
+              <BulletList
+                icon={<TriangleAlert className="size-4 text-warning-ink" aria-hidden />}
+                title={t.risks}
+                items={crop.risks}
+                empty={t.noRisks}
+              />
+              <BulletList
+                icon={<CircleHelp className="size-4 text-ink-2" aria-hidden />}
+                title={t.missing}
+                items={crop.missing_data}
+                empty={t.noMissing}
+              />
+              <BulletList
+                icon={<ListChecks className="size-4 text-brand" aria-hidden />}
+                title={t.checks}
+                items={fieldChecks(locale)}
+                empty=""
+              />
             </div>
 
             <CropRequirementsSection cropId={crop.crop_id} />
@@ -88,7 +110,12 @@ export function CropDetailSheet({
                 {crop.sources.map((s) => (
                   <li key={s.id} className="flex flex-wrap items-baseline gap-x-2">
                     {s.url ? (
-                      <a href={s.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-brand hover:underline">
+                      <a
+                        href={s.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1 text-brand hover:underline"
+                      >
                         {s.name} <ExternalLink className="size-3" aria-hidden />
                       </a>
                     ) : (

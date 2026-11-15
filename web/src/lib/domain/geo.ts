@@ -21,10 +21,7 @@ export function round(value: number, digits: number) {
 
 /** Lowercase, accent-free form used for search. */
 export function foldAccents(text: string) {
-  return text
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase();
+  return text.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 }
 
 type Ring = number[][];
