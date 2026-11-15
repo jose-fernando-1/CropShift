@@ -1,0 +1,25 @@
+# Field Shift: local/production stack.
+#   docker compose up --build web          -> http://localhost:3000 (mock API)
+# To use the real backend, uncomment `api`, set API_MODE=live on `web`.
+services:
+  web:
+    build:
+      context: ./web
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+    environment:
+      API_MODE: ${API_MODE:-mock}
+      API_ORIGIN: ${API_ORIGIN:-}
+      API_TIMEOUT_MS: ${API_TIMEOUT_MS:-15000}
+    restart: unless-stopped
+
+  # api:
+  #   build:
+  #     context: ./app            # FastAPI backend (track A/C), not part of this branch
+  #   environment:
+  #     GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+  #   expose:
+  #     - "8000"
+  #
+  # With the api service enabled, run the web in live mode:
+  #   API_MODE=live API_ORIGIN=http://api:8000 docker compose up --build
