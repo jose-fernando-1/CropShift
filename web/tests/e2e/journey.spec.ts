@@ -13,11 +13,11 @@ test.describe("main journey (mock mode)", () => {
     await expect(page.getByTestId("result-municipality")).toHaveText(new RegExp(SBU.name));
     await expect(page).toHaveURL(/mun=2613008/);
     await expect(page).not.toHaveURL(/-8\.6|36\.4/); // coordinates never go in the URL
-
-    const cards = page.locator('[data-testid^="rank-card-"]');
     await expect(page.getByTestId("result-coordinates")).toHaveText("-8.6000, -36.4000");
     await expect(page.getByRole("button", { name: "Share" })).toBeVisible();
     await expect(page.getByText(/^csm_/)).toHaveCount(0); // no analysis-id button
+
+    const cards = page.locator('[data-testid^="rank-card-"]');
     await expect(cards).toHaveCount(3);
     await expect(cards.first()).toHaveAttribute("data-testid", "rank-card-cowpea");
     await expect(page.getByTestId("excluded-card-castor")).toContainText("Own estimate not reliable");
@@ -28,17 +28,17 @@ test.describe("main journey (mock mode)", () => {
     const sheet = page.getByRole("dialog");
     await expect(sheet.getByRole("img", { name: /Cowpea: probability of success/ })).toBeVisible();
     await expect(sheet.getByText("What the municipality actually harvested")).toBeVisible();
-    await expect(page).toHaveURL(/crop=cowpea/);
-    await sheet.getByRole("button", { name: "Close" }).click();
-    await expect(page).not.toHaveURL(/crop=/);
-    await expect(page.getByTestId("mock-banner")).toBeVisible();
-  });
     const requirements = sheet.getByTestId("crop-requirements");
     await expect(requirements.getByRole("heading", { name: "Crop requirements" })).toBeVisible();
     await expect(requirements.getByRole("row", { name: /Depletion fraction p.*0\.45/ })).toBeVisible();
     await expect(requirements.getByRole("row", { name: /Optimal temperature\s*25–35 °C/ })).toBeVisible();
     const axe = await new AxeBuilder({ page }).include('[role="dialog"]').analyze();
     expect(axe.violations.filter((v) => v.impact === "serious" || v.impact === "critical").map((v) => v.id)).toEqual([]);
+    await expect(page).toHaveURL(/crop=cowpea/);
+    await sheet.getByRole("button", { name: "Close" }).click();
+    await expect(page).not.toHaveURL(/crop=/);
+    await expect(page.getByTestId("mock-banner")).toBeVisible();
+  });
 
   test("municipality search", async ({ page }) => {
     await page.goto("/");
@@ -81,9 +81,9 @@ test.describe("main journey (mock mode)", () => {
     await page.goto("/?mun=2613008");
     await expect(page.locator('[data-testid^="rank-card-"]')).toHaveCount(3);
     await expect(page.getByTestId("explanation-source")).toBeVisible();
+    await expect(page.getByTestId("result-coordinates")).toHaveText(/^-8\.\d{4}, -36\.\d{4}$/); // municipality centre
     const results = await new AxeBuilder({ page }).exclude(".leaflet-container").analyze();
     const serious = results.violations.filter((v) => v.impact === "serious" || v.impact === "critical");
-    await expect(page.getByTestId("result-coordinates")).toHaveText(/^-8\.\d{4}, -36\.\d{4}$/); // municipality centre
     expect(serious.map((v) => `${v.id}: ${v.nodes.length} nodes`)).toEqual([]);
   });
 });

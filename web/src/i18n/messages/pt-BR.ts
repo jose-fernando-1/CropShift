@@ -208,6 +208,10 @@ export const ptBR: Messages = {
     checks: "Conferir no campo",
     noStrengths: "Nada se destaca.",
     noRisks: "A simulação não apontou risco específico.",
+    noMissing: "Nenhum.",
+    zarcLine: (season, cycle, soil, ordinance) => `ZARC: safra ${season}, ciclo ${cycle}, código de solo ${soil}, ${ordinance}.`,
+    sources: "Fontes",
+  },
   requirements: {
     title: "Exigências da cultura",
     intro: "Valores brutos da ficha da cultura, como publicados. Descrevem a cultura em geral, não este local.",
@@ -247,10 +251,6 @@ export const ptBR: Messages = {
     noneListed: "nada listado",
     units: { days: "dias", m: "m", c: "°C", mmYear: "mm/ano", dsM: "dS/m" },
     source: "FAO-56 (Allen et al., 1998) e FAO EcoCrop",
-  },
-    noMissing: "Nenhum.",
-    zarcLine: (season, cycle, soil, ordinance) => `ZARC: safra ${season}, ciclo ${cycle}, código de solo ${soil}, ${ordinance}.`,
-    sources: "Fontes",
   },
   explain: {
     title: "Em palavras simples",

@@ -211,6 +211,10 @@ export const en = {
     noStrengths: "Nothing stands out.",
     noRisks: "No specific risk flagged by the simulation.",
     noMissing: "None.",
+    zarcLine: (season: string, cycle: string, soil: number, ordinance: string) =>
+      `ZARC: season ${season}, cycle ${cycle}, soil code ${soil}, ${ordinance}.`,
+    sources: "Sources",
+  },
   requirements: {
     title: "Crop requirements",
     intro: "Raw values from the crop sheet, as published. They describe the crop in general, not this place.",
@@ -250,10 +254,6 @@ export const en = {
     noneListed: "none listed",
     units: { days: "days", m: "m", c: "°C", mmYear: "mm/year", dsM: "dS/m" },
     source: "FAO-56 (Allen et al., 1998) and FAO EcoCrop",
-  },
-    zarcLine: (season: string, cycle: string, soil: number, ordinance: string) =>
-      `ZARC: season ${season}, cycle ${cycle}, soil code ${soil}, ${ordinance}.`,
-    sources: "Sources",
   },
   explain: {
     title: "In plain words",
