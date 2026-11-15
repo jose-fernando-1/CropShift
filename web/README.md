@@ -2,7 +2,7 @@
 
 Front end for Cropshift (NASA Space Apps 2026, team Rural). Given a point or municipality in Pernambuco, it shows for each crop the probability of planting success per dekad (36 ten-day windows, from 40 seasons of NASA POWER climate), next to the official ZARC window and IBGE PAM yields.
 
-It is a Next.js 16 + React 19 + TypeScript app. The FastAPI backend does not exist yet, so the app ships with a complete in-process mock API that follows the shared [API contract](../contract/README.md). The UI is in English by default, with Brazilian Portuguese (pt-BR) available from the header; the docs are in English.
+It is a Next.js 16 + React 19 + TypeScript app. The app ships with a complete in-process mock API that follows the shared [API contract](../contract/README.md), and can run against the FastAPI backend in [`../backend`](../backend/README.md) (`API_MODE=live`). The UI is in English by default, with Brazilian Portuguese (pt-BR) available from the header; the docs are in English.
 
 See also: [data flow and fixtures](docs/data-flow.md), [API contract](../contract/README.md).
 
@@ -15,7 +15,7 @@ Open the repo root in VS Code and choose "Reopen in Container" (`.devcontainer/d
 - `web/node_modules` is a named Docker volume (`cropshift-web-node-modules-<devcontainerId>`, one per workspace).
 - `.devcontainer/post-create.sh` runs `npm ci` and `npx playwright install --with-deps chromium`. It is safe to re-run.
 - Ports 3000 (`next dev`) and 3001 (a second instance, for testing live mode) are forwarded.
-- `API_MODE=mock` is set in the container environment.
+- `API_MODE=mock` is set in the container environment. For live mode run the backend with `make run` and start the web with `API_MODE=live npm run dev` (`API_ORIGIN` already points at `http://127.0.0.1:8000`).
 
 Then: `cd web && npm run dev` and open <http://localhost:3000>.
 
@@ -31,10 +31,10 @@ WEB_PORT=8080 docker compose up --build web
 The image is a multi-stage build of the Next.js standalone server (`web/Dockerfile`). `API_MODE`, `API_ORIGIN`, `API_TIMEOUT_MS` and `SHOW_DATA_FLOW` are read at runtime, so the same image serves the mock and the live proxy:
 
 ```bash
-API_MODE=live API_ORIGIN=http://api:8000 docker compose up --build web
+make stack    # db + migrations + api + web in live mode: web http://localhost:3000, API http://localhost:8000/docs
 ```
 
-`docker-compose.yml` has a commented-out `api` service as a placeholder for the backend.
+`make stack` runs `API_MODE=live API_ORIGIN=http://api:8000 docker compose --profile live up --build`. The root `docker-compose.yml` defines `db`, `migrate`, `api` and `seed` behind the `live` profile, so `docker compose up --build web` alone stays mock-only. See [../README.md](../README.md) for the run modes and [../docs/runbook.md](../docs/runbook.md) for operations.
 
 ### 3. Plain local
 
@@ -134,7 +134,7 @@ A sheet that lists the last 50 API calls (method, path, status, duration, mode, 
 
 ## Testing
 
-- `npm test` (Vitest, `tests/unit`): the mock handlers and engine, dekad helpers, the explanation template, and the published contract: every file in `../contract/examples/` is validated with Ajv against its JSON Schema, as the FastAPI side will do.
+- `npm test` (Vitest, `tests/unit`): the mock handlers and engine, dekad helpers, the explanation template, and the published contract: every file in `../contract/examples/` is validated with Ajv against its JSON Schema, as the backend contract tests do.
 - `npm run e2e` (Playwright, `tests/e2e`): builds the app, serves it in mock mode on port 3100 and runs the user journey in two projects, desktop (1440x900) and mobile (Pixel 7), with axe accessibility checks. Map tiles are blocked so runs are hermetic. The first run needs Chromium (`npx playwright install --with-deps chromium`; the devcontainer does this).
 - `npm run check` runs the format check, lint, typecheck, unit tests and the contract staleness check.
 
