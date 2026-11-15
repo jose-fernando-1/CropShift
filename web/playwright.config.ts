@@ -12,6 +12,8 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   reporter: [["list"]],
   use: {
+    // Pin the browser language: the app defaults to English regardless, and tests assert on English text.
+    locale: "en-US",
     baseURL: process.env.E2E_BASE_URL ?? `http://localhost:${PORT}`,
     trace: "retain-on-failure",
   },
