@@ -44,6 +44,34 @@ def percentages_are_grounded(texts: list[str], rec: Recommendation) -> bool:
     return True
 
 
+def compact_for_ai(rec: Recommendation) -> dict:
+    """What Gemini sees: the decisions and their reasons, not the 36-point curves or source lists (smaller, faster,
+    cheaper; every number it may quote is still in the payload the guard checks against)."""
+    return {
+        "place": {
+            "municipality": rec.location.municipality_name,
+            "soil_class": rec.location.soil_class,
+            "soil_was_default": rec.location.soil_source == "default",
+            "regime": rec.location.regime,
+        },
+        "ranked_crops": [
+            {
+                "rank": c.rank,
+                "name": c.name,
+                "best_windows": [w.model_dump() for w in c.best_windows],
+                "has_official_zarc_window": c.zarc is not None,
+                "confidence": c.confidence.model_dump(),
+                "strengths": c.strengths,
+                "risks": c.risks,
+                "missing_data": c.missing_data,
+            }
+            for c in rec.crops
+        ],
+        "not_ranked": [{"name": e.name, "reason": e.reason} for e in rec.excluded],
+        "disclaimers": [d.text for d in rec.disclaimers],
+    }
+
+
 def _data_key(rec: Recommendation) -> str:
     """Changes whenever the data behind an analysis changes, so a cached AI text never outlives its numbers."""
     parts = [rec.method_version, *(f"{d.name}:{d.version}:{d.retrieved_at}" for d in rec.dataset_versions)]
@@ -69,7 +97,7 @@ class ExplainService:
             return self._cache[key]
         if _FAILED_UNTIL.get(key, 0.0) > time.monotonic():
             return template  # recently failed: do not make every request wait for another timeout
-        ai = self.gemini.explain(rec.model_dump(), locale)
+        ai = self.gemini.explain(compact_for_ai(rec), locale)
         if ai is None or not ai.sections:
             _FAILED_UNTIL[key] = time.monotonic() + _FAILURE_COOLDOWN_S
             return template

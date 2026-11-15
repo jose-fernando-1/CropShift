@@ -133,7 +133,19 @@ def check_gemini(client: httpx.Client) -> Check:
         )
     if not wanted:
         return Check("Gemini API", OK, "key works; GEMINI_MODEL not set", f"Set GEMINI_MODEL to one of: {flash[:6]}")
-    return Check("Gemini API", OK, f"key works; model '{wanted}' is available")
+    probe = client.post(
+        f"https://generativelanguage.googleapis.com/v1beta/models/{wanted}:generateContent",
+        headers={"x-goog-api-key": key},
+        json={"contents": [{"parts": [{"text": "Reply with the word ok."}]}]},
+    )
+    if probe.status_code != 200:
+        return Check(
+            "Gemini API",
+            FAIL,
+            f"model '{wanted}' is listed but a test call returned HTTP {probe.status_code}",
+            f"Models can be retired for new users or overloaded. Try another one of: {flash[:6]}",
+        )
+    return Check("Gemini API", OK, f"key works; model '{wanted}' answered a test call")
 
 
 def check_database() -> Check:

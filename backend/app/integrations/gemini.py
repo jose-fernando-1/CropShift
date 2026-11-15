@@ -9,7 +9,7 @@ import json
 import logging
 from typing import Any
 
-from pydantic import SecretStr
+from pydantic import BaseModel, SecretStr
 
 from app.core.i18n import Locale
 from app.schemas.common import ContractModel
@@ -34,8 +34,22 @@ SYSTEM_INSTRUCTION = {
 }
 
 
+class _GeminiSection(BaseModel):
+    """Plain models on purpose: Gemini's schema format rejects `additionalProperties: false`, which our strict
+    contract models emit. The answer is converted to the strict contract models right after."""
+
+    id: str
+    title: str
+    paragraphs: list[str]
+
+
+class _GeminiAnswer(BaseModel):
+    sections: list[_GeminiSection]
+    field_checks: list[str]
+
+
 class AiExplanation(ContractModel):
-    """The shape Gemini must answer with (checked again by our own validation afterwards)."""
+    """What the service uses: contract-shaped (strict) sections and field checks."""
 
     sections: list[ExplanationSection]
     field_checks: list[str]
@@ -55,7 +69,7 @@ class GeminiExplainer:
 
             client = genai.Client(
                 api_key=self._api_key.get_secret_value(),
-                http_options=types.HttpOptions(timeout=int(self.timeout_s * 1000)),
+                http_options=types.HttpOptions(api_version="v1beta", timeout=int(self.timeout_s * 1000)),
             )
             response = client.models.generate_content(
                 model=self.model,
@@ -63,11 +77,12 @@ class GeminiExplainer:
                 config=types.GenerateContentConfig(
                     system_instruction=SYSTEM_INSTRUCTION[locale],
                     response_mime_type="application/json",
-                    response_schema=AiExplanation,
+                    response_schema=_GeminiAnswer,
                     temperature=0.2,
                 ),
             )
-            return AiExplanation.model_validate_json(response.text or "")
+            answer = _GeminiAnswer.model_validate_json(response.text or "")
+            return AiExplanation.model_validate(answer.model_dump())
         except Exception as exc:  # network, quota, safety block, bad JSON: all mean "use the template"
             logger.warning("Gemini explanation failed (%s); using the template", type(exc).__name__)
             return None

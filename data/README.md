@@ -24,7 +24,7 @@ make doctor                                    # check every source, credential 
 | `extract ibge-pam` | PAM yields 2005-2024. | network |
 | `extract zarc [--file CSV]` | ZARC windows from a manually downloaded CSV. | the CSV |
 | `extract power --cells pilot\|all [--force]` | NASA POWER daily series per cell. | `extract ibge-geo` first |
-| `extract appeears [--start --end]` | AppEEARS pilot-point samples (SMAP, MODIS, NASADEM). Needs Earthdata credentials; mock-tested only. | `EARTHDATA_*` in `data/.env` |
+| `extract appeears [--start --end]` | AppEEARS pilot-point samples (SMAP, MODIS, NASADEM). Needs Earthdata credentials; login and submit verified live. | `EARTHDATA_*` in `data/.env` |
 | `extract soilgrids [--workers N] [--limit N]` | SoilGrids profiles per municipality centroid. | `extract ibge-geo` first |
 | `etl load-reference` | Catalog, cells, municipalities, ZARC, PAM and dataset versions into the database. | the four processed outputs above, a migrated database |
 | `etl load-climate` | POWER series into `climate_daily`. | `load-reference` (cells must exist) |
@@ -50,7 +50,7 @@ Alternatively, on a fresh migrated database, `load-demo` (`make seed`) loads the
 
 | Path | What |
 | --- | --- |
-| `sources/<name>/` | One extractor per source, each with its own README: [fao_ecocrop](sources/fao_ecocrop/README.md), [ibge_geo](sources/ibge_geo/README.md), [ibge_pam](sources/ibge_pam/README.md), [mapa_zarc](sources/mapa_zarc/README.md), [nasa_power](sources/nasa_power/README.md), [soilgrids](sources/soilgrids/README.md). `earthdata_appeears` and `earthdata_harmony` hold parsers and sample CSVs for satellite products; `extract appeears` is wired into the CLI (pilot point, untested against the live service) and there is no IMERG download script: [appeears](sources/earthdata_appeears/README.md), [harmony](sources/earthdata_harmony/README.md). |
+| `sources/<name>/` | One extractor per source, each with its own README: [fao_ecocrop](sources/fao_ecocrop/README.md), [ibge_geo](sources/ibge_geo/README.md), [ibge_pam](sources/ibge_pam/README.md), [mapa_zarc](sources/mapa_zarc/README.md), [nasa_power](sources/nasa_power/README.md), [soilgrids](sources/soilgrids/README.md). `earthdata_appeears` and `earthdata_harmony` hold parsers and sample CSVs for satellite products; `extract appeears` is wired into the CLI (pilot point, login and task submission verified live, download pending) and there is no IMERG download script: [appeears](sources/earthdata_appeears/README.md), [harmony](sources/earthdata_harmony/README.md). |
 | `etl/` | Load and precompute steps: [README](etl/README.md). |
 | `validate/` | Quality gate: [README](validate/README.md). |
 | `ml/` | Plan for machine learning, not implemented: [README](ml/README.md). |

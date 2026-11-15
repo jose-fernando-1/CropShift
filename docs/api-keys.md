@@ -22,7 +22,7 @@ EARTHDATA_USERNAME=your_username
 EARTHDATA_PASSWORD=your_password
 ```
 
-`doctor` logs in to AppEEARS and reports `OK` when it gets a token. Only the satellite pipeline uses these values; `python -m data extract appeears` uses them (written, tested only with a mocked transport, not yet run against the live service) (see [../data/README.md](../data/README.md)).
+`doctor` logs in to AppEEARS and reports `OK` when it gets a token. Only the satellite pipeline uses these values; `python -m data extract appeears` uses them (written, login and task submission verified live on 2026-11-15, download not yet confirmed) (see [../data/README.md](../data/README.md)).
 
 ## Gemini
 
@@ -43,3 +43,7 @@ Privacy: the free tier of the Gemini API may use content to improve Google produ
 - Never commit a real key or password. `.env` and `.env.*` are git-ignored; only `*.example` files are tracked (`backend/.env.example`, root `.env.example`).
 - `data/.env` is read by `python -m data` only, after `backend/.env`; real environment variables win over both.
 - The development database password `change_me` is a placeholder for local use; set `POSTGRES_PASSWORD` anywhere shared.
+
+## Gemini model choice
+
+`GEMINI_MODEL` must be a model your key can still call: Google retires models for new accounts (`gemini-2.5-flash` returned 404 on 2026-11-15) and large ones can answer `503 high demand`. `python -m data doctor` makes one tiny test call with the configured model and fails if it does not answer. On 2026-11-15 `gemini-3.6-flash` and `gemini-3.5-flash-lite` answered in 4-7 s while `gemini-3.8-flash` was overloaded. The API always falls back to the template when Gemini fails, so an unavailable model never breaks `/explain`.
