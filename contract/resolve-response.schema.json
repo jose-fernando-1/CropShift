@@ -1,0 +1,98 @@
+{
+  "$id": "https://fieldshift.local/contract/0.1/resolve-response.schema.json",
+  "title": "Field Shift resolve-response (contract v0.1)",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "coverage": {
+          "type": "string",
+          "const": "covered"
+        },
+        "mock": {
+          "type": "boolean"
+        },
+        "municipality": {
+          "type": "object",
+          "properties": {
+            "municipality_code": {
+              "type": "string",
+              "pattern": "^\\d{7}$",
+              "description": "7-digit IBGE municipality code"
+            },
+            "municipality_name": {
+              "type": "string"
+            },
+            "state": {
+              "type": "string",
+              "const": "PE"
+            },
+            "power_cell": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "POWER grid cell id, e.g. 'r162c230'"
+                },
+                "lat": {
+                  "type": "number",
+                  "description": "cell centre latitude"
+                },
+                "lon": {
+                  "type": "number",
+                  "description": "cell centre longitude"
+                }
+              },
+              "required": [
+                "id",
+                "lat",
+                "lon"
+              ],
+              "additionalProperties": false
+            },
+            "near_centroid": {
+              "type": "boolean",
+              "description": "point falls in the same POWER cell as the municipality centroid"
+            }
+          },
+          "required": [
+            "municipality_code",
+            "municipality_name",
+            "state",
+            "power_cell",
+            "near_centroid"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "coverage",
+        "mock",
+        "municipality"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "coverage": {
+          "type": "string",
+          "const": "out_of_state"
+        },
+        "mock": {
+          "type": "boolean"
+        },
+        "municipality": {
+          "type": "null"
+        }
+      },
+      "required": [
+        "coverage",
+        "mock",
+        "municipality"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

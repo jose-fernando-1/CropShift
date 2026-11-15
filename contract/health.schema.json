@@ -1,0 +1,35 @@
+{
+  "$id": "https://fieldshift.local/contract/0.1/health.schema.json",
+  "title": "Field Shift health (contract v0.1)",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "ok",
+        "degraded"
+      ]
+    },
+    "contract_version": {
+      "type": "string"
+    },
+    "method_version": {
+      "type": "string"
+    },
+    "data_version": {
+      "type": "string"
+    },
+    "mock": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "status",
+    "contract_version",
+    "method_version",
+    "data_version",
+    "mock"
+  ],
+  "additionalProperties": false
+}

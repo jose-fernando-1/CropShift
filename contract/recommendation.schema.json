@@ -1,0 +1,673 @@
+{
+  "$id": "https://fieldshift.local/contract/0.1/recommendation.schema.json",
+  "title": "Field Shift recommendation (contract v0.1)",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "analysis_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.~-]+$",
+      "description": "Opaque id; URL-path-safe characters only (A-Z a-z 0-9 _ . ~ -) because it is a path segment in /explain"
+    },
+    "contract_version": {
+      "type": "string"
+    },
+    "method_version": {
+      "type": "string"
+    },
+    "dataset_versions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "retrieved_at": {
+            "type": "string",
+            "description": "ISO date the source was retrieved"
+          }
+        },
+        "required": [
+          "name",
+          "version",
+          "retrieved_at"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "mock": {
+      "type": "boolean"
+    },
+    "generated_at": {
+      "type": "string"
+    },
+    "location": {
+      "type": "object",
+      "properties": {
+        "municipality_code": {
+          "type": "string",
+          "pattern": "^\\d{7}$",
+          "description": "7-digit IBGE municipality code"
+        },
+        "municipality_name": {
+          "type": "string"
+        },
+        "power_cell": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "POWER grid cell id, e.g. 'r162c230'"
+            },
+            "lat": {
+              "type": "number",
+              "description": "cell centre latitude"
+            },
+            "lon": {
+              "type": "number",
+              "description": "cell centre longitude"
+            }
+          },
+          "required": [
+            "id",
+            "lat",
+            "lon"
+          ],
+          "additionalProperties": false
+        },
+        "soil_class": {
+          "anyOf": [
+            {
+              "type": "number",
+              "const": 1
+            },
+            {
+              "type": "number",
+              "const": 2
+            },
+            {
+              "type": "number",
+              "const": 3
+            }
+          ],
+          "description": "ZARC soil class: 1 sandy, 2 medium, 3 clayey"
+        },
+        "soil_source": {
+          "type": "string",
+          "enum": [
+            "user",
+            "default"
+          ]
+        },
+        "regime": {
+          "type": "string",
+          "enum": [
+            "rainfed",
+            "irrigated"
+          ]
+        },
+        "regime_source": {
+          "type": "string",
+          "enum": [
+            "user",
+            "default"
+          ]
+        },
+        "input_mode": {
+          "type": "string",
+          "enum": [
+            "point",
+            "municipality"
+          ]
+        },
+        "near_centroid": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "municipality_code",
+        "municipality_name",
+        "power_cell",
+        "soil_class",
+        "soil_source",
+        "regime",
+        "regime_source",
+        "input_mode",
+        "near_centroid"
+      ],
+      "additionalProperties": false
+    },
+    "crops": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "crop_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "rank": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "eligible": {
+            "type": "boolean",
+            "const": true
+          },
+          "legume": {
+            "type": "boolean",
+            "description": "Fabaceae: can fix nitrogen"
+          },
+          "best_windows": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "start_dekad": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 36,
+                  "description": "1-based dekad (decêndio), 1 = Jan 1-10"
+                },
+                "end_dekad": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 36,
+                  "description": "1-based dekad (decêndio), 1 = Jan 1-10"
+                },
+                "mean_p": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              },
+              "required": [
+                "start_dekad",
+                "end_dekad",
+                "mean_p"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "p_success": {
+            "minItems": 36,
+            "maxItems": 36,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "p": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "lo": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "hi": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              },
+              "required": [
+                "p",
+                "lo",
+                "hi"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "zarc": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "values": {
+                    "minItems": 36,
+                    "maxItems": 36,
+                    "type": "array",
+                    "items": {
+                      "anyOf": [
+                        {
+                          "type": "number",
+                          "const": 0
+                        },
+                        {
+                          "type": "number",
+                          "const": 20
+                        },
+                        {
+                          "type": "number",
+                          "const": 30
+                        },
+                        {
+                          "type": "number",
+                          "const": 40
+                        }
+                      ]
+                    },
+                    "description": "ZARC value per dekad; 0 = not recommended. Meaning of 20/30/40 unconfirmed"
+                  },
+                  "cycle_code": {
+                    "type": "string"
+                  },
+                  "soil_code": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991,
+                    "description": "ZARC soil code: 1-3 texture classes or 11-16 (AD1-AD6)"
+                  },
+                  "ordinance": {
+                    "type": "string"
+                  },
+                  "season": {
+                    "type": "string",
+                    "description": "ZARC season, e.g. '2025/2026'"
+                  }
+                },
+                "required": [
+                  "values",
+                  "cycle_code",
+                  "soil_code",
+                  "ordinance",
+                  "season"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "pam": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "crop_label": {
+                    "type": "string",
+                    "description": "PAM product used, e.g. 'feijao' (all beans pooled)"
+                  },
+                  "years": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "yield_kg_ha": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  },
+                  "municipality_median": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "state_median": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "crop_label",
+                  "years",
+                  "yield_kg_ha",
+                  "municipality_median",
+                  "state_median"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "flags": {
+            "type": "object",
+            "properties": {
+              "engine_reliable": {
+                "type": "boolean"
+              },
+              "ml_applied": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "engine_reliable",
+              "ml_applied"
+            ],
+            "additionalProperties": false
+          },
+          "strengths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "missing_data": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "version": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "url",
+                "version"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "confidence": {
+            "type": "object",
+            "properties": {
+              "level": {
+                "type": "string",
+                "enum": [
+                  "high",
+                  "medium",
+                  "low"
+                ]
+              },
+              "reasons": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "level",
+              "reasons"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "crop_id",
+          "name",
+          "rank",
+          "eligible",
+          "legume",
+          "best_windows",
+          "p_success",
+          "zarc",
+          "pam",
+          "flags",
+          "strengths",
+          "risks",
+          "missing_data",
+          "sources",
+          "confidence"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "excluded": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "crop_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "eligible": {
+            "type": "boolean",
+            "const": false
+          },
+          "reason_code": {
+            "type": "string",
+            "enum": [
+              "gate_failed",
+              "engine_not_run",
+              "no_data_for_regime"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          },
+          "zarc": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "values": {
+                    "minItems": 36,
+                    "maxItems": 36,
+                    "type": "array",
+                    "items": {
+                      "anyOf": [
+                        {
+                          "type": "number",
+                          "const": 0
+                        },
+                        {
+                          "type": "number",
+                          "const": 20
+                        },
+                        {
+                          "type": "number",
+                          "const": 30
+                        },
+                        {
+                          "type": "number",
+                          "const": 40
+                        }
+                      ]
+                    },
+                    "description": "ZARC value per dekad; 0 = not recommended. Meaning of 20/30/40 unconfirmed"
+                  },
+                  "cycle_code": {
+                    "type": "string"
+                  },
+                  "soil_code": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991,
+                    "description": "ZARC soil code: 1-3 texture classes or 11-16 (AD1-AD6)"
+                  },
+                  "ordinance": {
+                    "type": "string"
+                  },
+                  "season": {
+                    "type": "string",
+                    "description": "ZARC season, e.g. '2025/2026'"
+                  }
+                },
+                "required": [
+                  "values",
+                  "cycle_code",
+                  "soil_code",
+                  "ordinance",
+                  "season"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "pam": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "crop_label": {
+                    "type": "string",
+                    "description": "PAM product used, e.g. 'feijao' (all beans pooled)"
+                  },
+                  "years": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "yield_kg_ha": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  },
+                  "municipality_median": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "state_median": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "crop_label",
+                  "years",
+                  "yield_kg_ha",
+                  "municipality_median",
+                  "state_median"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "version": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "url",
+                "version"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "crop_id",
+          "name",
+          "eligible",
+          "reason_code",
+          "reason",
+          "zarc",
+          "pam",
+          "sources"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "disclaimers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "text"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "analysis_id",
+    "contract_version",
+    "method_version",
+    "dataset_versions",
+    "mock",
+    "generated_at",
+    "location",
+    "crops",
+    "excluded",
+    "disclaimers"
+  ],
+  "additionalProperties": false
+}

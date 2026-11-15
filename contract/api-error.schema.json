@@ -1,0 +1,38 @@
+{
+  "$id": "https://fieldshift.local/contract/0.1/api-error.schema.json",
+  "title": "Field Shift api-error (contract v0.1)",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "invalid_request",
+            "invalid_coordinates",
+            "out_of_coverage",
+            "not_found",
+            "no_data",
+            "upstream_unavailable",
+            "rate_limited",
+            "internal"
+          ]
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "error"
+  ],
+  "additionalProperties": false
+}

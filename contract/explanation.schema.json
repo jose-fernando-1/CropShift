@@ -1,0 +1,68 @@
+{
+  "$id": "https://fieldshift.local/contract/0.1/explanation.schema.json",
+  "title": "Field Shift explanation (contract v0.1)",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "analysis_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.~-]+$",
+      "description": "Opaque id; URL-path-safe characters only (A-Z a-z 0-9 _ . ~ -) because it is a path segment in /explain"
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "template",
+        "ai"
+      ]
+    },
+    "mock": {
+      "type": "boolean"
+    },
+    "generated_at": {
+      "type": "string"
+    },
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "paragraphs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "paragraphs"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "field_checks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "what the farmer should verify in the field"
+    }
+  },
+  "required": [
+    "analysis_id",
+    "source",
+    "mock",
+    "generated_at",
+    "sections",
+    "field_checks"
+  ],
+  "additionalProperties": false
+}

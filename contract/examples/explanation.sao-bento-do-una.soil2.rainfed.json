@@ -1,0 +1,48 @@
+{
+  "analysis_id": "fsm_20261114_2613008.2.u.r.u.m.1",
+  "source": "template",
+  "mock": true,
+  "generated_at": "2026-11-14T12:00:00.000Z",
+  "sections": [
+    {
+      "id": "summary",
+      "title": "Summary",
+      "paragraphs": [
+        "For São Bento do Una, with medium soil and rainfed farming, the crops with the best simulated planting windows are: Cowpea, Peanut, Grain sorghum."
+      ]
+    },
+    {
+      "id": "top",
+      "title": "Top crops",
+      "paragraphs": [
+        "1. Cowpea: The best window is Mar 11 – Jun 30, where planting succeeded in 89% of simulated seasons on average. The official ZARC window is shown on the chart for comparison. Confidence is medium: The engine's best dekad (Apr 21–30) is inside the ZARC window, but not in its best class.",
+        "2. Peanut: The best window is Mar 1 – Jun 20, where planting succeeded in 85% of simulated seasons on average. The official ZARC window is shown on the chart for comparison. Confidence is high: The engine's best dekad (Mar 21–31) is in ZARC's best class (value 20).",
+        "3. Grain sorghum: The best window is Mar 1 – Jun 20, where planting succeeded in 89% of simulated seasons on average. The official ZARC window is shown on the chart for comparison. Confidence is high: The engine's best dekad (Mar 21–31) is in ZARC's best class (value 20)."
+      ]
+    },
+    {
+      "id": "excluded",
+      "title": "Not ranked",
+      "paragraphs": [
+        "Maize (1st season): Not ranked yet: the water-balance engine has not been validated for this crop.",
+        "Common bean: Not ranked yet: the water-balance engine has not been validated for this crop.",
+        "Sunflower: Not ranked yet: the water-balance engine has not been validated for this crop.",
+        "Castor bean: Own estimate not reliable: the engine does not reproduce ZARC for this crop (rank correlation -0.25)."
+      ]
+    },
+    {
+      "id": "limits",
+      "title": "How sure is this",
+      "paragraphs": [
+        "These are probabilities from past seasons of NASA climate data, not a forecast. They describe a climate cell, not your field.",
+        "This is decision support: it does not replace your own judgement."
+      ]
+    }
+  ],
+  "field_checks": [
+    "Get a soil analysis: texture, depth and fertility change how much water the crop can use.",
+    "Check local market prices and buyers before choosing a crop.",
+    "Ask about pests and diseases this season with your local extension office.",
+    "Compare with the local planting calendar and your own experience of the rains."
+  ]
+}

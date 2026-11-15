@@ -1,0 +1,108 @@
+{
+  "$id": "https://fieldshift.local/contract/0.1/crops.schema.json",
+  "title": "Field Shift crops (contract v0.1)",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "contract_version": {
+      "type": "string"
+    },
+    "mock": {
+      "type": "boolean"
+    },
+    "crops": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "crop_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "scientific_name": {
+            "type": "string"
+          },
+          "family": {
+            "type": "string"
+          },
+          "legume": {
+            "type": "boolean"
+          },
+          "cycle_days": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "gate": {
+            "type": "object",
+            "properties": {
+              "passed": {
+                "type": "boolean"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "passed",
+                  "failed",
+                  "not_run"
+                ]
+              },
+              "metric": {
+                "type": "string",
+                "const": "spearman"
+              },
+              "value": {
+                "description": "rank correlation with ZARC on held-out municipalities",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "threshold": {
+                "type": "number"
+              },
+              "note": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "passed",
+              "status",
+              "metric",
+              "value",
+              "threshold",
+              "note"
+            ],
+            "additionalProperties": false
+          },
+          "has_zarc": {
+            "type": "boolean"
+          },
+          "has_pam": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "crop_id",
+          "name",
+          "scientific_name",
+          "family",
+          "legume",
+          "cycle_days",
+          "gate",
+          "has_zarc",
+          "has_pam"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "contract_version",
+    "mock",
+    "crops"
+  ],
+  "additionalProperties": false
+}
