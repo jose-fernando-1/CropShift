@@ -14,8 +14,8 @@ export const en = {
   app: {
     title: "Cropshift: what to plant and when",
     tagline: "What to plant and when, in Pernambuco. Decision support, not a substitute for your judgement.",
-    versionsTitle: "Data and method versions",
-    versions: (data: string, method: string, contract: string) => `data ${data} · ${method} · contract v${contract}`,
+    versionTitle: "Cropshift version",
+    version: (v: string) => `v${v}`,
     dataFlow: "Data flow",
     language: "Language",
     close: "Close",

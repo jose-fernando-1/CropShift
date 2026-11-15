@@ -32,7 +32,7 @@ export function CropshiftApp({ dataFlowAllowed }: { dataFlowAllowed: boolean }) 
   return (
     <>
       {isMock ? <MockBanner /> : null}
-      <AppHeader health={health.data} inspectorEnabled={inspectorEnabled} onOpenInspector={() => setInspectorOpen(true)} />
+      <AppHeader inspectorEnabled={inspectorEnabled} onOpenInspector={() => setInspectorOpen(true)} />
 
       <main className="mx-auto grid w-full max-w-7xl flex-1 gap-6 px-4 py-6 lg:grid-cols-[380px_minmax(0,1fr)] xl:grid-cols-[420px_minmax(0,1fr)]">
         <aside className="space-y-6 lg:sticky lg:top-12 lg:self-start">

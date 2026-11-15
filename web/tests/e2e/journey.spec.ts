@@ -6,6 +6,8 @@ test.describe("main journey (mock mode)", () => {
     await page.goto("/");
     await expect(page.getByTestId("mock-banner")).toBeVisible();
     await expect(page.getByTestId("empty-state")).toBeVisible();
+    // One application version in the header (hidden below the sm breakpoint).
+    if (test.info().project.name === "desktop") await expect(page.getByTestId("app-version")).toHaveText(/^v\d+\.\d+\.\d+$/);
 
     await page.getByTestId("try-example").click();
     await expect(page.getByTestId("result-municipality")).toHaveText(new RegExp(SBU.name));

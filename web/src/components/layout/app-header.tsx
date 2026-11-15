@@ -1,17 +1,16 @@
 "use client";
 
 import { Activity, Sprout } from "lucide-react";
-import type { Health } from "@/contract/types";
 import { Button } from "@/components/ui/button";
 import { useMessages } from "@/i18n/use-i18n";
 import { LanguageSwitcher } from "./language-switcher";
 
+const APP_VERSION = process.env.NEXT_PUBLIC_APP_VERSION;
+
 export function AppHeader({
-  health,
   inspectorEnabled,
   onOpenInspector,
 }: {
-  health: Health | undefined;
   inspectorEnabled: boolean;
   onOpenInspector: () => void;
 }) {
@@ -29,9 +28,9 @@ export function AppHeader({
           </div>
         </div>
         <div className="flex items-center gap-3 text-xs text-muted">
-          {health ? (
-            <span className="hidden sm:inline" title={m.app.versionsTitle}>
-              {m.app.versions(health.data_version, health.method_version, health.contract_version)}
+          {APP_VERSION ? (
+            <span className="hidden tabular-nums sm:inline" title={m.app.versionTitle} data-testid="app-version">
+              {m.app.version(APP_VERSION)}
             </span>
           ) : null}
           <LanguageSwitcher />

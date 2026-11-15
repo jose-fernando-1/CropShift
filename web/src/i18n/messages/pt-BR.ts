@@ -12,8 +12,8 @@ export const ptBR: Messages = {
   app: {
     title: "Cropshift: o que plantar e quando",
     tagline: "O que plantar e quando, em Pernambuco. Apoio à decisão: não substitui o seu julgamento.",
-    versionsTitle: "Versões dos dados e do método",
-    versions: (data, method, contract) => `dados ${data} · ${method} · contrato v${contract}`,
+    versionTitle: "Versão do Cropshift",
+    version: (v) => `v${v}`,
     dataFlow: "Fluxo de dados",
     language: "Idioma",
     close: "Fechar",
