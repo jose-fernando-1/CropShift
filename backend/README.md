@@ -40,7 +40,6 @@ Read from the environment and `backend/.env` (copy `backend/.env.example`; git-i
 | `API_V1_PREFIX` | `/api/v1` | Prefix of the business routes. |
 | `CORS_ORIGINS` | empty | Allowed browser origins. Empty is correct behind the web app's same-origin proxy. |
 | `CONTRACT_VERSION` | `0.1` | Reported by `/health` and in every payload. |
-| `METHOD_VERSION` | `mvp-1` | Method version: stored with precomputed results and embedded in `analysis_id`. Changing it makes older ids and stored results unusable until the windows are recomputed. |
 | `DATA_VERSION` | `2026-11-15` | Reported by `/health`; bump it when data is re-extracted and the seed rebuilt. |
 | `DATABASE_URL` | empty | Full SQLAlchemy URL. When set it wins over the `POSTGRES_*` parts. |
 | `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB` | `rurotation`, `change_me`, `rurotation` | Database credentials (development defaults; change them anywhere shared). |

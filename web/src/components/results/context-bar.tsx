@@ -51,7 +51,6 @@ export function ContextBar({ rec, requestPoint }: { rec: Recommendation; request
           {m.labels.regime[location.regime]}
           {location.regime_source === "default" ? t.isDefault : ""}
         </Badge>
-        <Badge tone="outline">{t.method(rec.method_version)}</Badge>
         {rec.mock ? <Badge tone="warning">{t.mock}</Badge> : null}
       </div>
     </section>

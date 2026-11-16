@@ -155,7 +155,6 @@ export const en = {
     shareTitle: "Copy a link to this result. It shares the municipality and options, never your exact point.",
     soil: (label: string, n: number) => `Soil: ${label} (class ${n})`,
     isDefault: " · default",
-    method: (v: string) => `Method ${v}`,
     mock: "Mock data",
   },
   results: {

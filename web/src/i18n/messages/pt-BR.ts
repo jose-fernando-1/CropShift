@@ -157,7 +157,6 @@ export const ptBR: Messages = {
     shareTitle: "Copia um link para este resultado. O link leva o município e as opções, nunca o seu ponto exato.",
     soil: (label, n) => `Solo: ${label} (classe ${n})`,
     isDefault: " · padrão",
-    method: (v) => `Método ${v}`,
     mock: "Dados simulados",
   },
   results: {
