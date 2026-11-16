@@ -2,7 +2,7 @@
 
 Cropshift is the NASA Space Apps 2026 project of team Rural. For a point or municipality in Pernambuco, Brazil, it shows for each crop the probability of planting success per dekad (36 ten-day windows) from 40 seasons of NASA POWER climate, next to the official ZARC planting window and IBGE PAM yields. The "probability" is the historical frequency of successful simulated seasons, not a calibrated probability.
 
-The GitHub repository is still named Rurotation; the product, the app and the docs use the name Cropshift. The default database user and name `rurotation` are identifiers, not branding.
+The GitHub repository is named CropShift. The default database user and name `rurotation` are identifiers kept from the project's earlier name, not branding.
 
 Current state: the web app ([`web/`](web/README.md)) runs against either its in-process mock API or the FastAPI backend ([`backend/`](backend/README.md)), which implements the shared [contract](contract/README.md) v0.1 over a PostGIS database. The data extraction and ETL tooling lives in [`data/`](data/README.md). Machine learning is scaffolded only: no model is trained or applied (`ml_applied` is always `false`).
 
