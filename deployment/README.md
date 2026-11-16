@@ -3,8 +3,8 @@
 One script takes a raw Linux server to a running Cropshift: the app at `https://your-domain/demo` and the landing page at `https://your-domain/`: it installs Docker, asks for each setting, builds the images, starts the stack behind nginx and gets a Let's Encrypt certificate that renews itself.
 
 ```bash
-git clone https://github.com/jose-fernando-1/Rurotation.git
-cd Rurotation
+git clone https://github.com/jose-fernando-1/CropShift.git
+cd CropShift
 sudo ./deployment/install.sh
 ```
 

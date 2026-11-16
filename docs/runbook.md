@@ -1,11 +1,11 @@
 # Runbook
 
-Operating the database and the data pipeline. Run modes are in [../README.md](../README.md); commands for the data tooling are in [../data/README.md](../data/README.md). Run `make` and `python -m data` from the repo root.
+Operating the database and the data pipeline on a developer machine; for a server installed with `deployment/install.sh` (backup, restore, update) see [../deployment/README.md](../deployment/README.md). Run modes are in [../README.md](../README.md); commands for the data tooling are in [../data/README.md](../data/README.md). Run `make` and `python -m data` from the repo root.
 
 ## Rules
 
 - Never run `docker compose down -v`: it deletes the PostgreSQL volume `postgres_data`. `make stack-down` (plain `down`) keeps it.
-- Back up before anything destructive (see below). `make seed` truncates the seeded tables.
+- Back up before anything destructive (see below). A forced seed truncates the seeded tables.
 
 ## Reseed a database
 
@@ -15,6 +15,8 @@ For a fresh or disposable database, load the committed derived tables with no ne
 make db migrate     # host; inside the devcontainer the db is already running
 make seed           # or: docker compose --profile live run --rm seed
 ```
+
+`make seed` stops with a message when the database already has crops. To replace the seeded tables anyway, run `docker compose --profile live run --rm seed` (it passes `--force`) or `python -m data load-demo --force`.
 
 The seed has the catalog, municipalities, ZARC, PAM, soil, precomputed windows and dataset versions, but not the raw daily climate (`climate_daily`). It replaces the content of those tables, including the quality gate values.
 

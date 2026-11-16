@@ -33,7 +33,7 @@ make doctor                                    # check every source, credential 
 | `validate gate` | Spearman agreement with ZARC per crop; writes the statewide gate on each crop. | `precompute-windows` |
 | `validate report` | Write `docs/validation/report.md` from the database and the committed IMERG sample. | `validate gate` |
 | `etl build-demo` | Export the derived tables to `data/demo/*.csv.gz` and a manifest (the committed seed). | the full pipeline above, in the database |
-| `load-demo` | Load the committed seed into an empty database: no network, no credentials. Truncates the seeded tables first. | a migrated database |
+| `load-demo [--force]` | Load the committed seed: no network, no credentials. Stops if the database already has crops; `--force` truncates the seeded tables and loads. | a migrated database |
 
 ## Run order
 

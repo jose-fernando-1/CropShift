@@ -27,7 +27,7 @@ EARTHDATA_PASSWORD=your_password
 ## Gemini
 
 1. Create a key in Google AI Studio.
-2. Set both values in `backend/.env` (outside containers) or in the root `.env` read by compose (the `api` service passes them through):
+2. Set the key (the model values are optional, the API has built-in defaults) in `backend/.env` (outside containers) or in the root `.env` read by compose (the `api` service passes them through):
 
 ```bash
 GEMINI_API_KEY=your_key
@@ -35,7 +35,7 @@ GEMINI_MODEL=a_model_offered_to_your_key
 GEMINI_FALLBACK_MODELS=second_choice,third_choice
 ```
 
-`doctor` makes a real test call to every model of the chain and reports which answer. With either value empty, `POST /api/v1/recommendations/{id}/explain` returns the deterministic template.
+`doctor` makes a real test call to every model of the chain and reports which answer. With the key empty, `POST /api/v1/recommendations/{id}/explain` returns the deterministic template.
 
 Privacy: the free tier of the Gemini API may use content to improve Google products, so the backend sends only the already computed, coordinate-free recommendation JSON, never coordinates or personal data. Answers are validated and any percentage not derivable from the payload makes the backend fall back to the template. Details: [../backend/README.md](../backend/README.md).
 

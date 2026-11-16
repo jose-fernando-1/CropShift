@@ -19,7 +19,7 @@ flowchart TD
 
 1. Components never call `fetch`. They use the hooks in `src/lib/api/queries.ts` (`useHealth`, `useCrops`, `useResolve`, `useRecommendation`, `useExplanation`).
 2. The hooks call `api.*` in `src/lib/api/client.ts`. The client parses every response with the zod schema from `src/contract/schemas.ts`; a body that does not match becomes an `ApiClientError` with code `schema_mismatch`. Error bodies are parsed as the contract error envelope. Each call is recorded in the in-memory request log (last 50) that feeds the [inspector](../README.md#data-flow-inspector). In mock mode the client adds the `x-mock-scenario` header when a scenario is selected.
-3. All calls are same-origin `/api/...`: one catch-all route, no CORS, and any backend secret stays server-side.
+3. All calls are same-origin `/api/...` (prefixed by `NEXT_PUBLIC_BASE_PATH` when set, for example `/demo/api/...`): one catch-all route, no CORS, and any backend secret stays server-side. Only the contract routes in `src/lib/server/routes.ts` are answered; other paths get 404 `not_found`.
 4. `handleApi` reads `API_MODE` on each request and sets `x-cropshift-mode` and `cache-control: no-store` on the response.
 5. In mock mode `src/mocks/handlers.ts` routes the request, builds the answer from the fixtures and validates its own output against the contract (a mock that drifts returns 500 `internal`). In live mode `live-proxy.ts` forwards to `API_ORIGIN`.
 
