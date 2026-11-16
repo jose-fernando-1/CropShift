@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Checks a running deployment from this machine: HTTP redirect, HTTPS page, security headers and the live API.
+# Checks a running deployment from this machine: HTTP redirect, landing page (/), web app (/demo), security headers
+# and the live API (/demo/api).
 #   smoke-test.sh DOMAIN [HTTPS_PORT] [HTTP_PORT] [--insecure]
 # --insecure accepts a self-signed or Let's Encrypt staging certificate. It resolves DOMAIN to 127.0.0.1, so it
 # works before DNS is ready. Exit code is the number of failed checks (0 = everything passed).
@@ -25,20 +26,24 @@ https() {  # https PATH [curl args...]
 }
 
 # nginx may still be reloading: wait for the first answer.
-for _ in $(seq 1 20); do https /api/health >/dev/null 2>&1 && break; sleep 3; done
+for _ in $(seq 1 20); do https /demo/api/health >/dev/null 2>&1 && break; sleep 3; done
 
 redirect_status="$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 --resolve "${DOMAIN}:${HTTP_PORT}:127.0.0.1" "http://${DOMAIN}:${HTTP_PORT}/")"
 t_redirect()  { [ "$redirect_status" = 301 ]; }
 t_page()      { https / | grep -qi '<html'; }
+t_demo()      { https /demo | grep -qi '<html'; }
+t_demo_link() { https / | grep -q 'href="/demo"'; }
 t_hsts()      { https / -D - -o /dev/null | grep -qi '^strict-transport-security'; }
-t_health()    { https /api/health | grep -q '"mock":false'; }
-t_status()    { https /api/health | grep -q '"status":"ok"'; }
-t_crops()     { https /api/v1/crops | grep -q '"crop_id":"cowpea"'; }
-t_recommend() { https /api/v1/recommendations -H 'content-type: application/json' -d '{"municipality_code":"2613008"}' | grep -q '"mock":false'; }
-t_no_docs()   { https /api/health >/dev/null && ! https /docs; }   # reachable, yet /docs refused
+t_health()    { https /demo/api/health | grep -q '"mock":false'; }
+t_status()    { https /demo/api/health | grep -q '"status":"ok"'; }
+t_crops()     { https /demo/api/v1/crops | grep -q '"crop_id":"cowpea"'; }
+t_recommend() { https /demo/api/v1/recommendations -H 'content-type: application/json' -d '{"municipality_code":"2613008"}' | grep -q '"mock":false'; }
+t_no_docs()   { https /demo/api/health >/dev/null && ! https /docs; }   # reachable, yet /docs refused
 
 check "HTTP redirects to HTTPS (got ${redirect_status})" t_redirect
-check "HTTPS serves the web page" t_page
+check "HTTPS serves the landing page at /" t_page
+check "Landing page links to the demo" t_demo_link
+check "HTTPS serves the web app at /demo" t_demo
 check "HSTS header present" t_hsts
 check "API health answers with mock:false (live backend)" t_health
 check "API reports status ok" t_status

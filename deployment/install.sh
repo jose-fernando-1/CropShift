@@ -80,7 +80,7 @@ preflight() {
     local mem_mb
     mem_mb="$(awk '/MemTotal/ {print int($2/1024)}' /proc/meminfo)"
     if [ "$mem_mb" -lt 1800 ]; then
-        warn "Only ${mem_mb} MB of RAM: building the web image needs about 2 GB. Add swap first, e.g.: fallocate -l 2G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile"
+        warn "Only ${mem_mb} MB of RAM: building the web and landing images needs about 2 GB. Add swap first, e.g.: fallocate -l 2G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile"
     fi
     local free_gb
     free_gb="$(df -Pk /var/lib 2>/dev/null | awk 'NR==2 {print int($4/1024/1024)}')"
@@ -307,7 +307,10 @@ wait_healthy() {  # wait_healthy service seconds
 }
 
 start_stack() {
-    step "Building images (the web build takes a few minutes)"
+    step "Building images (the web and landing builds take a few minutes)"
+    # The two Next.js builds run one after the other: together they can exhaust a small server's memory.
+    dc build web
+    dc build landing
     dc --profile tools build
     step "Starting the database and applying migrations"
     dc up -d db
@@ -321,10 +324,11 @@ start_stack() {
     else
         ok "Database already has data (${crops} crops): keeping it"
     fi
-    step "Starting api, web and nginx"
-    dc up -d api web nginx
+    step "Starting api, web, landing and nginx"
+    dc up -d api web landing nginx
     wait_healthy api 120
     wait_healthy web 120
+    wait_healthy landing 120
     wait_healthy nginx 60
     ok "Stack is up (plain HTTP while there is no certificate)"
 }

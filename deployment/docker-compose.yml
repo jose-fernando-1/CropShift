@@ -1,6 +1,6 @@
-# Cropshift production stack: nginx (HTTPS) -> web -> api -> db, plus certbot for Let's Encrypt renewal.
+# Cropshift production stack: nginx (HTTPS) -> landing (/) and web (/demo) -> api -> db, plus certbot for renewal.
 #
-# Only nginx publishes ports. db, api and web live on a private network and are never reachable from outside.
+# Only nginx publishes ports. db, api, web and landing live on a private network and are never reachable from outside.
 # Configuration comes from deployment/.env (written by install.sh, mode 600, git-ignored); see .env.example.
 # Run it through install.sh / manage.sh rather than by hand: they order the first start (cert bootstrap).
 #
@@ -81,9 +81,12 @@ services:
     networks: [internal]
 
   web:
+    # The app lives under /demo (Next.js basePath, baked in at build time); the landing page owns /.
     image: cropshift-web:${CROPSHIFT_VERSION:-local}
     build:
       context: ../web
+      args:
+        NEXT_PUBLIC_BASE_PATH: /demo
     restart: unless-stopped
     environment:
       API_MODE: live
@@ -96,6 +99,16 @@ services:
     networks:
       internal:
         ipv4_address: 172.30.0.10
+
+  landing:
+    # Static landing page at /; its "Open the demo" buttons point at /demo.
+    image: cropshift-landing:${CROPSHIFT_VERSION:-local}
+    build:
+      context: ../landing
+      args:
+        NEXT_PUBLIC_DEMO_URL: /demo
+    restart: unless-stopped
+    networks: [internal]
 
   nginx:
     image: ${NGINX_IMAGE:-nginx:1.27-alpine}
@@ -114,6 +127,8 @@ services:
     entrypoint: ["/bin/sh", "/cropshift-entrypoint.sh"]
     depends_on:
       web:
+        condition: service_healthy
+      landing:
         condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/healthz >/dev/null || exit 1"]
