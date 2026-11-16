@@ -8,6 +8,8 @@ on:
         "data/**",
         "contract/**",
         "web/mock-data/**",
+        "web/Dockerfile",
+        "deployment/**",
         "ruff.toml",
         "Makefile",
         ".github/workflows/backend-ci.yml",
@@ -20,6 +22,8 @@ on:
         "data/**",
         "contract/**",
         "web/mock-data/**",
+        "web/Dockerfile",
+        "deployment/**",
         "ruff.toml",
         "Makefile",
         ".github/workflows/backend-ci.yml",
@@ -74,6 +78,29 @@ jobs:
       - name: Tests (offline)
         working-directory: backend
         run: python -m pytest -m "not live"
+
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: shellcheck -x -P SCRIPTDIR deployment/install.sh deployment/manage.sh deployment/scripts/*.sh deployment/nginx/entrypoint.sh
+      - run: docker compose -p ci -f deployment/docker-compose.yml --env-file deployment/.env.example config -q
+      - name: nginx accepts both rendered configurations
+        run: |
+          for mode in bootstrap https; do
+            docker run --rm -e DOMAIN=example.org -e HTTPS_PORT_SUFFIX= \
+              -v "$PWD/deployment/nginx:/n:ro" --entrypoint sh nginx:1.27-alpine -c '
+                set -e
+                cp /n/templates/common.inc /etc/nginx/cropshift-common.inc
+                envsubst "\${DOMAIN} \${HTTPS_PORT_SUFFIX}" < /n/templates/'"$mode"'.conf.template > /etc/nginx/conf.d/default.conf
+                mkdir -p /etc/letsencrypt/live/example.org /var/www/certbot
+                apk add -q openssl
+                openssl req -x509 -nodes -newkey rsa:2048 -days 1 -subj /CN=example.org \
+                  -keyout /etc/letsencrypt/live/example.org/privkey.pem -out /etc/letsencrypt/live/example.org/fullchain.pem 2>/dev/null
+                nginx -t'
+          done
 
   image:
     runs-on: ubuntu-latest

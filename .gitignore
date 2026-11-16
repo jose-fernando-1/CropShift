@@ -68,3 +68,6 @@ data/processed/*
 !data/processed/.gitkeep
 
 *.sqlite3
+
+# Database dumps written by deployment/manage.sh backup
+backups/

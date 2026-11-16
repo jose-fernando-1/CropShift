@@ -46,7 +46,13 @@ cd web && npm ci && API_MODE=live API_ORIGIN=http://127.0.0.1:8000 npm run dev
 
 Without `API_MODE=live`, `npm run dev` uses the mock API and needs no backend. `make check` runs what the backend CI runs (lint and offline tests).
 
+## Deploy to a server
+
+On a raw Linux server with a domain pointing at it: `sudo ./deployment/install.sh` installs Docker, asks for each setting, starts the stack behind nginx and gets a Let's Encrypt certificate that renews itself. See [deployment/README.md](deployment/README.md).
+
 ## Docs
+
+- [deployment/README.md](deployment/README.md): one-command server install with nginx and HTTPS, operations and troubleshooting.
 
 - [web/README.md](web/README.md): web run modes, env vars, scripts, mock scenarios, tests, layout.
 - [web/docs/data-flow.md](web/docs/data-flow.md): request flow, fixtures (real vs synthetic), mapping rules, privacy.
