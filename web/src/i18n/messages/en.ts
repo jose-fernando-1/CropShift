@@ -27,6 +27,7 @@ export const en = {
     nasaData: "NASA data",
     nasaPower: "NASA POWER Daily API (temperature, humidity, wind, radiation, rain)",
     otherSources: "Other sources",
+    projectRepository: "Project repository",
     sources: {
       zarc: "MAPA ZARC risk table (CC BY)",
       pam: "IBGE PAM, municipal crop production (SIDRA 5457)",

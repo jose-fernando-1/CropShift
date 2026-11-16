@@ -25,6 +25,7 @@ export const ptBR: Messages = {
     nasaData: "Dados da NASA",
     nasaPower: "API diária do NASA POWER (temperatura, umidade, vento, radiação, chuva)",
     otherSources: "Outras fontes",
+    projectRepository: "Repositório do projeto",
     sources: {
       zarc: "Tábua de risco do ZARC, MAPA (CC BY)",
       pam: "IBGE PAM, produção agrícola municipal (SIDRA 5457)",

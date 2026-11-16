@@ -5,6 +5,10 @@ export function nasaData(m: Messages) {
   return [{ name: m.footer.nasaPower, url: "https://power.larc.nasa.gov/docs/services/api/temporal/daily/" }];
 }
 
+export function projectRepository(m: Messages) {
+  return { name: m.footer.projectRepository, url: "https://github.com/jose-fernando-1/CropShift" };
+}
+
 export function otherData(m: Messages) {
   const s = m.footer.sources;
   return [
