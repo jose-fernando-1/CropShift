@@ -1,0 +1,157 @@
+# Cropshift production stack: nginx (HTTPS) -> web -> api -> db, plus certbot for Let's Encrypt renewal.
+#
+# Only nginx publishes ports. db, api and web live on a private network and are never reachable from outside.
+# Configuration comes from deployment/.env (written by install.sh, mode 600, git-ignored); see .env.example.
+# Run it through install.sh / manage.sh rather than by hand: they order the first start (cert bootstrap).
+#
+# Never `docker compose down -v`: it deletes the database and the certificates.
+
+name: cropshift
+
+services:
+  db:
+    image: postgis/postgis:16-3.5
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-rurotation}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in deployment/.env}
+      POSTGRES_DB: ${POSTGRES_DB:-rurotation}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", 'pg_isready -h 127.0.0.1 -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks: [internal]
+
+  migrate:
+    image: cropshift-api:${CROPSHIFT_VERSION:-local}
+    build: &api-build
+      context: ..
+      dockerfile: backend/Dockerfile
+      target: runtime
+    command: ["alembic", "upgrade", "head"]
+    environment: &db-env
+      POSTGRES_HOST: db
+      POSTGRES_PORT: "5432"
+      POSTGRES_USER: ${POSTGRES_USER:-rurotation}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-rurotation}
+      APP_ENV: production
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+    networks: [internal]
+
+  seed:
+    # One-shot, run by install.sh only when the database is empty: loads the committed demo dataset.
+    profiles: [tools]
+    image: cropshift-tools:${CROPSHIFT_VERSION:-local}
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+      target: tools
+    command: ["load-demo"]
+    environment: *db-env
+    volumes:
+      - ../data:/srv/data:ro
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: "no"
+    networks: [internal]
+
+  api:
+    image: cropshift-api:${CROPSHIFT_VERSION:-local}
+    build: *api-build
+    restart: unless-stopped
+    environment:
+      <<: *db-env
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-}
+      GEMINI_FALLBACK_MODELS: ${GEMINI_FALLBACK_MODELS:-}
+      RATE_LIMIT_PER_MIN: ${RATE_LIMIT_PER_MIN:-60}
+      # The web container is the only client the api sees, and it carries the real client IP from nginx in
+      # X-Forwarded-For. Its address is fixed below so the api can trust exactly that peer.
+      TRUSTED_PROXIES: 172.30.0.10
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    networks: [internal]
+
+  web:
+    image: cropshift-web:${CROPSHIFT_VERSION:-local}
+    build:
+      context: ../web
+    restart: unless-stopped
+    environment:
+      API_MODE: live
+      API_ORIGIN: http://api:8000
+      API_TIMEOUT_MS: ${API_TIMEOUT_MS:-35000}
+      SHOW_DATA_FLOW: ${SHOW_DATA_FLOW:-false}
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      internal:
+        ipv4_address: 172.30.0.10
+
+  nginx:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${DOMAIN:?set DOMAIN in deployment/.env}
+      HTTPS_PORT_SUFFIX: ${HTTPS_PORT_SUFFIX:-}
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
+    volumes:
+      - ./nginx/templates:/etc/nginx/cropshift-templates:ro
+      - ./nginx/entrypoint.sh:/cropshift-entrypoint.sh:ro
+      - certs:/etc/letsencrypt:ro
+      - acme_webroot:/var/www/certbot:ro
+    entrypoint: ["/bin/sh", "/cropshift-entrypoint.sh"]
+    depends_on:
+      web:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/healthz >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    networks: [internal]
+
+  certbot:
+    # Renews certificates (twice a day it checks; renews inside the last 30 days). Issuing the first one is
+    # install.sh's job (`manage.sh issue-cert`). nginx reloads on its own to pick renewals up.
+    profiles: [tls]
+    image: certbot/certbot:latest
+    restart: unless-stopped
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        trap exit TERM
+        while :; do
+          certbot renew --webroot -w /var/www/certbot --quiet
+          sleep 12h & wait $${!}
+        done
+    volumes:
+      - certs:/etc/letsencrypt
+      - acme_webroot:/var/www/certbot
+    networks: [internal]
+
+networks:
+  internal:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
+
+volumes:
+  postgres_data:
+  certs:
+  acme_webroot:
