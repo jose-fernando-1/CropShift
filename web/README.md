@@ -12,9 +12,9 @@ See also: [data flow and fixtures](docs/data-flow.md), [API contract](../contrac
 
 Open the repo root in VS Code and choose "Reopen in Container" (`.devcontainer/devcontainer.json`, Node 22).
 
-- `web/node_modules` is a named Docker volume (`cropshift-web-node-modules-<devcontainerId>`, one per workspace).
-- `.devcontainer/post-create.sh` runs `npm ci` and `npx playwright install --with-deps chromium`. It is safe to re-run.
-- Ports 3000 (`next dev`) and 3001 (a second instance, for testing live mode) are forwarded.
+- `web/node_modules` is a named Docker volume (`cropshift-web-node-modules`, see `.devcontainer/docker-compose.yml`).
+- `.devcontainer/post-create.sh` runs `npm ci` and `npx playwright install --with-deps chromium` for the web, then installs the landing and backend dependencies and applies the migrations. It is safe to re-run.
+- Ports 3000 (`next dev`), 3001 (a second instance, for testing live mode), 3002 (landing) and 8000 (API) are forwarded.
 - `API_MODE=mock` is set in the container environment. For live mode run the backend with `make run` and start the web with `API_MODE=live npm run dev` (`API_ORIGIN` already points at `http://127.0.0.1:8000`).
 
 Then: `cd web && npm run dev` and open <http://localhost:3000>.
@@ -34,7 +34,7 @@ The image is a multi-stage build of the Next.js standalone server (`web/Dockerfi
 make stack    # db + migrations + api + web in live mode: web http://localhost:3000, API http://localhost:8000/docs
 ```
 
-`make stack` runs `API_MODE=live API_ORIGIN=http://api:8000 docker compose --profile live up --build`. The root `docker-compose.yml` defines `db`, `migrate`, `api` and `seed` behind the `live` profile, so `docker compose up --build web` alone stays mock-only. See [../README.md](../README.md) for the run modes and [../docs/runbook.md](../docs/runbook.md) for operations.
+`make stack` runs `API_MODE=live API_ORIGIN=http://api:8000 docker compose --profile live up --build`. The root `docker-compose.yml` defines `db`, `migrate`, `api` and `seed` behind the `live` profile (and `landing` without one), so `docker compose up --build web` alone stays mock-only. The server deployment builds the image with `NEXT_PUBLIC_BASE_PATH=/demo`: see [../deployment/README.md](../deployment/README.md). See [../README.md](../README.md) for the run modes and [../docs/runbook.md](../docs/runbook.md) for operations.
 
 ### 3. Plain local
 
@@ -73,6 +73,8 @@ The browser only calls same-origin `/api/*`. A single catch-all route (`src/app/
 - `live`: `src/lib/server/live-proxy.ts` forwards to `API_ORIGIN`. `/api/health` maps to the backend's `/health`; other paths keep their `/api/...` path.
 
 Responses carry `x-cropshift-mode: mock|live` and `cache-control: no-store`. In live mode, failures (backend down, timeout, non-contract error bodies such as FastAPI's default 422) are normalized to the contract error envelope `{ "error": { "code", "message" } }`, so the UI shows "API unavailable" instead of a schema error. `/health` (outside `/api`) serves the same handler, so a second web instance can stand in for the backend in a live-mode test.
+
+Only the contract routes are answered (`src/lib/server/routes.ts`: health, crops, resolve, recommendations and explain); any other path, such as `/api/v1/environment` or the backend's `/docs`, gets a 404 `not_found` before it reaches the mock or the backend. With `NEXT_PUBLIC_BASE_PATH` set, every URL above is prefixed (for example `/demo/api/v1/crops`).
 
 Details: [docs/data-flow.md](docs/data-flow.md).
 
@@ -154,6 +156,7 @@ web/
     components/     charts, form, map, results, explain, inspector, layout, ui
     contract/       zod schemas (source of the contract) and types
     lib/
+      base-path.ts  NEXT_PUBLIC_BASE_PATH helper (withBasePath)
       api/          client (zod parse, request log), TanStack Query hooks
       server/       handle-api (mock/live switch), live-proxy
       domain/       dekads, formatting, geo helpers
