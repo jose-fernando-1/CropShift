@@ -15,6 +15,7 @@ services:
       - cropshift-playwright-cache:/home/vscode/.cache/ms-playwright
       # Dependencies live in named volumes: the host's node_modules/.venv are built for another OS/Python.
       - cropshift-web-node-modules:/workspaces/Rurotation/web/node_modules
+      - cropshift-landing-node-modules:/workspaces/Rurotation/landing/node_modules
       - cropshift-backend-venv:/workspaces/Rurotation/backend/.venv
     environment:
       POSTGRES_HOST: db
@@ -30,4 +31,5 @@ services:
 volumes:
   cropshift-playwright-cache:
   cropshift-web-node-modules:
+  cropshift-landing-node-modules:
   cropshift-backend-venv:

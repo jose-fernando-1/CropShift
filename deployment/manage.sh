@@ -2,7 +2,7 @@
 # Day-to-day operations for a deployment made by install.sh.
 #
 #   status            containers, health, certificate expiry
-#   logs [service]    follow logs (api, web, nginx, db, certbot); all services when omitted
+#   logs [service]    follow logs (api, web, landing, nginx, db, certbot); all services when omitted
 #   start | stop      start or stop the whole stack (data and certificates are kept)
 #   restart [service]
 #   update            git pull (fast-forward only), rebuild, migrate, restart with minimal downtime
@@ -28,7 +28,7 @@ Day-to-day operations for a deployment made by install.sh.
   sudo ./deployment/manage.sh <command> [args]
 
   status            containers, health, certificate expiry
-  logs [service]    follow logs (api, web, nginx, db, certbot); all services when omitted
+  logs [service]    follow logs (api, web, landing, nginx, db, certbot); all services when omitted
   start | stop      start or stop the whole stack (data and certificates are kept)
   restart [service]
   update            backup, git pull (fast-forward only), rebuild, migrate, restart
@@ -116,12 +116,17 @@ cmd_update() {
     fi
     info "Rebuilding images and pulling base images"
     dc --profile tools --profile tls pull --ignore-buildable --quiet 2>/dev/null || true
+    # The two Next.js builds run one after the other: together they can exhaust a small server's memory.
+    dc build web
+    dc build landing
     dc --profile tools build
     info "Applying migrations"
     dc up -d db
     dc run --rm migrate
     info "Restarting services"
-    dc up -d api web nginx
+    dc up -d api web landing nginx
+    # nginx renders its config from the mounted templates only when it starts: restart it so template changes apply.
+    dc restart nginx
     [ "$cert_mode" = selfsigned ] || dc --profile tls up -d certbot
     ok "Updated. Run: manage.sh smoke (if something is wrong, restore the backup above)"
 }
@@ -154,7 +159,7 @@ cmd_env() {
 case "${1:-help}" in
     status) cmd_status ;;
     logs) shift; dc --profile tls logs -f --tail 100 "$@" ;;
-    start) dc up -d db api web nginx; [ "$cert_mode" = selfsigned ] || dc --profile tls up -d certbot ;;
+    start) dc up -d db api web landing nginx; [ "$cert_mode" = selfsigned ] || dc --profile tls up -d certbot ;;
     stop) dc --profile tls stop ;;
     restart) shift; dc restart "$@" ;;
     update) cmd_update ;;

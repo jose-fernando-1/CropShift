@@ -10,10 +10,11 @@
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
   },
   "postCreateCommand": "bash .devcontainer/post-create.sh",
-  "forwardPorts": [3000, 3001, 8000],
+  "forwardPorts": [3000, 3001, 3002, 8000],
   "portsAttributes": {
     "3000": { "label": "web (next dev)", "onAutoForward": "notify" },
     "3001": { "label": "web, second instance (live-mode test)", "onAutoForward": "silent" },
+    "3002": { "label": "landing (next dev)", "onAutoForward": "notify" },
     "8000": { "label": "api (uvicorn)", "onAutoForward": "notify" }
   },
   "customizations": {

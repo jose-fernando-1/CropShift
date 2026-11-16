@@ -1,6 +1,6 @@
 # Deployment
 
-One script takes a raw Linux server to a running Cropshift at `https://your-domain/`: it installs Docker, asks for each setting, builds the images, starts the stack behind nginx and gets a Let's Encrypt certificate that renews itself.
+One script takes a raw Linux server to a running Cropshift: the app at `https://your-domain/demo` and the landing page at `https://your-domain/`: it installs Docker, asks for each setting, builds the images, starts the stack behind nginx and gets a Let's Encrypt certificate that renews itself.
 
 ```bash
 git clone https://github.com/jose-fernando-1/Rurotation.git
@@ -22,13 +22,14 @@ It is safe to run again: it keeps your answers, the database and the certificate
 flowchart LR
   U["Browser"] -->|"443 (HTTPS)"| N["nginx"]
   U -->|"80 (redirect + ACME)"| N
-  N --> W["web (Next.js)"]
+  N -->|"/"| L["landing (Next.js)"]
+  N -->|"/demo"| W["web (Next.js, basePath /demo)"]
   W -->|"internal"| A["api (FastAPI)"]
   A --> D[("PostgreSQL + PostGIS")]
   C["certbot"] -->|"renews, webroot"| N
 ```
 
-Only nginx publishes ports. The database, API and web app live on a private Docker network. The API is reachable only through the web app's same-origin proxy, so `/docs` and the other FastAPI routes are never public.
+Only nginx publishes ports. The database, API, web app and landing live on a private Docker network. The API is reachable only through the web app's same-origin proxy (`/demo/api/`, rate-limited per IP), so `/docs` and the other FastAPI routes are never public.
 
 ## What the script asks
 
@@ -55,10 +56,10 @@ For automation, run `sudo -E ./deployment/install.sh --non-interactive` with the
 2. Installs `curl`, `openssl` and Docker Engine with the Compose plugin from Docker's official repository (skipped when already present).
 3. Asks the questions above and writes `deployment/.env`.
 4. Checks that the domain resolves to this server (Let's Encrypt modes) and that ports 80/443 are free, then optionally opens them in the firewall.
-5. Builds the images, starts PostgreSQL, applies the migrations and, on an empty database, loads the committed demo dataset.
-6. Starts api, web and nginx (plain HTTP at first, with the ACME challenge path open).
+5. Builds the images (web, then landing, one at a time to save memory), starts PostgreSQL, applies the migrations and, on an empty database, loads the committed demo dataset.
+6. Starts api, web, landing and nginx (plain HTTP at first, with the ACME challenge path open).
 7. Gets the certificate, switches nginx to HTTPS and starts the renewal service. For Let's Encrypt it first proves from this machine that `http://your-domain/.well-known/acme-challenge/` reaches nginx, so a DNS or firewall mistake does not use up one of Let's Encrypt's 5 failed validations per hour (`SKIP_ACME_SELFTEST=1` overrides it, e.g. when a server cannot reach its own public address). A certificate counts as already in place only if it was made in the chosen mode, so moving from `letsencrypt-staging` or `selfsigned` to `letsencrypt` really issues a new one; self-signed certificates are renewed when you re-run the script within 30 days of expiry.
-8. Runs the smoke test: HTTP→HTTPS redirect, HSTS, the page, a live API call (`mock:false`), real crop data, a recommendation, and that the API docs are not public.
+8. Runs the smoke test: HTTP→HTTPS redirect, HSTS, the landing at `/`, its link to `/demo`, the app at `/demo`, a live API call under `/demo/api/` (`mock:false`), real crop data, a recommendation, and that the API docs are not public.
 
 Containers use `restart: unless-stopped` and Docker is enabled at boot, so the site comes back after a reboot.
 
@@ -97,10 +98,14 @@ Never run `docker compose down -v`: it deletes the `cropshift_postgres_data` and
 | `scripts/smoke-test.sh` | End-to-end checks used by the installer and `manage.sh smoke`.  |
 | `.env.example`          | Every setting, for configuring by hand.                         |
 
+## Routes and updating
+
+nginx sends `/` to the landing, `/demo` to the web app and `/demo/api/` to the web app's API proxy. Old app links (`/?mun=...`, the state every shared result carries) get a 302 to `/demo?mun=...`; other query strings still show the landing. `manage.sh update` restarts nginx, so when updating from a version without the landing the new routes apply without extra steps.
+
 ## Troubleshooting
 
 - **Certificate issuance fails.** Check that the domain's A record points to this server (`getent hosts your-domain`), that port 80 is reachable from outside (cloud security group, firewall), and that nothing else listens on 80. Re-run the script: it resumes.
-- **The web build is killed or very slow.** The server is out of memory; add swap (the script prints the commands) and re-run.
+- **A web or landing build is killed or very slow.** The server is out of memory; add swap (the script prints the commands) and re-run.
 - **You changed the database password in `.env` and the API cannot log in.** The password of an initialised database does not change with `.env`. Restore the original value, or change it inside PostgreSQL too.
 - **A failed issuance after switching modes.** The previous (untrusted or self-signed) certificate is removed before the new one is requested, so until a re-run succeeds nginx serves the site over plain HTTP. Fix the cause and re-run.
 - **IPv6.** If the domain has an AAAA record it must point to this server and be reachable on port 80, otherwise Let's Encrypt fails (it tries IPv6 first). IPv6 visitors share one rate-limit bucket because of Docker's NAT.

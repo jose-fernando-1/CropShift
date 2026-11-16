@@ -46,17 +46,39 @@ server {
     add_header Referrer-Policy "strict-origin-when-cross-origin" always;
     add_header Permissions-Policy "geolocation=(self), camera=(), microphone=()" always;
 
-    # The API is only reachable through the web app's same-origin proxy; nginx adds a coarse per-IP limit on top
-    # of the api's own limiter.
-    location /api/ {
+    # The web app lives under /demo (Next.js basePath), so nginx forwards the path unchanged (no URI on proxy_pass).
+    # Its API is only reachable through the app's same-origin proxy; nginx adds a coarse per-IP limit on top of the
+    # api's own limiter.
+    location /demo/api/ {
         limit_req zone=api burst=60 nodelay;
         limit_req_status 429;
         set $upstream http://web:3000;
         proxy_pass $upstream;
     }
 
-    location / {
+    location = /demo {
         set $upstream http://web:3000;
+        proxy_pass $upstream;
+    }
+
+    location /demo/ {
+        set $upstream http://web:3000;
+        proxy_pass $upstream;
+    }
+
+    # The app used to live at /: its shared links always carry `mun` (the selected municipality). Only those move to
+    # /demo, so other query strings (utm_source, fbclid, ...) still show the landing page.
+    location = / {
+        # Relative Location header, so the redirect keeps the host and any non-standard port the browser used.
+        absolute_redirect off;
+        if ($arg_mun) { return 302 /demo?$args; }
+        set $upstream http://landing:3000;
+        proxy_pass $upstream;
+    }
+
+    # Everything else is the landing page.
+    location / {
+        set $upstream http://landing:3000;
         proxy_pass $upstream;
     }
 }
