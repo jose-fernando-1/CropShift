@@ -1,19 +1,22 @@
-# Rurotation
+# Cropshift
 
-Cropshift (NASA Space Apps 2026, team Rural): for a point or municipality in Pernambuco, Brazil, it shows for each crop the probability of planting success per dekad (36 ten-day windows) from 40 seasons of NASA POWER climate, next to the official ZARC planting window and IBGE PAM yields. The "probability" is the historical frequency of successful simulated seasons, not a calibrated probability.
+Cropshift is the NASA Space Apps 2026 project of team Rural. For a point or municipality in Pernambuco, Brazil, it shows for each crop the probability of planting success per dekad (36 ten-day windows) from 40 seasons of NASA POWER climate, next to the official ZARC planting window and IBGE PAM yields. The "probability" is the historical frequency of successful simulated seasons, not a calibrated probability.
+
+The GitHub repository is still named Rurotation; the product, the app and the docs use the name Cropshift. The default database user and name `rurotation` are identifiers, not branding.
 
 Current state: the web app ([`web/`](web/README.md)) runs against either its in-process mock API or the FastAPI backend ([`backend/`](backend/README.md)), which implements the shared [contract](contract/README.md) v0.1 over a PostGIS database. The data extraction and ETL tooling lives in [`data/`](data/README.md). Machine learning is scaffolded only: no model is trained or applied (`ml_applied` is always `false`).
 
 ## Layout
 
-| Path        | What                                                                                                     |
-| ----------- | -------------------------------------------------------------------------------------------------------- |
-| `web/`      | Next.js app with a mock API (`API_MODE=mock`) or a proxy to the backend (`API_MODE=live`, `API_ORIGIN`). |
-| `landing/`  | Next.js one-page landing site; its "Open the demo" buttons link to the app.                              |
-| `backend/`  | FastAPI API, pure simulation engines, Alembic migrations, tests.                                         |
-| `data/`     | Source extraction, ETL, validation (`python -m data ...`).                                               |
-| `contract/` | API contract v0.1: JSON Schemas and golden examples, generated from the web zod schemas.                 |
-| `docs/`     | Cross-cutting docs: architecture, data sources, API keys, runbook, validation.                           |
+| Path          | What                                                                                                     |
+| ------------- | -------------------------------------------------------------------------------------------------------- |
+| `web/`        | Next.js app with a mock API (`API_MODE=mock`) or a proxy to the backend (`API_MODE=live`, `API_ORIGIN`). |
+| `landing/`    | Next.js one-page landing site; its "Open the demo" buttons link to the app.                              |
+| `backend/`    | FastAPI API, pure simulation engines, Alembic migrations, tests.                                         |
+| `data/`       | Source extraction, ETL, validation (`python -m data ...`).                                               |
+| `contract/`   | API contract v0.1: JSON Schemas and golden examples, generated from the web zod schemas.                 |
+| `deployment/` | One-command server install: nginx, HTTPS, landing at `/`, app at `/demo`.                                |
+| `docs/`       | Cross-cutting docs: architecture, data sources, API keys, runbook, validation.                           |
 
 ## Run it
 
@@ -27,12 +30,12 @@ Open the repo root in VS Code and choose "Reopen in Container" (`.devcontainer/`
 
 ```bash
 make stack                     # db + migrations + api + web in live mode: http://localhost:3000, API docs http://localhost:8000/docs
-docker compose up --build web  # web alone with the mock API, no database
+docker compose up --build web  # web alone with the mock API, no database (or: make mock-web)
 make landing                   # landing alone: http://localhost:3002, linking to the web app on WEB_PORT
 make stack-down                # stop, keep the database volume
 ```
 
-Never run `docker compose down -v`: it deletes the PostgreSQL volume. The database listens on host port 5433. Overrides (ports, passwords, Gemini) go in a root `.env` copied from `.env.example`. `make seed` (or `docker compose --profile live run --rm seed`) loads the committed demo dataset from `data/demo` into the database with no network; it truncates the seeded tables first. To rebuild the data from the sources see [docs/runbook.md](docs/runbook.md).
+Never run `docker compose down -v`: it deletes the PostgreSQL volume. The database listens on host port 5433. Overrides (ports, passwords, Gemini) go in a root `.env` copied from `.env.example`. `make seed` (or `docker compose --profile live run --rm seed`) loads the committed demo dataset from `data/demo` into the database with no network. `make seed` stops if the database already has crops; the compose `seed` service passes `--force` and replaces (truncates) the seeded tables. To rebuild the data from the sources see [docs/runbook.md](docs/runbook.md).
 
 ### 3. Plain local
 
@@ -56,11 +59,9 @@ On a raw Linux server with a domain pointing at it: `sudo ./deployment/install.s
 
 ## Docs
 
-- [deployment/README.md](deployment/README.md): one-command server install with nginx and HTTPS, operations and troubleshooting.
-
-- [landing/README.md](landing/README.md): landing site run modes, env var, scripts, content.
 - [web/README.md](web/README.md): web run modes, env vars, scripts, mock scenarios, tests, layout.
 - [web/docs/data-flow.md](web/docs/data-flow.md): request flow, fixtures (real vs synthetic), mapping rules, privacy.
+- [landing/README.md](landing/README.md): landing site run modes, env var, scripts, content.
 - [backend/README.md](backend/README.md): backend layers, configuration, endpoints, errors, tests.
 - [docs/backend-architecture.md](docs/backend-architecture.md): request and data flow, key decisions and why.
 - [data/README.md](data/README.md): extraction, ETL, validation commands and data layout; one README per source under `data/sources/`.
@@ -69,3 +70,4 @@ On a raw Linux server with a domain pointing at it: `sudo ./deployment/install.s
 - [docs/runbook.md](docs/runbook.md): reseed, re-extract, backup and restore, troubleshooting.
 - [docs/validation/README.md](docs/validation/README.md): how the evidence for the method is produced.
 - [contract/README.md](contract/README.md): API contract v0.1 draft, schemas, examples and backend notes.
+- [deployment/README.md](deployment/README.md): one-command server install with nginx and HTTPS, operations and troubleshooting.
