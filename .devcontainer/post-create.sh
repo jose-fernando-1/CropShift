@@ -1,17 +1,20 @@
 #!/usr/bin/env bash
-# Installs web + backend dependencies, applies migrations and the Playwright browser. Safe to re-run.
+# Installs web, landing and backend dependencies, applies migrations and the Playwright browser. Safe to re-run.
 set -euo pipefail
 
 root="$(cd "$(dirname "$0")/.." && pwd)"
 
 # Named volumes are created root-owned by Docker.
-for dir in "$root/web/node_modules" "$root/backend/.venv" "$HOME/.cache/ms-playwright"; do
+for dir in "$root/web/node_modules" "$root/landing/node_modules" "$root/backend/.venv" "$HOME/.cache/ms-playwright"; do
   mkdir -p "$dir"
   [ -w "$dir" ] || sudo chown -R "$(id -u):$(id -g)" "$dir"
 done
 
 echo "== web"
 (cd "$root/web" && npm ci && npx playwright install --with-deps chromium)
+
+echo "== landing"
+(cd "$root/landing" && npm ci)
 
 echo "== backend"
 [ -x "$root/backend/.venv/bin/python" ] || python -m venv "$root/backend/.venv"
@@ -21,6 +24,7 @@ echo "== backend"
 cat <<'MSG'
 Ready.
   web:      cd web && npm run dev                       -> http://localhost:3000 (mock API)
+  landing:  cd landing && NEXT_PUBLIC_DEMO_URL=http://localhost:3000 npm run dev -> http://localhost:3002
   api:      make run                                    -> http://localhost:8000/docs
   web live: cd web && API_MODE=live npm run dev         (API_ORIGIN already points at the api above)
   data:     python -m data --help (PYTHONPATH is set), make doctor, make check

@@ -9,6 +9,7 @@ Current state: the web app ([`web/`](web/README.md)) runs against either its in-
 | Path        | What                                                                                                     |
 | ----------- | -------------------------------------------------------------------------------------------------------- |
 | `web/`      | Next.js app with a mock API (`API_MODE=mock`) or a proxy to the backend (`API_MODE=live`, `API_ORIGIN`). |
+| `landing/`  | Next.js one-page landing site; its "Open the demo" buttons link to the app.                              |
 | `backend/`  | FastAPI API, pure simulation engines, Alembic migrations, tests.                                         |
 | `data/`     | Source extraction, ETL, validation (`python -m data ...`).                                               |
 | `contract/` | API contract v0.1: JSON Schemas and golden examples, generated from the web zod schemas.                 |
@@ -20,13 +21,14 @@ Three ways, all driven by the root `Makefile` (`make help` lists the targets) an
 
 ### 1. Devcontainer
 
-Open the repo root in VS Code and choose "Reopen in Container" (`.devcontainer/`, compose-based: services `dev` and `db`, Python 3.13 and Node 22). `post-create.sh` installs the web and backend dependencies and applies the migrations. Then `make run` for the API and `cd web && npm run dev` for the web. Run `make db` and `make stack` on the host, not inside the container.
+Open the repo root in VS Code and choose "Reopen in Container" (`.devcontainer/`, compose-based: services `dev` and `db`, Python 3.13 and Node 22). `post-create.sh` installs the web and backend dependencies and applies the migrations. Then `make run` for the API, `cd web && npm run dev` for the web and `cd landing && npm run dev` for the landing (port 3002). Run `make db` and `make stack` on the host, not inside the container.
 
 ### 2. Containers
 
 ```bash
 make stack                     # db + migrations + api + web in live mode: http://localhost:3000, API docs http://localhost:8000/docs
 docker compose up --build web  # web alone with the mock API, no database
+make landing                   # landing alone: http://localhost:3002, linking to the web app on WEB_PORT
 make stack-down                # stop, keep the database volume
 ```
 
@@ -44,16 +46,19 @@ make run       # API on http://127.0.0.1:8000
 cd web && npm ci && API_MODE=live API_ORIGIN=http://127.0.0.1:8000 npm run dev
 ```
 
+For the landing: `cd landing && npm ci && NEXT_PUBLIC_DEMO_URL=http://localhost:3000 npm run dev` (http://localhost:3002; see [landing/README.md](landing/README.md)).
+
 Without `API_MODE=live`, `npm run dev` uses the mock API and needs no backend. `make check` runs what the backend CI runs (lint and offline tests).
 
 ## Deploy to a server
 
-On a raw Linux server with a domain pointing at it: `sudo ./deployment/install.sh` installs Docker, asks for each setting, starts the stack behind nginx and gets a Let's Encrypt certificate that renews itself. See [deployment/README.md](deployment/README.md).
+On a raw Linux server with a domain pointing at it: `sudo ./deployment/install.sh` installs Docker, asks for each setting, starts the stack behind nginx (landing at `/`, app at `/demo`) and gets a Let's Encrypt certificate that renews itself. See [deployment/README.md](deployment/README.md).
 
 ## Docs
 
 - [deployment/README.md](deployment/README.md): one-command server install with nginx and HTTPS, operations and troubleshooting.
 
+- [landing/README.md](landing/README.md): landing site run modes, env var, scripts, content.
 - [web/README.md](web/README.md): web run modes, env vars, scripts, mock scenarios, tests, layout.
 - [web/docs/data-flow.md](web/docs/data-flow.md): request flow, fixtures (real vs synthetic), mapping rules, privacy.
 - [backend/README.md](backend/README.md): backend layers, configuration, endpoints, errors, tests.

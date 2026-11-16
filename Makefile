@@ -4,7 +4,7 @@
 PY := $(shell [ -x backend/.venv/bin/python ] && echo $(CURDIR)/backend/.venv/bin/python || echo python3)
 DATA_ENV := PYTHONPATH=backend:.
 
-.PHONY: help install db migrate seed run test lint format check doctor stack stack-down mock-web
+.PHONY: help install db migrate seed run test lint format check doctor stack stack-down mock-web landing
 
 help: ## List targets
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  %-12s %s\n", $$1, $$2}'
@@ -49,3 +49,6 @@ stack-down: ## Stop the stack, keep the database volume
 
 mock-web: ## Web alone with the in-process mock API in a container
 	docker compose up --build web
+
+landing: ## Landing page on http://localhost:3002 in a container (links to the web app on WEB_PORT)
+	docker compose up --build landing
