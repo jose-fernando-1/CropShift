@@ -47,7 +47,7 @@ Each value is asked on its own, with an explanation; press Enter to accept the v
 
 Answers are written to `deployment/.env` (mode 600, git-ignored). Values may use letters, digits and `. _ ~ + / = @ : , % -` only, so they survive Docker Compose's `.env` parsing. Earthdata credentials are **not** needed on the server: they only matter for re-extracting satellite data on a developer machine (see [../docs/api-keys.md](../docs/api-keys.md)).
 
-For automation, run `sudo -E ./deployment/install.sh --non-interactive` with the settings in the environment (or in `deployment/.env`); a missing required value is an error. Other options: `--env-only` (only write `.env`), `--skip-docker`, `--no-firewall`, `--no-root-check`, `--help`.
+For automation, run `sudo -E ./deployment/install.sh --non-interactive` with the settings in the environment (or in `deployment/.env`); a missing required value is an error. Other options: `--env-only` (only ask and write `.env`: no root, no installs, nothing started), `--skip-docker`, `--no-firewall`, `--no-root-check`, `--help`. In `--non-interactive` mode the environment overrides `.env`; interactively only `.env` and your answers count, so a stray exported variable can never replace a stored password.
 
 ## What the script does, in order
 
@@ -57,7 +57,7 @@ For automation, run `sudo -E ./deployment/install.sh --non-interactive` with the
 4. Checks that the domain resolves to this server (Let's Encrypt modes) and that ports 80/443 are free, then optionally opens them in the firewall.
 5. Builds the images, starts PostgreSQL, applies the migrations and, on an empty database, loads the committed demo dataset.
 6. Starts api, web and nginx (plain HTTP at first, with the ACME challenge path open).
-7. Gets the certificate (Let's Encrypt over the HTTP challenge, or a self-signed one), switches nginx to HTTPS and starts the renewal service.
+7. Gets the certificate, switches nginx to HTTPS and starts the renewal service. For Let's Encrypt it first proves from this machine that `http://your-domain/.well-known/acme-challenge/` reaches nginx, so a DNS or firewall mistake does not use up one of Let's Encrypt's 5 failed validations per hour (`SKIP_ACME_SELFTEST=1` overrides it, e.g. when a server cannot reach its own public address). A certificate counts as already in place only if it was made in the chosen mode, so moving from `letsencrypt-staging` or `selfsigned` to `letsencrypt` really issues a new one; self-signed certificates are renewed when you re-run the script within 30 days of expiry.
 8. Runs the smoke test: HTTP→HTTPS redirect, HSTS, the page, a live API call (`mock:false`), real crop data, a recommendation, and that the API docs are not public.
 
 Containers use `restart: unless-stopped` and Docker is enabled at boot, so the site comes back after a reboot.
@@ -67,9 +67,9 @@ Containers use `restart: unless-stopped` and Docker is enabled at boot, so the s
 ```bash
 sudo ./deployment/manage.sh status        # containers, health, certificate expiry
 sudo ./deployment/manage.sh logs api      # follow a service's logs
-sudo ./deployment/manage.sh update        # git pull, rebuild, migrate, restart
-sudo ./deployment/manage.sh backup        # pg_dump to backups/
-sudo ./deployment/manage.sh restore FILE
+sudo ./deployment/manage.sh update        # backup, git pull, rebuild, migrate, restart
+sudo ./deployment/manage.sh backup        # pg_dump to backups/ (git-ignored)
+sudo ./deployment/manage.sh restore FILE  # takes a safety dump first; a failed restore is rolled back
 sudo ./deployment/manage.sh smoke         # end-to-end checks
 sudo ./deployment/manage.sh renew-now
 sudo ./deployment/manage.sh stop | start
@@ -102,4 +102,6 @@ Never run `docker compose down -v`: it deletes the `cropshift_postgres_data` and
 - **Certificate issuance fails.** Check that the domain's A record points to this server (`getent hosts your-domain`), that port 80 is reachable from outside (cloud security group, firewall), and that nothing else listens on 80. Re-run the script: it resumes.
 - **The web build is killed or very slow.** The server is out of memory; add swap (the script prints the commands) and re-run.
 - **You changed the database password in `.env` and the API cannot log in.** The password of an initialised database does not change with `.env`. Restore the original value, or change it inside PostgreSQL too.
+- **A failed issuance after switching modes.** The previous (untrusted or self-signed) certificate is removed before the new one is requested, so until a re-run succeeds nginx serves the site over plain HTTP. Fix the cause and re-run.
+- **IPv6.** If the domain has an AAAA record it must point to this server and be reachable on port 80, otherwise Let's Encrypt fails (it tries IPv6 first). IPv6 visitors share one rate-limit bucket because of Docker's NAT.
 - **Logs.** `manage.sh logs nginx`, `manage.sh logs api`. The API never logs coordinates.

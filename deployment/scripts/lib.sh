@@ -37,10 +37,12 @@ load_env_file() {
     done < "$file"
 }
 
-current_value() {  # precedence: this run > real environment (automation) > existing file
+# Precedence: this run > the real environment (ONLY with --non-interactive, so a stray exported variable such as a
+# dev machine's POSTGRES_PASSWORD carried over by `sudo -E` can never silently replace a stored value) > the .env file.
+current_value() {
     local key="$1"
     if [ -n "${ENV_NEW[$key]+x}" ]; then printf '%s' "${ENV_NEW[$key]}"
-    elif [ -n "${!key:-}" ]; then printf '%s' "${!key}"
+    elif [ "$NONINTERACTIVE" = "1" ] && [ -n "${!key:-}" ]; then printf '%s' "${!key}"
     elif [ -n "${ENV_CUR[$key]+x}" ]; then printf '%s' "${ENV_CUR[$key]}"
     fi
 }
@@ -161,6 +163,9 @@ validate_password() {
     [ "${#1}" -ge 16 ] && return 0
     warn "Use at least 16 characters (or leave empty to generate one)."; return 1
 }
+
+NGINX_IMAGE="${NGINX_IMAGE:-nginx:1.27-alpine}"   # also the default in docker-compose.yml
+export NGINX_IMAGE
 
 # ---------- system ----------
 # shellcheck disable=SC2034  # OS_VERSION_CODENAME is read by install.sh

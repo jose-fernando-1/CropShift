@@ -5,6 +5,7 @@
 # A background loop re-renders and reloads when a certificate appears, and reloads every 6 h so renewed
 # certificates are picked up without a restart.
 set -eu
+# (the background loop below must never die: every command in it is guarded)
 
 : "${DOMAIN:?DOMAIN is required}"
 export HTTPS_PORT_SUFFIX="${HTTPS_PORT_SUFFIX:-}"
@@ -34,9 +35,9 @@ nginx -t
         ticks=$((ticks + 1))
         wanted="$(desired_mode)"
         if [ "$wanted" != "$mode" ]; then
-            render "$wanted" && nginx -t && nginx -s reload && mode="$wanted"
+            { render "$wanted" && nginx -t && nginx -s reload && mode="$wanted"; } || echo "nginx: switching to $wanted failed, will retry"
         elif [ $((ticks % 720)) -eq 0 ]; then
-            nginx -s reload
+            nginx -s reload || echo "nginx: periodic reload failed"
         fi
     done
 ) &

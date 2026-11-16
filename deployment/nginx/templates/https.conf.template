@@ -16,6 +16,7 @@ server {
 # Any other hostname or a bare IP over TLS: refuse the handshake (no certificate is shown).
 server {
     listen 443 ssl default_server;
+    http2 on;
     server_name _;
     ssl_reject_handshake on;
 }
@@ -38,6 +39,7 @@ server {
     resolver 127.0.0.11 valid=10s ipv6=off;
     include /etc/nginx/cropshift-common.inc;
 
+    proxy_hide_header X-Powered-By;
     add_header Strict-Transport-Security "max-age=31536000" always;
     add_header X-Content-Type-Options "nosniff" always;
     add_header X-Frame-Options "DENY" always;

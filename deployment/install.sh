@@ -18,12 +18,33 @@
 # It needs: root, a DNS A record for your domain pointing at this machine, and ports 80 and 443 reachable.
 set -euo pipefail
 
+ORIGINAL_ARGS=("$@")
 DEPLOY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="$(dirname "$DEPLOY_DIR")"
 ENV_FILE="$DEPLOY_DIR/.env"
 PROJECT="${COMPOSE_PROJECT_NAME:-cropshift}"
 # shellcheck source=scripts/lib.sh
 . "$DEPLOY_DIR/scripts/lib.sh"
+
+usage() {
+    cat <<'USAGE'
+Cropshift installer: takes a raw Linux server to a running HTTPS site (Docker, nginx, certbot). Safe to re-run.
+
+  sudo ./deployment/install.sh [options]
+
+Options:
+  --non-interactive   take every value from the environment or deployment/.env (automation); a missing
+                      required value is an error instead of a question
+  --env-only          only ask for the settings and write deployment/.env (no root, no installs, nothing started)
+  --skip-docker       do not install Docker (it must already be there)
+  --no-firewall       leave the firewall alone
+  --no-root-check     do not require root (rootless Docker, or testing)
+  -h, --help
+
+Needs: a DNS A record for your domain pointing at this machine and ports 80/443 reachable (Let's Encrypt modes).
+Supported: Debian/Ubuntu (tested path); Fedora/RHEL family is best effort.
+USAGE
+}
 
 ENV_ONLY=0; SKIP_DOCKER=0; NO_FIREWALL=0; NO_ROOT_CHECK=0
 while [ $# -gt 0 ]; do
@@ -33,15 +54,13 @@ while [ $# -gt 0 ]; do
         --skip-docker) SKIP_DOCKER=1 ;;
         --no-firewall) NO_FIREWALL=1 ;;
         --no-root-check) NO_ROOT_CHECK=1 ;;
-        -h|--help) sed -n '2,22p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+        -h|--help) usage; exit 0 ;;
         *) die "Unknown option: $1 (see --help)" ;;
     esac
     shift
 done
 
 dc() { docker compose -p "$PROJECT" -f "$DEPLOY_DIR/docker-compose.yml" --env-file "$ENV_FILE" "$@"; }
-
-ORIGINAL_ARGS=("$@")
 
 # ------------------------------------------------------------------------------------------------ 1. preflight
 preflight() {
@@ -72,19 +91,22 @@ preflight() {
 install_base_packages() {
     step "Installing base packages and Docker"
     local family; family="$(os_family)"
-    local missing=0 tool
-    for tool in curl openssl ss; do command -v "$tool" >/dev/null 2>&1 || missing=1; done
-    if [ "$missing" = 0 ]; then
+    local pkgs=() tool
+    for tool in curl openssl ss; do
+        command -v "$tool" >/dev/null 2>&1 && continue
+        case "$tool" in ss) pkgs+=("$([ "$family" = debian ] && echo iproute2 || echo iproute)") ;; *) pkgs+=("$tool") ;; esac
+    done
+    if [ "${#pkgs[@]}" -eq 0 ]; then
         ok "curl, openssl and iproute2 are already installed"
     elif [ "$family" = debian ]; then
         export DEBIAN_FRONTEND=noninteractive
         apt-get update -qq
-        apt-get install -y -qq ca-certificates curl gnupg openssl iproute2 >/dev/null
-        ok "ca-certificates, curl, openssl, iproute2"
+        apt-get install -y -qq ca-certificates "${pkgs[@]}" >/dev/null
+        ok "installed: ${pkgs[*]}"
     else
         local pm; pm="$(command -v dnf || command -v yum)"
-        "$pm" install -y -q ca-certificates curl openssl iproute >/dev/null
-        ok "ca-certificates, curl, openssl, iproute"
+        "$pm" install -y -q "${pkgs[@]}" >/dev/null
+        ok "installed: ${pkgs[*]}"
     fi
 
     if docker compose version >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
@@ -92,11 +114,17 @@ install_base_packages() {
         return
     fi
     [ "$SKIP_DOCKER" = 0 ] || die "Docker with the Compose plugin is not available and --skip-docker was given."
+    if command -v docker >/dev/null 2>&1; then
+        die "Docker is installed but 'docker compose' (v2 plugin) or the daemon is not working. Installing Docker's own packages would replace your engine and restart other containers on this host, so I will not do it: install the compose plugin (apt install docker-compose-v2, or Docker's docker-compose-plugin) or start the daemon, then re-run."
+    fi
     info "Installing Docker Engine from Docker's official repository"
     if [ "$family" = debian ]; then
         local repo_id="debian"
         case " $OS_ID $OS_LIKE " in *" ubuntu "*) repo_id="ubuntu" ;; esac
         [ -n "$OS_VERSION_CODENAME" ] || die "Cannot determine the release codename for Docker's apt repository."
+        curl -fsSI "https://download.docker.com/linux/${repo_id}/dists/${OS_VERSION_CODENAME}/Release" >/dev/null 2>&1 \
+            || die "Docker has no apt repository for ${repo_id} '${OS_VERSION_CODENAME}'. Install Docker manually and re-run with --skip-docker."
+        apt-get install -y -qq gnupg >/dev/null
         install -m 0755 -d /etc/apt/keyrings
         curl -fsSL "https://download.docker.com/linux/${repo_id}/gpg" -o /etc/apt/keyrings/docker.asc
         chmod a+r /etc/apt/keyrings/docker.asc
@@ -148,8 +176,14 @@ Use 'localhost' only with the selfsigned mode (testing)." \
             "" required validate_email
     fi
 
-    local existing_pw; existing_pw="$(current_value POSTGRES_PASSWORD)"
-    if [ -z "$existing_pw" ] && docker volume inspect "${PROJECT}_postgres_data" >/dev/null 2>&1; then
+    local existing_pw volume_exists=0
+    existing_pw="$(current_value POSTGRES_PASSWORD)"
+    docker volume inspect "${PROJECT}_postgres_data" >/dev/null 2>&1 && volume_exists=1
+    if [ -n "$existing_pw" ]; then
+        ask POSTGRES_PASSWORD "PostgreSQL password" \
+"Keep the current password unless you also changed it inside the database (it cannot be cleared here)." \
+            "" secret validate_password
+    elif [ "$volume_exists" = 1 ]; then
         warn "A database volume from a previous install exists but no password is stored in $ENV_FILE."
         warn "Enter the ORIGINAL database password; a new one would not match the existing data."
         ask POSTGRES_PASSWORD "PostgreSQL password" "The password the existing database was created with." "" secret validate_password
@@ -171,11 +205,11 @@ and everything else works. Content is sent to Google; no coordinates or personal
     if [ -n "${ENV_NEW[GEMINI_API_KEY]}" ]; then
         ask GEMINI_MODEL "Gemini model (first choice)" \
 "A model your key can call. Models are retired and sometimes overloaded, so the API falls through a fallback chain.
-Leave empty to use the built-in defaults (gemini-3.6-flash, gemini-3.5-flash-lite, gemini-3.8-flash)." \
-            "gemini-3.6-flash" optional
+Enter a name, or leave empty to use only the built-in defaults (gemini-3.6-flash, gemini-3.5-flash-lite, gemini-3.8-flash)." \
+            "" optional
         ask GEMINI_FALLBACK_MODELS "Gemini fallback models (comma separated)" \
-"Tried in order when the first choice fails. Leave empty for the built-in defaults." \
-            "gemini-3.5-flash-lite,gemini-3.1-flash-lite" optional
+"Tried in order when the first choice fails; the built-in defaults follow them. Leave empty if the defaults are enough." \
+            "" optional
     else
         ENV_ORDER+=("GEMINI_MODEL" "GEMINI_FALLBACK_MODELS"); ENV_NEW[GEMINI_MODEL]=""; ENV_NEW[GEMINI_FALLBACK_MODELS]=""
     fi
@@ -219,6 +253,12 @@ check_dns_and_ports() {
         ok "Ports ${ENV_NEW[HTTP_PORT]} and ${ENV_NEW[HTTPS_PORT]} are free"
     fi
     [ "$mode" = selfsigned ] && { ok "selfsigned mode: skipping the public DNS check"; return; }
+    if [ "${ENV_NEW[HTTP_PORT]}" != 80 ]; then
+        die "Let's Encrypt validates over port 80: HTTP_PORT must be 80 in $mode mode (it is ${ENV_NEW[HTTP_PORT]})."
+    fi
+    if getent ahostsv6 "$domain" 2>/dev/null | grep -q .; then
+        warn "$domain has an AAAA (IPv6) record. Let's Encrypt tries IPv6 first: it must point to this server and be reachable on port 80, or issuance fails. Remove the AAAA record if unsure. IPv6 visitors also share one rate-limit bucket (Docker NAT)."
+    fi
 
     local resolved my_ip
     resolved="$(getent ahostsv4 "$domain" 2>/dev/null | awk 'NR==1 {print $1}')"
@@ -247,8 +287,8 @@ configure_firewall() {
     elif command -v firewall-cmd >/dev/null 2>&1 && firewall-cmd --state >/dev/null 2>&1; then
         step "Firewall (firewalld)"
         if confirm "firewalld is running. Allow http and https?" y; then
-            firewall-cmd --permanent --add-service=http --add-service=https >/dev/null && firewall-cmd --reload >/dev/null
-            ok "firewalld: http and https opened"
+            firewall-cmd --permanent --add-port="${ENV_NEW[HTTP_PORT]}/tcp" --add-port="${ENV_NEW[HTTPS_PORT]}/tcp" >/dev/null && firewall-cmd --reload >/dev/null
+            ok "firewalld: ports ${ENV_NEW[HTTP_PORT]} and ${ENV_NEW[HTTPS_PORT]} opened"
         fi
     fi
 }
@@ -274,7 +314,7 @@ start_stack() {
     wait_healthy db 120
     dc run --rm migrate
     local crops
-    crops="$(dc exec -T db psql -U "${ENV_NEW[POSTGRES_USER]}" -d "${ENV_NEW[POSTGRES_DB]}" -tAc 'SELECT count(*) FROM crops' 2>/dev/null | tr -d '[:space:]')"
+    crops="$(dc exec -T db psql -U "${ENV_NEW[POSTGRES_USER]}" -d "${ENV_NEW[POSTGRES_DB]}" -tAc 'SELECT count(*) FROM crops' 2>/dev/null | tr -d '[:space:]' || true)"
     if [ "${crops:-0}" = "0" ]; then
         info "Empty database: loading the demo dataset (crops, municipalities, ZARC, PAM, precomputed windows)"
         dc --profile tools run --rm seed
@@ -289,36 +329,78 @@ start_stack() {
     ok "Stack is up (plain HTTP while there is no certificate)"
 }
 
-cert_exists() {
-    docker run --rm -v "${PROJECT}_certs:/c:ro" --entrypoint sh nginx:1.27-alpine \
-        -c "test -s /c/live/${ENV_NEW[DOMAIN]}/fullchain.pem" >/dev/null 2>&1
+# --- certificate lifecycle -----------------------------------------------------------------------------------
+# A marker file next to the certificate records which mode made it. A certificate counts as "in place" only when the
+# marker matches the chosen mode (so staging -> production or self-signed -> Let's Encrypt really issues a new one)
+# and, for self-signed certificates, when it is not within 30 days of expiry (re-running install.sh renews it).
+cert_volume_run() {  # cert_volume_run "shell command"   (volume mounted read-write at /c)
+    docker run --rm -v "${PROJECT}_certs:/c" --entrypoint sh "$NGINX_IMAGE" -c "$1"
 }
+
+cert_present() { cert_volume_run "test -s /c/live/${ENV_NEW[DOMAIN]}/fullchain.pem" >/dev/null 2>&1; }
+
+cert_ok() {
+    cert_present || return 1
+    local marker
+    marker="$(cert_volume_run "cat /c/live/${ENV_NEW[DOMAIN]}/.cropshift-mode 2>/dev/null" 2>/dev/null || true)"
+    [ "$marker" = "${ENV_NEW[CERT_MODE]}" ] || return 1
+    if [ "${ENV_NEW[CERT_MODE]}" = selfsigned ]; then
+        cert_volume_run "cat /c/live/${ENV_NEW[DOMAIN]}/fullchain.pem" 2>/dev/null | openssl x509 -noout -checkend 2592000 >/dev/null 2>&1 || return 1
+    fi
+    return 0
+}
+
+reset_cert_lineage() {  # remove whatever certificate exists for the domain (any mode) so a new one can be made
+    cert_volume_run "rm -rf /c/live/${ENV_NEW[DOMAIN]} /c/archive/${ENV_NEW[DOMAIN]} /c/renewal/${ENV_NEW[DOMAIN]}.conf"
+}
+
+mark_cert() { cert_volume_run "echo ${ENV_NEW[CERT_MODE]} > /c/live/${ENV_NEW[DOMAIN]}/.cropshift-mode"; }
 
 issue_selfsigned() {
     local tmp; tmp="$(mktemp -d)"
     openssl req -x509 -nodes -newkey rsa:2048 -days 365 -subj "/CN=${ENV_NEW[DOMAIN]}" \
         -addext "subjectAltName=DNS:${ENV_NEW[DOMAIN]}" -keyout "$tmp/privkey.pem" -out "$tmp/fullchain.pem" 2>/dev/null
-    docker run --rm -v "${PROJECT}_certs:/dst" -v "$tmp:/src:ro" --entrypoint sh nginx:1.27-alpine \
+    docker run --rm -v "${PROJECT}_certs:/dst" -v "$tmp:/src:ro" --entrypoint sh "$NGINX_IMAGE" \
         -c "mkdir -p /dst/live/${ENV_NEW[DOMAIN]} && cp /src/fullchain.pem /src/privkey.pem /dst/live/${ENV_NEW[DOMAIN]}/ && chmod 600 /dst/live/${ENV_NEW[DOMAIN]}/privkey.pem"
     rm -rf "$tmp"
 }
 
+# Let's Encrypt allows only 5 failed validations per hostname per hour: prove the challenge path works from
+# THIS machine's view of the public name before spending an attempt. (Override: SKIP_ACME_SELFTEST=1, e.g. NAT hairpin.)
+acme_selftest() {
+    [ "${SKIP_ACME_SELFTEST:-0}" = 1 ] && { warn "Skipping the challenge self-test (SKIP_ACME_SELFTEST=1)"; return 0; }
+    local url="http://${ENV_NEW[DOMAIN]}/.well-known/acme-challenge/cropshift-selftest" ok_flag=0
+    docker run --rm -v "${PROJECT}_acme_webroot:/w" --entrypoint sh "$NGINX_IMAGE" \
+        -c "mkdir -p /w/.well-known/acme-challenge && echo cropshift-ok > /w/.well-known/acme-challenge/cropshift-selftest"
+    curl -fsS --max-time 15 "$url" 2>/dev/null | grep -q cropshift-ok && ok_flag=1
+    docker run --rm -v "${PROJECT}_acme_webroot:/w" --entrypoint sh "$NGINX_IMAGE" -c "rm -f /w/.well-known/acme-challenge/cropshift-selftest" >/dev/null 2>&1 || true
+    [ "$ok_flag" = 1 ] && return 0
+    die "http://${ENV_NEW[DOMAIN]}/ does not reach this server's nginx on port 80 (checked from this machine). Fix DNS (A record), the cloud firewall/security group, or anything else listening on port 80, then re-run: nothing was sent to Let's Encrypt, so no rate-limit attempt was used. If this server cannot reach its own public address (NAT hairpin), re-run with SKIP_ACME_SELFTEST=1."
+}
+
 issue_letsencrypt() {
     local args=(certonly --webroot -w /var/www/certbot -d "${ENV_NEW[DOMAIN]}" --email "${ENV_NEW[LETSENCRYPT_EMAIL]}"
-                --agree-tos --no-eff-email --non-interactive --keep-until-expiring)
+                --agree-tos --no-eff-email --non-interactive)
     [ "${ENV_NEW[CERT_MODE]}" = letsencrypt-staging ] && args+=(--staging)
     dc --profile tls run --rm --entrypoint certbot certbot "${args[@]}"
 }
 
 setup_tls() {
     step "HTTPS certificate (${ENV_NEW[CERT_MODE]})"
-    if cert_exists; then
-        ok "A certificate for ${ENV_NEW[DOMAIN]} is already in place (certbot renews it automatically)"
+    if cert_ok; then
+        ok "A ${ENV_NEW[CERT_MODE]} certificate for ${ENV_NEW[DOMAIN]} is already in place$([ "${ENV_NEW[CERT_MODE]}" = selfsigned ] || echo " (certbot renews it automatically)")"
     elif [ "${ENV_NEW[CERT_MODE]}" = selfsigned ]; then
-        issue_selfsigned && ok "Self-signed certificate created (valid 365 days; browsers will show a warning)"
+        cert_present && info "Replacing the existing certificate (different mode or close to expiry)"
+        reset_cert_lineage
+        issue_selfsigned && mark_cert && ok "Self-signed certificate created (valid 365 days; re-run install.sh within 30 days of expiry to renew)"
     else
+        info "Checking that the HTTP challenge path is reachable"
+        acme_selftest
+        cert_present && info "Replacing the existing certificate (it was made in a different mode)"
+        reset_cert_lineage
         info "Asking Let's Encrypt via the HTTP challenge on port ${ENV_NEW[HTTP_PORT]}"
-        issue_letsencrypt || die "Certificate issuance failed. Check that ${ENV_NEW[DOMAIN]} points to this server and port 80 is reachable from the internet, then re-run this script (it resumes)."
+        issue_letsencrypt || die "Certificate issuance failed (see certbot's message above). Re-run this script after fixing it: it resumes."
+        mark_cert
         ok "Certificate issued"
     fi
     info "Switching nginx to HTTPS"
@@ -346,16 +428,20 @@ summary() {
   Configuration:  $ENV_FILE  (secrets, mode 600; re-run install.sh to change answers)
   Data:           Docker volumes ${PROJECT}_postgres_data and ${PROJECT}_certs
                   NEVER run 'docker compose down -v' (it deletes the database and the certificates)
-  Certificates:   $( [ "${ENV_NEW[CERT_MODE]}" = selfsigned ] && echo "self-signed, 365 days: re-run install.sh to renew" || echo "renewed automatically by the certbot service" )
+  Certificates:   $( [ "${ENV_NEW[CERT_MODE]}" = selfsigned ] && echo "self-signed, 365 days: re-run install.sh within 30 days of expiry to renew" || echo "renewed automatically by the certbot service" )
   Docs:           deployment/README.md
 MSG
 }
 
 main() {
+    if [ "$ENV_ONLY" = 1 ]; then
+        gather_config
+        info "--env-only: wrote $ENV_FILE. Nothing was installed or started."
+        exit 0
+    fi
     preflight
     install_base_packages
     gather_config
-    [ "$ENV_ONLY" = 0 ] || { info "--env-only: done."; exit 0; }
     check_dns_and_ports
     configure_firewall
     start_stack

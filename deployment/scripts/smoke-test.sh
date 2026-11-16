@@ -35,7 +35,7 @@ t_health()    { https /api/health | grep -q '"mock":false'; }
 t_status()    { https /api/health | grep -q '"status":"ok"'; }
 t_crops()     { https /api/v1/crops | grep -q '"crop_id":"cowpea"'; }
 t_recommend() { https /api/v1/recommendations -H 'content-type: application/json' -d '{"municipality_code":"2613008"}' | grep -q '"mock":false'; }
-t_no_docs()   { ! https /docs; }
+t_no_docs()   { https /api/health >/dev/null && ! https /docs; }   # reachable, yet /docs refused
 
 check "HTTP redirects to HTTPS (got ${redirect_status})" t_redirect
 check "HTTPS serves the web page" t_page

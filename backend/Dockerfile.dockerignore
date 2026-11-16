@@ -11,3 +11,5 @@ web
 backend/tests
 data/raw
 data/processed
+backups
+deployment

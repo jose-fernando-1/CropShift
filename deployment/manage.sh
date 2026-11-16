@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # Day-to-day operations for a deployment made by install.sh.
-#   sudo ./deployment/manage.sh <command> [args]
 #
 #   status            containers, health, certificate expiry
 #   logs [service]    follow logs (api, web, nginx, db, certbot); all services when omitted
@@ -22,10 +21,37 @@ PROJECT="${COMPOSE_PROJECT_NAME:-cropshift}"
 # shellcheck source=scripts/lib.sh
 . "$DEPLOY_DIR/scripts/lib.sh"
 
-[ -f "$ENV_FILE" ] || die "$ENV_FILE not found: run ./deployment/install.sh first."
-if ! docker info >/dev/null 2>&1; then
-    command -v sudo >/dev/null 2>&1 || die "Cannot talk to Docker: run as root or a member of the docker group."
-    exec sudo -E bash "${BASH_SOURCE[0]}" "$@"
+usage() {
+    cat <<'USAGE'
+Day-to-day operations for a deployment made by install.sh.
+
+  sudo ./deployment/manage.sh <command> [args]
+
+  status            containers, health, certificate expiry
+  logs [service]    follow logs (api, web, nginx, db, certbot); all services when omitted
+  start | stop      start or stop the whole stack (data and certificates are kept)
+  restart [service]
+  update            backup, git pull (fast-forward only), rebuild, migrate, restart
+  issue-cert        request the Let's Encrypt certificate again, then restart nginx
+  renew-now         run certbot renew immediately and reload nginx
+  backup [file]     compressed pg_dump (default: backups/cropshift-DATE.dump)
+  restore FILE      replace the database content with a backup made by `backup` (asks first, keeps a safety dump)
+  smoke             run the end-to-end checks against this server
+  env               show the settings with secrets masked
+USAGE
+}
+
+case "${1:-help}" in help|-h|--help) usage; exit 0 ;; esac
+
+# Needs the root-owned .env and the Docker socket. Re-exec through sudo ONLY when not already root (a stopped daemon
+# must not make a root shell loop through sudo forever).
+if [ ! -r "$ENV_FILE" ] || ! docker info >/dev/null 2>&1; then
+    if [ "$(id -u)" -ne 0 ]; then
+        command -v sudo >/dev/null 2>&1 || die "Run as root (or a user that can read $ENV_FILE and use Docker)."
+        exec sudo -E bash "${BASH_SOURCE[0]}" "$@"
+    fi
+    [ -f "$ENV_FILE" ] || die "$ENV_FILE not found: run ./deployment/install.sh first."
+    die "Docker is not running or not reachable. Try: systemctl status docker"
 fi
 load_env_file "$ENV_FILE"
 dc() { docker compose -p "$PROJECT" -f "$DEPLOY_DIR/docker-compose.yml" --env-file "$ENV_FILE" "$@"; }
@@ -47,27 +73,49 @@ cmd_status() {
 }
 
 cmd_backup() {
-    local out="${1:-$REPO_DIR/backups/cropshift-$(date -u +%Y%m%dT%H%M%SZ).dump}"
+    local out="${1:-$REPO_DIR/backups/cropshift-$(date -u +%Y%m%dT%H%M%SZ).dump}" tmp
     mkdir -p "$(dirname "$out")"
-    ( umask 077; dc exec -T db pg_dump -U "${ENV_CUR[POSTGRES_USER]:-rurotation}" -d "${ENV_CUR[POSTGRES_DB]:-rurotation}" -Fc > "$out" )
-    ok "Backup written to $out ($(du -h "$out" | cut -f1))"
+    tmp="$(umask 077; mktemp "${out}.partial.XXXXXX")"
+    if dc exec -T db pg_dump -U "${ENV_CUR[POSTGRES_USER]:-rurotation}" -d "${ENV_CUR[POSTGRES_DB]:-rurotation}" -Fc > "$tmp"; then
+        [ -s "$tmp" ] || { rm -f "$tmp"; die "pg_dump produced an empty file"; }
+        mv "$tmp" "$out"
+        ok "Backup written to $out ($(du -h "$out" | cut -f1))"
+    else
+        rm -f "$tmp"
+        die "pg_dump failed: no backup was written"
+    fi
 }
 
 cmd_restore() {
-    local file="${1:?usage: manage.sh restore FILE}"
+    local file="${1:?usage: manage.sh restore FILE}" safety
     [ -f "$file" ] || die "$file not found"
-    confirm "This REPLACES the database content with $file. Continue?" n || exit 1
+    confirm "This REPLACES the database content with $file. A safety dump of the current database is taken first. Continue?" n || exit 1
+    safety="$REPO_DIR/backups/pre-restore-$(date -u +%Y%m%dT%H%M%SZ).dump"
+    cmd_backup "$safety"
     dc stop api web >/dev/null
-    dc exec -T db pg_restore -U "${ENV_CUR[POSTGRES_USER]:-rurotation}" -d "${ENV_CUR[POSTGRES_DB]:-rurotation}" --clean --if-exists --no-owner < "$file" \
-        || warn "pg_restore reported warnings (often harmless with --clean); check the data."
-    dc up -d api web
-    ok "Restored. Run: manage.sh smoke"
+    # One transaction, stop at the first error: a failed restore leaves the database exactly as it was.
+    if dc exec -T db pg_restore -U "${ENV_CUR[POSTGRES_USER]:-rurotation}" -d "${ENV_CUR[POSTGRES_DB]:-rurotation}" \
+            --clean --if-exists --no-owner --single-transaction --exit-on-error < "$file"; then
+        dc up -d api web
+        ok "Restored from $file (safety dump of the previous state: $safety). Run: manage.sh smoke"
+    else
+        dc up -d api web
+        die "Restore failed and was rolled back: the database is unchanged. The file may be truncated or from another version."
+    fi
 }
 
 cmd_update() {
+    info "Backing up before the update"
+    cmd_backup
     info "Updating the code (fast-forward only)"
-    git -C "$REPO_DIR" pull --ff-only
-    info "Rebuilding images"
+    local owner; owner="$(stat -c %U "$REPO_DIR/.git")"
+    if [ "$(id -u)" -eq 0 ] && [ "$owner" != root ]; then
+        sudo -u "$owner" git -C "$REPO_DIR" pull --ff-only   # keep .git owned by its user, not root
+    else
+        git -C "$REPO_DIR" pull --ff-only
+    fi
+    info "Rebuilding images and pulling base images"
+    dc --profile tools --profile tls pull --ignore-buildable --quiet 2>/dev/null || true
     dc --profile tools build
     info "Applying migrations"
     dc up -d db
@@ -75,13 +123,13 @@ cmd_update() {
     info "Restarting services"
     dc up -d api web nginx
     [ "$cert_mode" = selfsigned ] || dc --profile tls up -d certbot
-    ok "Updated. Run: manage.sh smoke"
+    ok "Updated. Run: manage.sh smoke (if something is wrong, restore the backup above)"
 }
 
 cmd_issue_cert() {
     [ "$cert_mode" != selfsigned ] || die "CERT_MODE=selfsigned: re-run install.sh to create a new self-signed certificate."
     local args=(certonly --webroot -w /var/www/certbot -d "$domain" --email "${ENV_CUR[LETSENCRYPT_EMAIL]:?LETSENCRYPT_EMAIL missing}"
-                --agree-tos --no-eff-email --non-interactive --keep-until-expiring)
+                --agree-tos --no-eff-email --non-interactive --keep-until-expiring)   # not expired yet: certbot keeps it
     [ "$cert_mode" = letsencrypt-staging ] && args+=(--staging)
     dc --profile tls run --rm --entrypoint certbot certbot "${args[@]}"
     dc restart nginx
@@ -105,7 +153,7 @@ cmd_env() {
 
 case "${1:-help}" in
     status) cmd_status ;;
-    logs) shift; dc logs -f --tail 100 "$@" ;;
+    logs) shift; dc --profile tls logs -f --tail 100 "$@" ;;
     start) dc up -d db api web nginx; [ "$cert_mode" = selfsigned ] || dc --profile tls up -d certbot ;;
     stop) dc --profile tls stop ;;
     restart) shift; dc restart "$@" ;;
@@ -116,6 +164,5 @@ case "${1:-help}" in
     restore) shift; cmd_restore "$@" ;;
     smoke) cmd_smoke ;;
     env) cmd_env ;;
-    help|-h|--help) sed -n '2,19p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
     *) die "Unknown command '$1'. Try: manage.sh help" ;;
 esac

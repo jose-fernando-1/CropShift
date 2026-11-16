@@ -55,8 +55,6 @@ services:
       target: tools
     command: ["load-demo"]
     environment: *db-env
-    volumes:
-      - ../data:/srv/data:ro
     depends_on:
       migrate:
         condition: service_completed_successfully
@@ -100,7 +98,7 @@ services:
         ipv4_address: 172.30.0.10
 
   nginx:
-    image: nginx:1.27-alpine
+    image: ${NGINX_IMAGE:-nginx:1.27-alpine}
     restart: unless-stopped
     environment:
       DOMAIN: ${DOMAIN:?set DOMAIN in deployment/.env}
@@ -128,7 +126,7 @@ services:
     # Renews certificates (twice a day it checks; renews inside the last 30 days). Issuing the first one is
     # install.sh's job (`manage.sh issue-cert`). nginx reloads on its own to pick renewals up.
     profiles: [tls]
-    image: certbot/certbot:latest
+    image: certbot/certbot:v5.10.0
     restart: unless-stopped
     entrypoint:
       - /bin/sh
@@ -149,7 +147,9 @@ networks:
     driver: bridge
     ipam:
       config:
+        # ip_range keeps Docker's dynamic allocator away from the web container's fixed .10 (which the api trusts).
         - subnet: 172.30.0.0/24
+          ip_range: 172.30.0.128/25
 
 volumes:
   postgres_data:
