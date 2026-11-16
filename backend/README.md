@@ -65,7 +65,7 @@ Business routes live under `/api/v1`. Contract schemas are in [../contract/](../
 | `GET /api/v1/` | Service info. |
 | `GET /api/v1/crops` | Crop catalog with raw FAO-56 and EcoCrop requirements and each crop's statewide quality gate. |
 | `GET /api/v1/crops/{id}` | One crop. Not in the contract table. |
-| `POST /api/v1/environment` | Backend-only: stored POWER climate summary, SoilGrids layers and elevation behind an analysis (body `{lat, lon}` or `{municipality_code}`; not query string, so coordinates stay out of URLs). |
+| `POST /api/v1/environment` | Backend-only (the web proxy does not forward it): stored POWER climate summary, SoilGrids layers and elevation behind an analysis (body `{lat, lon}` or `{municipality_code}`; not query string, so coordinates stay out of URLs). |
 | `POST /api/v1/locations/resolve` | `{lat, lon}` to municipality and POWER cell, or `out_of_state`. |
 | `POST /api/v1/recommendations` | Ranked crops, windows and excluded crops for `{lat, lon}` or `{municipality_code}` plus optional `soil_class` (1-3) and `regime`. |
 | `GET /api/v1/recommendations/{id}` | Recomputes an earlier analysis from its id. Not in the contract table. |
@@ -125,7 +125,7 @@ make check   # lint + test
 - `tests/data`: parity of the Python crop catalog with the web mock's.
 - Markers (`pyproject.toml`): `db` needs the PostGIS database; `live` calls real external APIs and is excluded by `make test`; run them with `cd backend && python -m pytest -m live`. No test is currently marked `live`.
 - The test setup disables the rate limit and blanks `GEMINI_API_KEY`, so tests never call Gemini.
-- CI: `.github/workflows/backend-ci.yml` runs lint, the migration round trip and `pytest -m "not live"` against a PostGIS service, and builds the `runtime` and `tools` images.
+- CI: `.github/workflows/backend-ci.yml` runs lint, the migration round trip and `pytest -m "not live"` against a PostGIS service, checks the `deployment/` compose file and nginx templates, and builds the `runtime` and `tools` images.
 
 ## Not implemented (deliberately deferred)
 
