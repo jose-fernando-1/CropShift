@@ -49,7 +49,7 @@ npm run build && npm start   # standalone server, same as the image
 
 ## Environment variables
 
-Copy `.env.example` to `.env.local` if you need to change any. All are read at request time, so no rebuild is needed.
+Copy `.env.example` to `.env.local` if you need to change any. All are read at request time, so no rebuild is needed, except `NEXT_PUBLIC_BASE_PATH`, which is fixed at build time.
 
 | Variable | Default | Meaning |
 | --- | --- | --- |
@@ -58,6 +58,7 @@ Copy `.env.example` to `.env.local` if you need to change any. All are read at r
 | `API_TIMEOUT_MS` | `15000` | Upstream timeout in live mode. |
 | `SHOW_DATA_FLOW` | `true` | Unset, empty, `true`, `1`, `on` or `yes` (case-insensitive) keep the header's "Data flow" button and the inspector. Any other value, such as `false` or a typo, hides them entirely, even with `?debug=1`. Useful on a public demo. |
 | `MOCK_LATENCY_MS` | random 300-900 | Mock only. Fixed latency in ms; `0` disables it. |
+| `NEXT_PUBLIC_BASE_PATH` | empty | Build time. Path the app is served under (for example `/demo`), applied to Next.js `basePath` and to the client's API calls. Empty serves it at `/`. The deployment builds with `/demo` (Docker build arg of the same name). |
 | `WEB_PORT` | `3000` | Compose only: host port. |
 | `PORT` | `3000` | Port of the standalone server (`npm start`). |
 | `WEB_HOST` | `0.0.0.0` | Interface `npm start` binds to. Set explicitly because Docker and the devcontainer set `HOSTNAME` to the container id, which the standalone server would otherwise bind to. |

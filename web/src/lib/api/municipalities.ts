@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { withBasePath } from "@/lib/base-path";
 import { foldAccents } from "@/lib/domain/geo";
 
 export type MunicipalityFeatureCollection = GeoJSON.FeatureCollection<
@@ -16,7 +17,7 @@ export function useMunicipalities() {
     queryKey: ["geo", "pe-municipalities"],
     staleTime: Infinity,
     queryFn: async () => {
-      const res = await fetch("/geo/pe-municipalities.json");
+      const res = await fetch(withBasePath("/geo/pe-municipalities.json"));
       if (!res.ok) throw new Error(`map data: HTTP ${res.status}`);
       const geojson = (await res.json()) as MunicipalityFeatureCollection;
       const options: MunicipalityOption[] = geojson.features

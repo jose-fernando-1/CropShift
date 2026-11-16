@@ -7,6 +7,7 @@ import type { z } from "zod";
 import * as S from "@/contract/schemas";
 import type { ErrorCode, RecommendationRequest, ResolveRequest } from "@/contract/types";
 import type { Locale } from "@/i18n";
+import { withBasePath } from "@/lib/base-path";
 import { requestLog } from "./request-log";
 
 export type ClientErrorCode = ErrorCode | "network" | "schema_mismatch";
@@ -49,7 +50,7 @@ async function call<T extends z.ZodType>(
 
   let res: Response;
   try {
-    res = await fetch(path, { method, headers, body: body === undefined ? undefined : JSON.stringify(body) });
+    res = await fetch(withBasePath(path), { method, headers, body: body === undefined ? undefined : JSON.stringify(body) });
   } catch {
     requestLog.finish(logId, { durationMs: performance.now() - started, schemaOk: null });
     throw new ApiClientError("network", "Could not reach the server. Check your connection.", null);
